@@ -1,0 +1,184 @@
+---
+/**
+ * A drawing brought to life (RF-50 to RF-52, ADR 0051): its layers, cut from the scan by
+ * `scripts/animations/build.ts`, stacked in one box. The background carries the artwork's
+ * alternative text; the moving layers are decorative.
+ *
+ * While a song plays, each part moves as its description says (strum, sway or drift). The
+ * first time the drawing is seen, white covers over the handwriting slide away line by line,
+ * as if it were being written. With "reduce motion", or without JavaScript, nothing moves and
+ * nothing is covered.
+ */
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+import type { ArtworkEntry } from '../../lib/content/collections';
+import {
+  type DrawingAnimation,
+  bandBox,
+  pivotOrigin,
+} from '../../lib/animations/drawing-animation';
+
+interface Props {
+  artwork: ArtworkEntry;
+  animation: DrawingAnimation;
+  sizes: string;
+  widths: number[];
+  loading: 'lazy' | 'eager';
+}
+
+const { artwork, animation, sizes, widths, loading } = Astro.props;
+
+const layerFiles = import.meta.glob<{ default: ImageMetadata }>(
+  '../../assets/animations/*/*.webp',
+  { eager: true },
+);
+function layer(name: string): ImageMetadata {
+  const file = layerFiles[`../../assets/animations/${animation.artworkId}/${name}.webp`];
+  if (file === undefined) {
+    throw new Error(
+      `Layer "${name}" of the animation of "${animation.artworkId}" is missing: run npx tsx scripts/animations/build.ts`,
+    );
+  }
+  return file.default;
+}
+
+/** Writing speed: milliseconds per scan pixel of a line, and the pause between lines. */
+const MS_PER_PIXEL = 1.1;
+const PAUSE_MS = 250;
+/**
+ * Scan pixels each cover reaches above its band. Handwritten lines interleave: the tall
+ * strokes of a line rise into the band of the line above. Reaching up keeps them hidden until
+ * their own line is written, and leaves no rounding gap between two covers. It may hide a
+ * low stroke of the line above for a moment, which shows far less than strokes of a line
+ * not yet written. The first verse does not reach up: above it is the frame of the scene.
+ */
+const REACH = 40;
+let start = 0;
+const covers = animation.writing.map((band, index) => {
+  const duration = Math.round((band.right - band.left) * MS_PER_PIXEL);
+  const previous = animation.writing[index - 1];
+  const reaches = previous?.bottom === band.top;
+  const bled = reaches ? { ...band, top: band.top - REACH } : band;
+  const cover = { box: bandBox(animation, bled), delay: start, duration };
+  start += duration + PAUSE_MS;
+  return cover;
+});
+const aspect = `${String(animation.width)} / ${String(animation.height)}`;
+---
+
+<animated-drawing class="drawing" style={`aspect-ratio: ${aspect}`}>
+  <Image
+    class="layer background"
+    src={layer('background')}
+    alt={artwork.data.alt}
+    widths={widths}
+    sizes={sizes}
+    loading={loading}
+  />
+  {animation.parts.map((part) => (
+    <Image
+      class={`layer part ${part.motion}`}
+      src={layer(part.name)}
+      alt=""
+      widths={widths}
+      sizes={sizes}
+      loading={loading}
+      data-part={part.name}
+      style={`transform-origin: ${pivotOrigin(animation, part)}; --cycle: ${String(part.seconds)}s`}
+    />
+  ))}
+  {covers.map(({ box, delay, duration }) => (
+    <span
+      class="ink-cover"
+      aria-hidden="true"
+      style={`left: ${box.left}; top: ${box.top}; width: ${box.width}; height: ${box.height}; --delay: ${String(delay)}ms; --duration: ${String(duration)}ms`}
+    />
+  ))}
+</animated-drawing>
+
+<script>
+  import './animated-drawing';
+</script>
+
+<style>
+  .drawing {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    background: var(--paper);
+  }
+  .layer {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .part {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .ink-cover {
+    display: none;
+    position: absolute;
+    background: var(--paper);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    [data-playing] .strum {
+      animation: strum var(--cycle) ease-in-out infinite;
+    }
+    [data-playing] .sway {
+      animation: sway var(--cycle) ease-in-out infinite;
+    }
+    [data-playing] .drift {
+      animation: drift var(--cycle) ease-in-out infinite alternate;
+    }
+  }
+  /* Covered before the script runs, so the handwriting never shows and then vanishes. */
+  @media (prefers-reduced-motion: no-preference) and (scripting: enabled) {
+    .drawing:not([data-written]) .ink-cover {
+      display: block;
+    }
+    [data-writing] .ink-cover {
+      animation: write var(--duration) linear var(--delay) both;
+    }
+  }
+
+  @keyframes strum {
+    0%,
+    100% {
+      transform: rotate(0deg);
+    }
+    35% {
+      transform: rotate(-6deg);
+    }
+    70% {
+      transform: rotate(2deg);
+    }
+  }
+  @keyframes sway {
+    0%,
+    100% {
+      transform: rotate(0deg);
+    }
+    50% {
+      transform: rotate(-4deg);
+    }
+  }
+  @keyframes drift {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(2.5%);
+    }
+  }
+  @keyframes write {
+    from {
+      clip-path: inset(0 0 0 0);
+    }
+    to {
+      clip-path: inset(0 0 0 100%);
+    }
+  }
+</style>

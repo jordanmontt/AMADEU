@@ -29,3 +29,7 @@ Project terms, one line each. Spanish words in parentheses are what the Foundati
 - **Track** (pista): what the player knows about a recording: id, title, collection, audio URL, duration and the page of its lyrics.
 - **Queue** (cola de reproducción): the ordered tracks the player plays; "Escuchar toda la obra" fills it with a work's primary recordings.
 - **Playlist of a work**: the primary recording of each of its texts, in editorial order (`Catalog.playlistOf`).
+- **Animated drawing** (dibujo animado): a drawing cut into layers that move while a song plays; described in `src/lib/animations/`.
+- **Moving part** (parte que se mueve): a piece of an animated drawing (the hand, the feather, a cloud) with its outline, pivot and motion.
+- **Repair** (reparación): ink drawn on the background where a moving part uncovers the paper.
+- **Writing band** (línea manuscrita): a handwritten line of a drawing, revealed as if being written.

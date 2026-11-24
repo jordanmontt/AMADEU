@@ -12,16 +12,9 @@
  */
 import { es } from '../../i18n/es';
 import { formatDuration } from '../../lib/format';
+import { PLAYER_CHANGE_EVENT, type PlayerChange } from '../../lib/player/events';
 import { PlayQueue, previousRestarts } from '../../lib/player/queue';
 import { parseTracks, type Track } from '../../lib/player/track';
-
-export const PLAYER_CHANGE_EVENT = 'amadeu:player-change';
-
-export interface PlayerChange {
-  /** The current track's recording id; undefined when the queue is empty. */
-  readonly trackId: string | undefined;
-  readonly playing: boolean;
-}
 
 /** How long a confirmation such as "added to the queue" stays visible. */
 const STATUS_SECONDS = 4;

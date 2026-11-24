@@ -89,6 +89,9 @@ flowchart TB
   audio[src/data/audio.ts + src/pages/audio: publish audio, re-encode > 25 MiB]
   player[src/components/player: persistent player, browser only]
   queue[src/lib/player: tracks and play queue]
+  animations[src/lib/animations: animated drawings described as data]
+  drawing[src/components/animations: layered drawing, browser only]
+  layers[scripts/animations: cut layers into src/assets/animations]
   pages[src/pages/*: routes]
   components[src/components/*]
   i18n[src/i18n/es.ts: UI strings]
@@ -110,6 +113,10 @@ flowchart TB
   pages --> audio
   components --> player
   player --> queue
+  components --> drawing
+  drawing --> animations
+  layers --> animations
+  drawing -. "amadeu:player-change" .-> player
 ```
 
 Rules that keep the code testable and replaceable:
@@ -121,7 +128,8 @@ Rules that keep the code testable and replaceable:
 - **UI text comes from `src/i18n/es.ts`**, never hard-coded.
 - **Styles** are plain CSS: design tokens and base typography in `src/styles/` ([ADR 0048](adr/0048-watercolour-visual-identity.md)), everything else scoped in each component.
 - **Shared page parts** are components: `SiteHeader`, `SiteFooter`, `PageBand` (the colour band that opens a page), `FramedArtwork` (an artwork in the green frame, optimized by Astro), `Verses`, `RecordingList`, `RecordFields` (the archival record), `WorkCard`, `WorkContents`, `VideoFacade` (YouTube loaded on click), `PendingTaskList`, and the player's `AudioPlayer` and `PlayerButton`.
-- **Browser scripts** are plain TypeScript, without a framework: custom elements (`video-facade`, `amadeu-player`) and document-level listeners. Their logic that can be tested without a browser lives in `src/lib/` (for example `src/lib/player/queue.ts`); the rest is covered by E2E tests.
+- **Animated drawings** ([ADR 0051](adr/0051-raster-layer-animations.md)): `FramedArtwork` with `animate` shows `AnimatedDrawing` when `src/lib/animations/registry.ts` has an animation for the artwork. Its layers are files in `src/assets/animations/<artwork id>/`, cut by `scripts/animations/build.ts` from the same description.
+- **Browser scripts** are plain TypeScript, without a framework: custom elements (`video-facade`, `amadeu-player`, `animated-drawing`) and document-level listeners. Their logic that can be tested without a browser lives in `src/lib/` (for example `src/lib/player/queue.ts`); the rest is covered by E2E tests.
 - **Domain helpers for pages** live in `src/lib/`: `record.ts` (record fields mapped to Dublin Core), `format.ts` (dates, durations, stanzas), `youtube.ts`.
 
 ### 4.1 Content model

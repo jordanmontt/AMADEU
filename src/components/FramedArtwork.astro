@@ -1,13 +1,16 @@
 ---
 /**
  * An artwork in the hand-painted green frame (ADR 0048), optimized by Astro, with an
- * optional caption and link to its gallery record.
+ * optional caption and link to its gallery record. With `animate`, a drawing that has a
+ * handcrafted animation is shown animated (ADR 0051).
  */
 import type { ImageMetadata } from 'astro';
 import { Image } from 'astro:assets';
 import { artworkImage } from '../data/catalog';
+import { animationOf } from '../lib/animations/registry';
 import type { ArtworkEntry } from '../lib/content/collections';
 import { artworkPath } from '../lib/routes';
+import AnimatedDrawing from './animations/AnimatedDrawing.astro';
 
 interface Props {
   artwork: ArtworkEntry;
@@ -17,6 +20,8 @@ interface Props {
   caption?: boolean;
   link?: boolean;
   loading?: 'lazy' | 'eager';
+  /** Show the animated version, if the artwork has one (where it is shown large). */
+  animate?: boolean;
 }
 
 const {
@@ -26,7 +31,9 @@ const {
   caption = true,
   link = true,
   loading = 'lazy',
+  animate = false,
 } = Astro.props;
+const animation = animate ? animationOf(artwork.id) : undefined;
 const image: ImageMetadata = await artworkImage(artwork);
 const captionText = [artwork.data.title, artwork.data.technique, artwork.data.date]
   .filter((part) => part !== undefined)
@@ -34,7 +41,15 @@ const captionText = [artwork.data.title, artwork.data.technique, artwork.data.da
 ---
 
 <figure class="framed">
-  {link ? (
+  {animation !== undefined ? (
+    link ? (
+      <a href={artworkPath(artwork)}>
+        <AnimatedDrawing {...{ artwork, animation, sizes, widths, loading }} />
+      </a>
+    ) : (
+      <AnimatedDrawing {...{ artwork, animation, sizes, widths, loading }} />
+    )
+  ) : link ? (
     <a href={artworkPath(artwork)}>
       <Image src={image} alt={artwork.data.alt} widths={widths} sizes={sizes} loading={loading} />
     </a>
@@ -48,7 +63,9 @@ const captionText = [artwork.data.title, artwork.data.technique, artwork.data.da
   .framed {
     margin: 0;
   }
-  .framed :global(img) {
+  .framed > :global(img),
+  .framed > a > :global(img),
+  .framed :global(animated-drawing) {
     display: block;
     width: 100%;
     height: auto;
@@ -56,8 +73,10 @@ const captionText = [artwork.data.title, artwork.data.technique, artwork.data.da
     background: var(--paper);
     transition: border-color 150ms ease;
   }
-  .framed a:hover :global(img),
-  .framed a:focus-visible :global(img) {
+  .framed a:hover > :global(img),
+  .framed a:focus-visible > :global(img),
+  .framed a:hover > :global(animated-drawing),
+  .framed a:focus-visible > :global(animated-drawing) {
     border-color: var(--ochre);
   }
   figcaption {

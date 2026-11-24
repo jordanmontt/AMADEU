@@ -33,7 +33,7 @@ See [architecture.md](architecture.md) for C4 diagrams. In short:
 | PWA | `@vite-pwa/astro` (Workbox) | Manifest, install, offline cache (RF-53, RF-54). |
 | Search | **Pagefind** | Static index built after `astro build` (`npm run build` runs both); default UI themed with the design tokens (RF-35). |
 | Image viewer | PhotoSwipe (MIT) or an equivalent light library | Zoom and pan (RF-27). |
-| Animations | SVG + CSS / Web Animations API | No heavy libraries (RF-50). |
+| Animations | Raster layers cut from the scan with `sharp`, moved with CSS | No heavy libraries, no new tools (RF-50, [ADR 0051](adr/0051-raster-layer-animations.md)). |
 | Fonts | Young Serif and Literata, self-hosted with Fontsource | No requests to third parties; available offline ([ADR 0048](adr/0048-watercolour-visual-identity.md)). |
 | Styles | Plain CSS with design tokens (`src/styles/tokens.css`) and component-scoped styles | No CSS framework. |
 | Image processing | Astro assets (`astro:assets`, `sharp`) | Responsive WebP at build time; `sharp` also used by import scripts. |
