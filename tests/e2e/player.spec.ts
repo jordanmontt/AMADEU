@@ -2,8 +2,9 @@ import { expect, test, type Locator, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
 /**
- * The persistent player (RF-47, RF-48). The fixture recordings are short tones (2–3 s), so
- * a track can be heard to its end and the player seen moving on to the next one.
+ * The persistent player (RF-47, RF-48). Most fixture recordings last 60 s, so a test can
+ * check the player while it sounds without racing the end of the track, even on a slow CI
+ * runner. "Alcalde de la canción" lasts 2 s, to see the player move on to the next track.
  */
 
 function player(page: Page): Locator {
@@ -71,10 +72,13 @@ test.describe('persistent player', () => {
 
     await home.getByRole('button', { name: 'Escuchar «Alcalde de la canción»' }).click();
 
-    await expectSounding(page, 'Alcalde de la canción');
-    await expect(player(page).getByRole('button', { name: 'Siguiente' })).toBeEnabled();
+    // The 2-second first track ends, and the player goes on with the next one by itself.
+    await expect(player(page).locator('[data-title]')).toHaveText('Cordillera Real', {
+      timeout: 15_000,
+    });
     await expectSounding(page, 'Cordillera Real');
     await expect(player(page).getByRole('button', { name: 'Siguiente' })).toBeDisabled();
+    await expect(player(page).getByRole('button', { name: 'Anterior' })).toBeEnabled();
   });
 
   test('"listen to the whole work" queues the primary recording of each song', async ({ page }) => {

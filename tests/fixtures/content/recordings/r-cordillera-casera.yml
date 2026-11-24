@@ -3,6 +3,6 @@ texts: [t-cordillera]
 kind: song
 date: '1994'
 collection: Grabación casera
-durationSeconds: 2
+durationSeconds: 60
 audio: cordillera-casera.mp3
 rights: cleared
