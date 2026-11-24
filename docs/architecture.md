@@ -196,5 +196,5 @@ Relations to filtered-out entries stay in the data; the `Catalog` simply does no
 | iOS Safari may interrupt persistent audio | WebKit E2E run; fallback design in H3 |
 | Sveltia image transformation with R2 unverified | Fallback: resize in a GitHub Action (RT-23) |
 | GoatCounter is maintained by one person | Migrate to Cloudflare Web Analytics if needed |
-| `.astro` imports are untyped for plain TypeScript tooling | See CONTRIBUTING; logged upstream |
+| `.astro` imports are untyped for plain TypeScript tooling | Local declaration `src/astro-modules.d.ts` (see CONTRIBUTING); logged upstream |
 | Static redirect pages wait ~2 s (Astro default) | Add Cloudflare `_redirects` at deployment (H7) |
