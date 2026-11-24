@@ -1,0 +1,19 @@
+/*
+ * Base styles shared by every page. The visual identity (milestone H2) builds on top of
+ * these accessibility baselines; do not remove them without an equivalent rule.
+ */
+
+/* WCAG 2.5.8 Target Size (Minimum): interactive targets are at least 24×24 CSS px. */
+li > a,
+nav a {
+  display: inline-block;
+  min-block-size: 24px;
+  min-inline-size: 24px;
+  padding-block: 0.25rem;
+}
+
+/* WCAG 2.4.7 Focus Visible. */
+:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 2px;
+}

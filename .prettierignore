@@ -1,0 +1,10 @@
+dist/
+dist-e2e/
+.astro/
+coverage/
+test-results/
+playwright-report/
+package-lock.json
+media/
+# Documentation is formatted by hand (tables, Spanish typography)
+*.md

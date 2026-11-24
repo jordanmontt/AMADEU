@@ -1,0 +1,31 @@
+---
+import type { GetStaticPaths } from 'astro';
+import WorkContents from '../../components/WorkContents.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { catalog } from '../../data/catalog';
+import type { WorkEntry } from '../../lib/content/collections';
+
+export const getStaticPaths = (async () => {
+  const archive = await catalog();
+  return archive.publishedWorks().map((work) => ({
+    params: { work: work.data.slug },
+    props: { work },
+  }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  work: WorkEntry;
+}
+
+const { work } = Astro.props;
+const archive = await catalog();
+const sections = archive
+  .sectionsOf(work)
+  .map((section) => ({ section, texts: archive.textsIn(work, section) }));
+---
+
+<BaseLayout title={work.data.title} description={work.data.description}>
+  <h1>{work.data.title}</h1>
+  {work.data.subtitle && <p>{work.data.subtitle}</p>}
+  <WorkContents work={work} sections={sections} />
+</BaseLayout>

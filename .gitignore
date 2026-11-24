@@ -1,0 +1,26 @@
+# build output
+dist/
+dist-e2e/
+.astro/
+
+# dependencies
+node_modules/
+
+# local media (synced to Cloudflare R2, never committed)
+media/
+
+# test output
+coverage/
+test-results/
+playwright-report/
+
+# environment
+.env
+.env.*
+!.env.example
+
+# OS / editor
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea/

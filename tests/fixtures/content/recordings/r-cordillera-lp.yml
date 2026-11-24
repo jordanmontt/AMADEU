@@ -1,0 +1,10 @@
+title: Cordillera Real
+texts: [t-cordillera]
+kind: song
+date: '1984'
+collection: LP Discolandia 1984
+durationSeconds: 3
+audio: audio/silence.mp3
+credits:
+  - { person: persona-prueba, role: dirección musical }
+rights: cleared

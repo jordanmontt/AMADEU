@@ -53,9 +53,9 @@ See [architecture.md](architecture.md) for C4 diagrams. In short:
 
 - **RT-10. The repository is the database.** Content lives in `src/content/` and is validated by Zod schemas at build time. No database, no server ([ADR 0008](adr/0008-no-database.md)).
 - **RT-11. Permanent identity.** Every entry has an `id` that **never changes** and does not depend on title or order (RF-58). Relations between collections always use `id`, never a title or slug.
-  - Entries created in the admin get an auto-generated short ID.
-  - The initial import uses readable prefixed IDs, e.g. `sys-t-0012` for a *Sangre y Sueño* text.
-- **RT-12. Slug separate from ID.** The URL slug derives from the title and may change. The stable link is `/id/<id>/` (§7.2).
+  - An entry's id is its **file name** (without extension), lowercase kebab-case. It is set once, when the entry is created (by the import script or the admin), and never renamed afterwards.
+  - Ids are unique across page-bearing collections (works, texts, artworks, videos), because `/id/<id>/` must be unambiguous. Enforced by the content integrity tests.
+- **RT-12. Slug separate from ID.** A text's URL slug derives from its current title and may change; works have an explicit permanent slug; gallery images and videos use their id in the URL. The stable link for everything is `/id/<id>/` (§7.2).
 - **RT-13. Explicit order.** Sections and texts have an editable `order` field; nothing is sorted alphabetically by default.
 - **RT-14. English names.** Fields and folders are in English; admin labels are in Spanish ([ADR 0039](adr/0039-language-split.md)).
 - **RT-15. Reserved routes.** Work slugs must not equal a reserved route: `obras`, `escuchar`, `galeria`, `leer`, `videos`, `marcelo`, `buscar`, `admin`, `id` ([ADR 0038](adr/0038-works-at-root-path.md)). Enforced by the content integrity tests.
@@ -77,37 +77,41 @@ src/data/
 
 Main fields. `ref(x)` is a reference by `id` to collection `x`; `[]` is a list.
 
-**`works`**: `id`, `title`, `subtitle`, `slug`, `status` (`published` | `upcoming` | `draft`), `year`, `description`, `cover` (ref artworks), `sections[]` (`{ id, title, slug, order, description }`), `order`.
+Every entry also has its `id` (the file name), which is not a field.
+
+**`works`**: `title`, `subtitle`, `slug`, `status` (`published` | `upcoming` | `draft`), `year`, `description`, `cover` (ref artworks), `sections[]` (`{ id, title, slug, order, description }`), `order`.
 
 **`texts`**:
-- Identity: `id`, `title`, `altTitles[]` (`{ title, source }`), `slug`.
+- Identity: `title`, `altTitles[]` (`{ title, source }`). The URL slug is derived from `title`.
 - Placement: `work` (ref works), `section` (section id within the work), `order`.
 - Content: `kind` (`poem` | `song`), Markdown body (the text), `criticalNotes` (optional Markdown), `facsimile[]` (ref artworks).
 - Source: `edition` (`{ name, year, publisher, pages }`), `provisional` (boolean).
-- Related media: `primaryRecording` (ref recordings), `illustrations[]` (ref artworks).
+- Related media: `primaryRecording` (ref recordings): which of the recordings pointing to this text is shown first. Recordings, illustrations and videos are linked from their own side (see below).
 - Rights: `rights`, `rightsHolder`, `license`.
 
 **`recordings`**:
-- Identity: `id`, `title`, `altTitles[]`, `texts[]` (ref texts; may be empty, e.g. an interview).
+- Identity: `title`, `altTitles[]`, `texts[]` (ref texts; may be empty, e.g. an interview).
 - Kind: `kind` (`song` | `recital` | `reading` | `interview` | `lecture` | `instrumental`).
 - Date and provenance: `date`, `collection` (e.g. "LP Discolandia 1984", "Grabación casera 1993–95", "Recital Goethe-Institut 1981"), `venue`.
 - Credits: `performers[]`, `credits[]` (`{ person: ref people, role }`).
-- Audio: `durationSeconds`, `audioUrl` (R2), `originalUrl` (Internet Archive).
+- Audio: `durationSeconds`, `audio` (path relative to the media base URL, e.g. `audio/cordillera-real-lp-1984.mp3`), `originalUrl` (Internet Archive).
 - Other: `trackNumber`, `notes`, `rights`, `rightsHolder`, `license`.
 
 **`artworks`**:
-- Identity: `id`, `inventoryCode` (e.g. `ADLC-01`), `title`, `inscription` (handwritten verses).
+- Identity: `inventoryCode` (e.g. `ADLC-01`), `title`, `inscription` (handwritten verses).
 - Description: `kind` (`drawing` | `watercolor` | `painting` | `photo` | `document` | `poster`), `technique`, `dimensions`, `date`, `place`, `series`.
-- Sheets and panels: `sheet` (ref artworks: the sheet a panel belongs to), `panels[]` (ref artworks).
+- Sheets and panels: `sheet` (ref artworks: the sheet a panel belongs to). A sheet's panels are derived.
 - Relations: `texts[]` (ref texts it illustrates).
-- Image: `imageUrl` (WebP in R2), `width`, `height`, `originalUrl` (Internet Archive), `sourceFile` (file name in the digitized archive).
+- Image: `image` (WebP path relative to the media base URL), `width`, `height`, `originalUrl` (Internet Archive), `sourceFile` (file name in the digitized archive).
 - Other: `rating` (1–3, from the inventory), `animated` (boolean), `rights`, `rightsHolder`, `license`, `alt` (alternative text, **mandatory**).
 
 **`videos`**:
-- Identity: `id`, `title`, `series` (e.g. "Los Caminos del Hombre"), `episode`.
+- Identity: `title`, `series` (e.g. "Los Caminos del Hombre"), `episode`.
 - Data: `date`, `durationSeconds`, `description`, `credits[]`.
-- Media: `youtubeId`, `thumbnailUrl`, `originalUrl` (Internet Archive), `texts[]` (for future poem video clips).
+- Media: `youtubeId` (the thumbnail is derived from it), `originalUrl` (Internet Archive), `texts[]` (for future poem video clips).
 - Rights: `rights`, `rightsHolder`, `license`.
+
+**Relations are stored on one side only.** Media point to the texts they belong to (`recording.texts`, `artwork.texts`, `video.texts`) and a panel points to its sheet; the `Catalog` derives the other direction, so the two sides can never disagree. The only relation stored on a text is a choice among those (`primaryRecording`) or an ordered list (`facsimile`).
 
 **Common rights fields**:
 - `rights`: `cleared` | `pending` | `restricted`. **Only `cleared` is published** (RF-57).
@@ -183,7 +187,7 @@ Works live at the root (`/<work-slug>/`, [ADR 0038](adr/0038-works-at-root-path.
 [ADR 0037](adr/0037-permalink-by-id.md):
 
 - A slug derives from the title and **may change**. When it changes, the old URL stops existing; no slug history is kept.
-- **`/id/<id>/`** always leads to the item's current URL. Each build regenerates Cloudflare Pages `_redirects` from current content, one line per item (`/id/<id>/ → current URL`, status 302).
+- **`/id/<id>/`** always leads to the item's current URL. Each build generates one static redirect page per item from current content (`Astro.redirect` in static output writes a `meta refresh` page), so it works on any host and inside the Android app. At deployment (H7) a Cloudflare `_redirects` file can be added for an instant HTTP redirect.
 - The record shows the permalink under "how to cite".
 - A slug history can be added later without rework if old URLs need preserving.
 
@@ -239,7 +243,7 @@ Rules:
 - **RT-57.** On every pull request and every push to `main`:
   1. Install (`npm ci`), then `astro check`, ESLint and Prettier check.
   2. Unit, content integrity and component tests, with coverage thresholds.
-  3. `astro build` + Pagefind index + `_redirects` for permalinks.
+  3. `astro build` (including permalink pages) + Pagefind index.
   4. E2E tests in Chromium, Firefox and WebKit against the fixture build.
   5. Only on `main`, and only if every previous step passed: deploy to Cloudflare Pages.
 
@@ -286,7 +290,7 @@ Credentials and secrets (R2 tokens, Cloudflare API token, Additions Worker secre
 
 - **RT-60.** The **same Astro project**, built with a work filter (`BUILD_WORK=sangre-y-sueno`) that includes only that work and its related items, packaged with **Capacitor** as an Android app ([ADR 0018](adr/0018-astro-pwa-capacitor.md)).
 - **RT-61.** Texts, records and images ship **inside** the app for offline use. Audio is still served from R2; offline audio is evaluated then.
-- **RT-62.** To keep that door open, v1 avoids server-only APIs: no server functions in the public site; paths relative to a configurable base. `/id/<id>/` links rely on Cloudflare `_redirects`; inside the app they are resolved by the app itself.
+- **RT-62.** To keep that door open, v1 avoids server-only APIs: no server functions in the public site; paths relative to a configurable base. `/id/<id>/` links are static redirect pages, so they also work inside the app.
 
 ## 14. Open technical checks
 

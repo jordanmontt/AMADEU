@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { catalog } from '../data/catalog';
+import { es } from '../i18n/es';
+import { workPath } from '../lib/routes';
+
+const archive = await catalog();
+const published = archive.publishedWorks();
+const upcoming = archive.upcomingWorks();
+---
+
+<BaseLayout>
+  <h1>{es.site.name}</h1>
+  <p>{es.site.tagline}</p>
+
+  <h2>{es.home.worksHeading}</h2>
+  <ul>
+    {published.map((work) => (
+      <li>
+        <a href={workPath(work)}>{work.data.title}</a>
+      </li>
+    ))}
+  </ul>
+
+  {upcoming.length > 0 && (
+    <>
+      <h2>{es.home.upcomingHeading}</h2>
+      <ul>
+        {upcoming.map((work) => (
+          <li>{work.data.title}</li>
+        ))}
+      </ul>
+    </>
+  )}
+</BaseLayout>
