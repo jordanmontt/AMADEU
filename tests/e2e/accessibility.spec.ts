@@ -2,7 +2,20 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
 /** WCAG 2.2 AA (RF-56, RT-42): no automatically detectable violations on key pages. */
-const PAGES = ['/', '/sangre-y-sueno/', '/sangre-y-sueno/cordillera-real/'];
+const PAGES = [
+  '/',
+  '/obras/',
+  '/sangre-y-sueno/',
+  '/sangre-y-sueno/cordillera-real/',
+  '/sangre-y-sueno/luna-andina/',
+  '/escuchar/',
+  '/galeria/',
+  '/galeria/dibujo-prueba/',
+  '/leer/',
+  '/videos/',
+  '/marcelo/',
+  '/buscar/',
+];
 
 for (const path of PAGES) {
   test(`${path} has no WCAG 2.2 AA violations`, async ({ page }) => {

@@ -4,7 +4,7 @@ test.describe('navigation through a work', () => {
   test('the home page lists published works and announces upcoming ones', async ({ page }) => {
     await page.goto('/');
 
-    await expect(page.getByRole('link', { name: 'Sangre y Sueño' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Sangre y Sueño', exact: true })).toBeVisible();
     await expect(page.getByText('Obra futura')).toBeVisible();
     await expect(page.getByText('Obra en borrador')).toHaveCount(0);
   });
@@ -34,10 +34,11 @@ test.describe('navigation through a work', () => {
     await expect(page).toHaveURL('/sangre-y-sueno/cordillera-real/');
     await expect(page.getByText('Primer verso de prueba')).toBeVisible();
     await expect(page.getByText('Grabación no disponible en el archivo')).toHaveCount(0);
-    await expect(page.getByRole('link', { name: /Volver a la obra/ })).toHaveAttribute(
-      'href',
-      '/sangre-y-sueno/',
-    );
+    await expect(
+      page.getByRole('paragraph').filter({ hasText: 'Libro de canciones' }).getByRole('link', {
+        name: 'Sangre y Sueño',
+      }),
+    ).toHaveAttribute('href', '/sangre-y-sueno/');
   });
 
   test('a song without a recording says so', async ({ page }) => {

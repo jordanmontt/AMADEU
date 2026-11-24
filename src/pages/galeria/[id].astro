@@ -1,0 +1,120 @@
+---
+import type { GetStaticPaths } from 'astro';
+import FramedArtwork from '../../components/FramedArtwork.astro';
+import PageBand from '../../components/PageBand.astro';
+import RecordFields from '../../components/RecordFields.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { artworkImage, catalog } from '../../data/catalog';
+import { es } from '../../i18n/es';
+import type { ArtworkEntry } from '../../lib/content/collections';
+import { artworkRecord } from '../../lib/record';
+import { textPath } from '../../lib/routes';
+
+export const getStaticPaths = (async () => {
+  const archive = await catalog();
+  return archive.artworks().map((artwork) => ({ params: { id: artwork.id }, props: { artwork } }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  artwork: ArtworkEntry;
+}
+
+const { artwork } = Astro.props;
+const archive = await catalog();
+const texts = archive.textsIllustratedBy(artwork);
+const sheet = archive.sheetOf(artwork);
+const panels = archive.panelsOf(artwork);
+const full = await artworkImage(artwork);
+---
+
+<BaseLayout title={artwork.data.title} description={artwork.data.alt}>
+  <PageBand title={artwork.data.title} subtitle={es.kinds[artwork.data.kind]} tone="sky">
+    <a slot="crumb" href="/galeria/">
+      {es.gallery.title}
+    </a>
+  </PageBand>
+  <article class="artwork">
+    <div class="image">
+      <FramedArtwork
+        artwork={artwork}
+        sizes="(min-width: 900px) 60vw, 100vw"
+        caption={false}
+        link={false}
+        loading="eager"
+        widths={[800, 1200, 1600, 2400]}
+      />
+      <p>
+        <a href={full.src}>{es.gallery.viewLarge}</a>
+      </p>
+    </div>
+    <aside>
+      {texts.length > 0 && (
+        <section aria-labelledby="illustrates-heading">
+          <h2 id="illustrates-heading">{es.gallery.illustratesHeading}</h2>
+          <ul class="links">
+            {texts.map((text) => (
+              <li>
+                <a href={textPath(archive.workOf(text), text)}>{text.data.title}</a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+      <section aria-labelledby="record-heading">
+        <h2 id="record-heading">{es.text.recordHeading}</h2>
+        <RecordFields fields={artworkRecord(artwork)} origin={Astro.url.origin} />
+      </section>
+      {sheet !== undefined && (
+        <section aria-labelledby="sheet-heading">
+          <h2 id="sheet-heading">{es.gallery.sheetHeading}</h2>
+          <FramedArtwork artwork={sheet} sizes="(min-width: 900px) 30vw, 100vw" />
+        </section>
+      )}
+    </aside>
+  </article>
+  {panels.length > 0 && (
+    <section aria-labelledby="panels-heading" class="panels">
+      <h2 id="panels-heading">{es.gallery.panelsHeading}</h2>
+      <div class="grid">
+        {panels.map((panel) => (
+          <FramedArtwork artwork={panel} sizes="(min-width: 760px) 25vw, 50vw" />
+        ))}
+      </div>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .artwork {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.8fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    padding: 2.5rem var(--gutter) 0;
+    align-items: start;
+  }
+  aside {
+    display: grid;
+    gap: 2rem;
+  }
+  h2 {
+    font-size: 1.4rem;
+    margin: 0 0 0.75rem;
+  }
+  .links {
+    margin: 0;
+    padding-left: 1.2rem;
+  }
+  .panels {
+    padding: 3rem var(--gutter) 0;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+    gap: 1.5rem;
+  }
+  @media (max-width: 900px) {
+    .artwork {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

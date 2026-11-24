@@ -31,9 +31,11 @@ See [architecture.md](architecture.md) for C4 diagrams. In short:
 | Interactivity | TypeScript, no UI framework (Web Components / plain modules) | The player and animations do not need React. Re-evaluate (e.g. Preact) only if a component justifies it. |
 | Persistent navigation | Astro View Transitions (`<ClientRouter />`) + `transition:persist` | Keeps the player alive across pages (RF-47). |
 | PWA | `@vite-pwa/astro` (Workbox) | Manifest, install, offline cache (RF-53, RF-54). |
-| Search | **Pagefind** | Static index built after `astro build` (RF-35). |
+| Search | **Pagefind** | Static index built after `astro build` (`npm run build` runs both); default UI themed with the design tokens (RF-35). |
 | Image viewer | PhotoSwipe (MIT) or an equivalent light library | Zoom and pan (RF-27). |
 | Animations | SVG + CSS / Web Animations API | No heavy libraries (RF-50). |
+| Fonts | Young Serif and Literata, self-hosted with Fontsource | No requests to third parties; available offline ([ADR 0048](adr/0048-watercolour-visual-identity.md)). |
+| Styles | Plain CSS with design tokens (`src/styles/tokens.css`) and component-scoped styles | No CSS framework. |
 | Image processing | Astro assets (`astro:assets`, `sharp`) | Responsive WebP at build time; `sharp` also used by import scripts. |
 | Audio processing | ffmpeg | Build step that re-encodes audio over 25 MiB ([ADR 0045](adr/0045-long-audio-recompressed-at-build.md)); `ffprobe` in import scripts. |
 | CMS | **Sveltia CMS** + **Sveltia CMS Additions** | See §6. |
@@ -73,9 +75,11 @@ src/content/
 ├── media/images/ image files        — optimized by Astro
 ├── videos/       video (YAML)       — YouTube
 ├── people/       person (YAML)      — credits (musicians, engineers, editors)
-└── pages/        page (Markdown)    — biography, presentation, site credits
+├── pages/        page (Markdown)    — free-text pages, such as the biography (marcelo.md)
+└── timeline.yml  timeline events    — the biography's timeline (RF-33)
 src/data/
-└── timeline.yml  biography timeline
+├── catalog.ts    the only reader of astro:content
+└── audio.ts      audio publication (ADR 0045)
 ```
 
 Main fields. `ref(x)` is a reference by `id` to collection `x`; `[]` is a list.

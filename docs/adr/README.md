@@ -55,3 +55,4 @@ Each design decision is recorded in a short file with context, decision, consequ
 | [0045](0045-long-audio-recompressed-at-build.md) | Audio over 25 MiB is recompressed at build time (known limitation) | Accepted |
 | [0046](0046-pending-tasks-derived-from-content.md) | The Foundation's pending tasks are derived from the content | Accepted |
 | [0047](0047-initial-import.md) | Initial import from reviewable manifests, with initial rights statuses | Accepted |
+| [0048](0048-watercolour-visual-identity.md) | Visual identity: "Acuarela" (watercolour) | Accepted |

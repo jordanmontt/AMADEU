@@ -27,6 +27,13 @@ export type RecordingVersions =
       readonly others: readonly RecordingEntry[];
     };
 
+/** Recordings that share a collection (an LP, the home recordings, recitals…). */
+export interface RecordingGroup {
+  /** The collection's name, or `undefined` for recordings that belong to none. */
+  readonly collection: string | undefined;
+  readonly recordings: readonly RecordingEntry[];
+}
+
 /** A permanent link: `/id/<id>/` leads to `target`, the entry's current URL. */
 export interface Permalink {
   readonly id: string;
@@ -66,6 +73,7 @@ export class Catalog {
   private readonly worksById: Map<string, WorkEntry>;
   private readonly artworksById: Map<string, ArtworkEntry>;
   private readonly recordingsById: Map<string, RecordingEntry>;
+  private readonly textsById: Map<string, TextEntry>;
 
   /** Builds a catalog from already-published content. Prefer `Catalog.published()`. */
   constructor(content: Collections) {
@@ -73,6 +81,7 @@ export class Catalog {
     this.worksById = indexById(content.works);
     this.artworksById = indexById(content.artworks);
     this.recordingsById = indexById(content.recordings);
+    this.textsById = indexById(content.texts);
   }
 
   /** The catalog of everything that may be published from `all`. */
@@ -112,6 +121,17 @@ export class Catalog {
     return this.sectionsOf(work).flatMap((section) => this.textsIn(work, section));
   }
 
+  /**
+   * Texts of a work that can be both heard and seen (an available recording and at least
+   * one illustration), in editorial order: the best entry points for a first visit.
+   */
+  showcaseTexts(work: WorkEntry): TextEntry[] {
+    return this.textsOf(work).filter(
+      (text) =>
+        this.recordingVersions(text).kind === 'available' && this.illustrationsOf(text).length > 0,
+    );
+  }
+
   /** The work a published text belongs to; publishing guarantees it is published too. */
   workOf(text: TextEntry): WorkEntry {
     const work = this.worksById.get(text.data.work);
@@ -119,6 +139,64 @@ export class Catalog {
       throw new Error(`Text "${text.id}" belongs to work "${text.data.work}", which is missing`);
     }
     return work;
+  }
+
+  /** The section of its work a published text sits in; integrity checks guarantee it. */
+  sectionOf(text: TextEntry): Section {
+    const section = this.workOf(text).data.sections.find((each) => each.id === text.data.section);
+    if (section === undefined) {
+      throw new Error(`Text "${text.id}" is in section "${text.data.section}", which is missing`);
+    }
+    return section;
+  }
+
+  /** The artwork that represents a work (home page, cards), when it has a published one. */
+  coverOf(work: WorkEntry): ArtworkEntry | undefined {
+    return work.data.cover === undefined ? undefined : this.artworksById.get(work.data.cover);
+  }
+
+  /** Published texts that an entry points to, in editorial order (work, section, text). */
+  private publishedTexts(ids: readonly string[]): TextEntry[] {
+    const texts = ids.flatMap((id) => {
+      const text = this.textsById.get(id);
+      return text === undefined ? [] : [text];
+    });
+    const position = new Map(
+      this.publishedWorks()
+        .flatMap((work) => this.textsOf(work))
+        .map((text, index) => [text.id, index]),
+    );
+    return texts.sort((a, b) => (position.get(a.id) ?? 0) - (position.get(b.id) ?? 0));
+  }
+
+  /** The texts a recording is a version of. */
+  textsOfRecording(recording: RecordingEntry): TextEntry[] {
+    return this.publishedTexts(recording.data.texts);
+  }
+
+  /** The texts an artwork illustrates. */
+  textsIllustratedBy(artwork: ArtworkEntry): TextEntry[] {
+    return this.publishedTexts(artwork.data.texts);
+  }
+
+  /** The multi-panel sheet a panel was cut from, when the sheet is published. */
+  sheetOf(panel: ArtworkEntry): ArtworkEntry | undefined {
+    return panel.data.sheet === undefined ? undefined : this.artworksById.get(panel.data.sheet);
+  }
+
+  /**
+   * Recordings grouped by collection: collections ordered by their oldest recording,
+   * recordings without a collection last.
+   */
+  recordingsByCollection(): RecordingGroup[] {
+    const groups = new Map<string | undefined, RecordingEntry[]>();
+    for (const recording of this.recordings()) {
+      const key = recording.data.collection;
+      groups.set(key, [...(groups.get(key) ?? []), recording]);
+    }
+    return [...groups]
+      .map(([collection, recordings]) => ({ collection, recordings }))
+      .sort((a, b) => Number(a.collection === undefined) - Number(b.collection === undefined));
   }
 
   recordingVersions(text: TextEntry): RecordingVersions {

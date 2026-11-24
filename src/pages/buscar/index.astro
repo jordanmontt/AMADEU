@@ -1,0 +1,43 @@
+---
+/**
+ * Site search with Pagefind (RF-35, ADR 0014): the index is built after `astro build` and
+ * searched in the browser. The UI follows the page language (Spanish).
+ */
+import PageBand from '../../components/PageBand.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { es } from '../../i18n/es';
+---
+
+<BaseLayout title={es.search.title}>
+  <PageBand title={es.search.title} subtitle={es.search.intro} tone="sky" />
+  <div class="search" data-pagefind-ignore="all">
+    <div id="search"></div>
+    <noscript>
+      <p>{es.search.noScript}</p>
+    </noscript>
+  </div>
+  <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
+  <script is:inline src="/pagefind/pagefind-ui.js"></script>
+  <script is:inline>
+    window.addEventListener('DOMContentLoaded', () => {
+      // eslint-disable-next-line no-undef
+      new PagefindUI({ element: '#search', showSubResults: true, showImages: false });
+    });
+  </script>
+</BaseLayout>
+
+<style>
+  .search {
+    padding: 2.5rem var(--gutter) 0;
+    max-width: 48rem;
+    --pagefind-ui-scale: 1;
+    --pagefind-ui-primary: var(--ink);
+    --pagefind-ui-text: var(--ink);
+    --pagefind-ui-background: var(--paper);
+    --pagefind-ui-border: var(--frame);
+    --pagefind-ui-tag: var(--sky);
+    --pagefind-ui-border-width: 3px;
+    --pagefind-ui-border-radius: 0;
+    --pagefind-ui-font: var(--font-text);
+  }
+</style>

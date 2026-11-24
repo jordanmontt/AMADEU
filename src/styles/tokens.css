@@ -1,0 +1,33 @@
+/*
+ * Design tokens of the "Acuarela" identity (ADR 0048). Every colour comes from Marcelo's
+ * watercolours; see the ADR for the source of each one.
+ */
+:root {
+  --paper: #ffffff;
+  --ink: #1f2440;
+  --ink-soft: #565b78;
+  --sky: #cfe1f2;
+  --sky-pale: #eaf2fa;
+  --ochre: #d9a046;
+  --frame: #2f8a55;
+  --frame-soft: #9cbfa9;
+  --flag: #b8202b;
+  --focus: #1d4fd8;
+  --rule: #d7dbe6;
+
+  --font-display: 'Young Serif', Georgia, serif;
+  --font-text: 'Literata Variable', Georgia, serif;
+
+  /* Type scale (ratio ≈ 1.25, Elements of Typographic Style). */
+  --step--1: 0.9rem;
+  --step-0: 1.0625rem;
+  --step-1: 1.3rem;
+  --step-2: 1.6rem;
+  --step-3: clamp(2.1rem, 5vw, 3.8rem);
+  --step-4: clamp(2.3rem, 5.5vw, 4.4rem);
+
+  --gutter: clamp(1rem, 4vw, 3rem);
+  --measure-verse: 32rem;
+  --measure-prose: 38rem;
+  --frame-width: 3px;
+}

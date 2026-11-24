@@ -1,0 +1,47 @@
+---
+/**
+ * The colour band that opens a page: a breadcrumb (slot "crumb"), the title and a subtitle.
+ * Ochre for works and texts, sky for the cross-cutting sections (ADR 0048).
+ */
+interface Props {
+  title: string;
+  subtitle?: string | undefined;
+  tone?: 'ochre' | 'sky';
+}
+
+const { title, subtitle, tone = 'ochre' } = Astro.props;
+---
+
+<div class:list={['band', tone]}>
+  {Astro.slots.has('crumb') && (
+    <p class="crumb">
+      <slot name="crumb" />
+    </p>
+  )}
+  <h1>{title}</h1>
+  {subtitle !== undefined && <p class="subtitle">{subtitle}</p>}
+</div>
+
+<style>
+  .band {
+    padding: 2.5rem var(--gutter) 2rem;
+  }
+  .ochre {
+    background: var(--ochre);
+  }
+  .sky {
+    background: var(--sky);
+  }
+  .crumb {
+    margin: 0 0 0.75rem;
+  }
+  h1 {
+    font-size: var(--step-3);
+    margin: 0;
+    max-width: 22ch;
+  }
+  .subtitle {
+    margin: 0.75rem 0 0;
+    max-width: var(--measure-prose);
+  }
+</style>

@@ -209,3 +209,17 @@ export const personSchema = z.object({
   description: z.string().optional(),
 });
 export type Person = z.infer<typeof personSchema>;
+
+/** A free-text page edited by the Foundation, such as the biography. */
+export const pageSchema = z.object({
+  title: z.string().min(1),
+  description: z.string().optional(),
+});
+export type Page = z.infer<typeof pageSchema>;
+
+/** An event of the biography's timeline (RF-33). */
+export const timelineEventSchema = z.object({
+  date: archiveDateSchema,
+  text: z.string().min(1),
+});
+export type TimelineEvent = z.infer<typeof timelineEventSchema>;

@@ -1,0 +1,44 @@
+---
+import PageBand from '../../components/PageBand.astro';
+import WorkContents from '../../components/WorkContents.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { catalog } from '../../data/catalog';
+import { es } from '../../i18n/es';
+import { workPath } from '../../lib/routes';
+
+const archive = await catalog();
+const works = archive.publishedWorks().map((work) => ({
+  work,
+  sections: archive
+    .sectionsOf(work)
+    .map((section) => ({ section, texts: archive.textsIn(work, section) })),
+}));
+---
+
+<BaseLayout title={es.read.title}>
+  <PageBand title={es.read.title} subtitle={es.read.intro} tone="sky" />
+  <div class="works">
+    {works.map(({ work, sections }) => (
+      <section aria-labelledby={`work-${work.id}`}>
+        <h2 id={`work-${work.id}`} class="work-title">
+          <a href={workPath(work)}>{work.data.title}</a>
+        </h2>
+        <WorkContents work={work} sections={sections} headingLevel={3} />
+      </section>
+    ))}
+  </div>
+</BaseLayout>
+
+<style>
+  .works {
+    padding: 2.5rem var(--gutter) 0;
+    max-width: 60rem;
+  }
+  .work-title {
+    font-size: var(--step-3);
+    margin: 0 0 1.5rem;
+  }
+  .work-title a {
+    text-decoration: none;
+  }
+</style>

@@ -3,6 +3,7 @@ subtitle: Obra de prueba
 slug: sangre-y-sueno
 status: published
 order: 1
+cover: dibujo-prueba
 sections:
   - { id: cancionero, title: Libro de canciones, slug: cancionero, order: 2 }
   - { id: relatos, title: Relatos poéticos, slug: relatos, order: 1 }

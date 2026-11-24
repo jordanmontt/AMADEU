@@ -1,0 +1,76 @@
+---
+/**
+ * Site name and main navigation. The current section is marked with `aria-current`.
+ */
+import { es } from '../i18n/es';
+import { SITE_SECTIONS, currentSection, sectionPath } from '../lib/routes';
+
+const current = currentSection(Astro.url.pathname);
+---
+
+<header class="site-header">
+  <a class="brand" href="/">
+    {es.site.name}
+  </a>
+  <nav aria-label={es.site.mainNavigation}>
+    <ul>
+      {SITE_SECTIONS.map((section) => (
+        <li>
+          <a href={sectionPath(section)} aria-current={section === current ? 'page' : undefined}>
+            {es.nav[section]}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+    padding: 1rem var(--gutter);
+  }
+  .brand {
+    font: 400 1.35rem/1.1 var(--font-display);
+    text-decoration: none;
+  }
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.25rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  nav a {
+    text-decoration: none;
+    padding-inline: 0.1rem;
+  }
+  nav a[aria-current='page'] {
+    box-shadow: inset 0 -3px var(--ochre);
+  }
+  nav a:hover {
+    box-shadow: inset 0 -3px var(--sky);
+  }
+  /* On phones the sections stay on one line that scrolls sideways instead of wrapping. */
+  @media (max-width: 640px) {
+    .site-header {
+      padding-bottom: 0.5rem;
+    }
+    nav {
+      width: calc(100% + 2 * var(--gutter));
+      margin-inline: calc(-1 * var(--gutter));
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    ul {
+      flex-wrap: nowrap;
+      padding-inline: var(--gutter);
+      white-space: nowrap;
+    }
+  }
+</style>

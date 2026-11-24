@@ -1,6 +1,15 @@
 import { describe, expect, it } from 'vitest';
 import { aText, aVideo, aWork, anArtwork } from '../../tests/support/builders';
-import { adminEditPath, artworkPath, permalinkPath, textPath, videoPath, workPath } from './routes';
+import {
+  adminEditPath,
+  artworkPath,
+  currentSection,
+  permalinkPath,
+  sectionPath,
+  textPath,
+  videoPath,
+  workPath,
+} from './routes';
 
 describe('routes', () => {
   const work = aWork('sys', { slug: 'sangre-y-sueno' });
@@ -34,5 +43,29 @@ describe('routes', () => {
     expect(adminEditPath('artworks', 'dibujo-93')).toBe(
       '/admin/#/collections/artworks/entries/dibujo-93',
     );
+  });
+
+  it('builds section paths', () => {
+    expect(sectionPath('galeria')).toBe('/galeria/');
+  });
+});
+
+describe('currentSection', () => {
+  it('finds the navigation section of a page', () => {
+    expect(currentSection('/escuchar/')).toBe('escuchar');
+    expect(currentSection('/galeria/dibujo-93/')).toBe('galeria');
+  });
+
+  it('places work and text pages under "obras"', () => {
+    expect(currentSection('/sangre-y-sueno/')).toBe('obras');
+    expect(currentSection('/sangre-y-sueno/cordillera-de-los-andes/')).toBe('obras');
+    expect(currentSection('/obras/')).toBe('obras');
+  });
+
+  it('gives no section for the home page and technical routes', () => {
+    expect(currentSection('/')).toBeNull();
+    expect(currentSection('/admin/pendientes/')).toBeNull();
+    expect(currentSection('/id/x/')).toBeNull();
+    expect(currentSection('/audio/x.mp3')).toBeNull();
   });
 });

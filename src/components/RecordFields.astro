@@ -1,0 +1,74 @@
+---
+/**
+ * The archival record of an item (RF-40): Spanish labels, formatted values, links.
+ * Each field carries its Dublin Core element as a `data-dc` attribute.
+ */
+import { es } from '../i18n/es';
+import { formatArchiveDate, formatDuration } from '../lib/format';
+import { DUBLIN_CORE, type RecordField } from '../lib/record';
+
+interface Props {
+  fields: readonly RecordField[];
+  /** Site origin, to show permalinks as full, citable URLs. */
+  origin: string;
+}
+
+const { fields, origin } = Astro.props;
+const strings = es.record;
+
+function display(field: RecordField): string {
+  switch (field.key) {
+    case 'kind':
+      return es.kinds[field.value as keyof typeof es.kinds];
+    case 'date':
+      return formatArchiveDate(field.value);
+    case 'duration':
+      return formatDuration(Number(field.value));
+    case 'license':
+      return strings.licenses[field.value] ?? field.value;
+    case 'original':
+      return strings.originalLink;
+    case 'permalink':
+      return new URL(field.value, origin).href;
+    default:
+      return field.value;
+  }
+}
+---
+
+<dl class="record">
+  {fields.map((field) => (
+    <div data-dc={DUBLIN_CORE[field.key]}>
+      <dt>{strings.fields[field.key]}</dt>
+      <dd>
+        {field.href === undefined ? display(field) : <a href={field.href}>{display(field)}</a>}
+      </dd>
+    </div>
+  ))}
+</dl>
+
+<style>
+  .record {
+    margin: 0;
+    font-size: 0.98rem;
+  }
+  .record div {
+    display: grid;
+    grid-template-columns: 9.5rem 1fr;
+    gap: 1rem;
+    padding: 0.3rem 0;
+  }
+  dt {
+    color: var(--ink-soft);
+  }
+  dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+  @media (max-width: 30rem) {
+    .record div {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+  }
+</style>

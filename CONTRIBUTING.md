@@ -76,3 +76,4 @@ See [ADR 0040](docs/adr/0040-testing-strategy.md).
 - **`eslint-plugin-jsx-a11y` does not support ESLint 10 yet**; the project uses the drop-in `eslint-plugin-jsx-a11y-x`, as documented by `eslint-plugin-astro`.
 - **`src/jsx.d.ts`** narrows Astro's JSX element type so type-aware lint rules work in `.astro` files (documented by `eslint-plugin-astro`).
 - **`src/astro-modules.d.ts`** declares `.astro` modules for plain TypeScript tooling (`tsc`, typescript-eslint), which Astro 7 no longer types outside `astro check`. Component tests therefore do not type-check component props; `astro check` still checks every real usage. Remove the file once Astro ships an equivalent declaration.
+- **After changing `src/content.config.ts`, restart `astro dev`.** The dev server keeps a content cache; a stale one shows errors such as `LocalImageUsedWrongly` that a clean build does not have.

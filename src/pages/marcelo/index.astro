@@ -1,0 +1,68 @@
+---
+import PageBand from '../../components/PageBand.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { biography } from '../../data/catalog';
+import { es } from '../../i18n/es';
+import { formatArchiveDate } from '../../lib/format';
+
+const { page, Content, events } = await biography();
+---
+
+<BaseLayout title={page.title} description={page.description}>
+  <PageBand title={page.title} subtitle={page.description} tone="sky" />
+  <div class="biography">
+    <div class="prose">
+      <Content />
+    </div>
+    <section aria-labelledby="timeline-heading" class="timeline">
+      <h2 id="timeline-heading">{es.marcelo.timelineHeading}</h2>
+      <ol>
+        {events.map((event) => (
+          <li>
+            <span class="date">{formatArchiveDate(event.date)}</span>
+            <p>{event.text}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .biography {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    padding: 2.5rem var(--gutter) 0;
+    align-items: start;
+  }
+  .prose {
+    font-size: var(--step-1);
+    max-width: var(--measure-prose);
+  }
+  h2 {
+    font-size: var(--step-2);
+    margin: 0 0 1rem;
+  }
+  ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-left: var(--frame-width) solid var(--frame);
+  }
+  li {
+    padding: 0 0 1.25rem 1.25rem;
+  }
+  .date {
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+  }
+  li p {
+    margin: 0.25rem 0 0;
+  }
+  @media (max-width: 760px) {
+    .biography {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

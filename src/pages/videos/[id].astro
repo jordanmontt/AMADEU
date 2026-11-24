@@ -1,0 +1,71 @@
+---
+import type { GetStaticPaths } from 'astro';
+import PageBand from '../../components/PageBand.astro';
+import RecordFields from '../../components/RecordFields.astro';
+import VideoFacade from '../../components/VideoFacade.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { catalog } from '../../data/catalog';
+import { es } from '../../i18n/es';
+import type { VideoEntry } from '../../lib/content/collections';
+import { videoRecord } from '../../lib/record';
+
+export const getStaticPaths = (async () => {
+  const archive = await catalog();
+  return archive.videos().map((video) => ({ params: { id: video.id }, props: { video } }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  video: VideoEntry;
+}
+
+const { video } = Astro.props;
+---
+
+<BaseLayout title={video.data.title} description={video.data.description}>
+  <PageBand title={video.data.title} subtitle={video.data.series} tone="sky">
+    <a slot="crumb" href="/videos/">
+      {es.videos.title}
+    </a>
+  </PageBand>
+  <article class="video">
+    <div>
+      {video.data.youtubeId === undefined ? (
+        <p class="pending">{es.videos.notYetOnYouTube}</p>
+      ) : (
+        <VideoFacade title={video.data.title} youtubeId={video.data.youtubeId} />
+      )}
+      {video.data.description && <p class="description">{video.data.description}</p>}
+    </div>
+    <aside>
+      <h2>{es.text.recordHeading}</h2>
+      <RecordFields fields={videoRecord(video)} origin={Astro.url.origin} />
+    </aside>
+  </article>
+</BaseLayout>
+
+<style>
+  .video {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.7fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    padding: 2.5rem var(--gutter) 0;
+    align-items: start;
+  }
+  h2 {
+    font-size: 1.4rem;
+    margin: 0 0 0.75rem;
+  }
+  .pending {
+    border: 2px dashed var(--frame-soft);
+    padding: 1rem;
+    color: var(--ink-soft);
+  }
+  .description {
+    max-width: var(--measure-prose);
+  }
+  @media (max-width: 900px) {
+    .video {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

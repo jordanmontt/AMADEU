@@ -1,0 +1,23 @@
+---
+import { es } from '../i18n/es';
+---
+
+<footer class="site-footer">
+  <p>{es.site.footer}</p>
+  <p>{es.site.footerFoundation}</p>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: 4rem;
+    padding: 2rem var(--gutter) 3rem;
+    border-top: var(--frame-width) solid var(--frame);
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+    max-width: 60rem;
+  }
+  p {
+    margin: 0 0 0.5rem;
+    max-width: var(--measure-prose);
+  }
+</style>

@@ -1,0 +1,36 @@
+---
+/**
+ * A poem or song: stanzas separated by space, one verse per line (RF-16).
+ */
+import { stanzas } from '../lib/format';
+
+interface Props {
+  body: string;
+}
+
+const { body } = Astro.props;
+---
+
+<div class="verses">
+  {stanzas(body).map((stanza) => (
+    <p>
+      {stanza.map((verse, index) => (
+        <>
+          {index > 0 && <br />}
+          {verse}
+        </>
+      ))}
+    </p>
+  ))}
+</div>
+
+<style>
+  .verses {
+    font-size: var(--step-1);
+    line-height: 1.75;
+    max-width: var(--measure-verse);
+  }
+  p {
+    margin: 0 0 1.5em;
+  }
+</style>
