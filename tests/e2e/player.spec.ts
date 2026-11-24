@@ -1,4 +1,5 @@
-import { expect, test, type Locator, type Page } from '@playwright/test';
+import { type Locator, type Page } from '@playwright/test';
+import { expect, test } from './support/test';
 import AxeBuilder from '@axe-core/playwright';
 
 /**
@@ -6,9 +7,8 @@ import AxeBuilder from '@axe-core/playwright';
  * check the player while it sounds without racing the end of the track. "Alcalde de la
  * canción" lasts 2 s, to see the player move on to the next track.
  *
- * Every fixture recording is a quiet tone encoded at 44.1 kHz, 32 kbps: Playwright's Firefox
- * on the Linux CI runner refused to load a digitally silent MP3 and one at 22.05 kHz, 8 kbps
- * ("No se pudo cargar" in the player), while it played this format.
+ * Firefox needs a sound card to play anything; the CI workflow gives the Linux runner a
+ * virtual one (see .github/workflows/ci.yml).
  */
 
 function player(page: Page): Locator {
