@@ -1,7 +1,7 @@
 # 01 — Requerimientos funcionales
 
 > Estado: aprobado para la v1 (prototipo). Fecha: 2026-11-24.
-> Este documento describe **qué** es la aplicación y **qué** tiene que hacer. El **cómo** está en [02 – Requerimientos técnicos](02-requerimientos-tecnicos.md).
+> Este documento describe **qué** es la aplicación y **qué** tiene que hacer. El **cómo** está en [02 – Technical requirements](02-technical-requirements.md).
 
 ## 1. Propósito
 

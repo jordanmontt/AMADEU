@@ -6,11 +6,13 @@ La primera versión (v1) publica el universo **_Sangre y Sueño_**: poemario, ca
 
 ## Documentación
 
-Toda la documentación está en español, en [`docs/`](docs/README.md):
+La documentación para la Fundación está en español y la documentación técnica en inglés. Índice en [`docs/`](docs/README.md):
 
 - [Requerimientos funcionales](docs/01-requerimientos-funcionales.md): qué es la aplicación, qué contiene y cómo se ve.
-- [Requerimientos técnicos](docs/02-requerimientos-tecnicos.md): arquitectura, tecnologías, modelo de datos y operación.
-- [Registro de decisiones](docs/decisiones/README.md): cada decisión con su contexto, su porqué y las alternativas descartadas.
+- [Technical requirements](docs/02-technical-requirements.md) (en inglés): tecnologías, modelo de datos y operación.
+- [Architecture](docs/architecture.md) (en inglés): componentes, flujo de datos y despliegue.
+- [Architecture Decision Records](docs/adr/README.md) (en inglés): cada decisión con su contexto, su porqué y las alternativas descartadas.
+- [CONTRIBUTING.md](CONTRIBUTING.md) (en inglés): cómo instalar, probar y publicar.
 - [Inventario del archivo](docs/inventario/README.md): qué material existe y qué falta.
 
 ## Resumen técnico

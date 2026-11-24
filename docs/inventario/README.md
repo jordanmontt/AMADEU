@@ -28,7 +28,7 @@ El archivo son cuatro carpetas, `000 ARCHIVO MARCELO` y las numeradas 2, 3 y 4. 
 - **`Tomo II.pdf`** (132 págs.): *El libro de las odas*, *Nuevas odas para Silvia*, *Haikus* y *Cartas de amor de Telmo Castro*. No incluye nada de *Sangre y Sueño*.
 - **No hay escaneo** de la edición original de 1981 (José Martí).
 - El texto se extrae bien con Ghostscript `txtwrite`. `pdftotext` no está instalado.
-- **Ojo:** el texto canónico que se está elaborando tendrá **otro orden y otros títulos** (ver [decisión 0021](../decisiones/0021-texto-provisional-tomo-i.md)).
+- **Ojo:** el texto canónico que se está elaborando tendrá **otro orden y otros títulos** (ver [ADR 0021](../adr/0021-provisional-text-tomo-i.md)).
 
 ### 2.2 Grabaciones
 
