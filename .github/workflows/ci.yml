@@ -49,6 +49,16 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx playwright install --with-deps ${{ matrix.browser }}
+      # The runner has no sound card. Firefox cannot open an audio output without one and
+      # stops every recording with NS_ERROR_DOM_MEDIA_MEDIASINK_ERR; a PulseAudio null sink
+      # gives it one, so the player tests hear real playback.
+      - if: matrix.browser == 'firefox'
+        name: Give Firefox a virtual sound card
+        run: |
+          sudo apt-get install -y --no-install-recommends pulseaudio
+          pulseaudio --start --exit-idle-time=-1
+          pactl load-module module-null-sink sink_name=virtual
+          pactl set-default-sink virtual
       - run: npm run test:e2e -- --project=${{ matrix.browser }}
       - if: failure()
         uses: actions/upload-artifact@v4
