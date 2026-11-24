@@ -9,9 +9,11 @@ interface Props {
   /** Page title, without the site name. Omit on the home page. */
   title?: string;
   description?: string | undefined;
+  /** Keep the page out of search engines (admin pages). */
+  noindex?: boolean;
 }
 
-const { title, description = es.site.tagline } = Astro.props;
+const { title, description = es.site.tagline, noindex = false } = Astro.props;
 const fullTitle = title === undefined ? es.site.name : `${title} · ${es.site.name}`;
 ---
 
@@ -21,6 +23,7 @@ const fullTitle = title === undefined ? es.site.name : `${title} · ${es.site.na
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{fullTitle}</title>
   </head>

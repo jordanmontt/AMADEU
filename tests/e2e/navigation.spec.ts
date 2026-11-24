@@ -51,4 +51,10 @@ test.describe('navigation through a work', () => {
 
     await expect(page).toHaveURL('/sangre-y-sueno/cordillera-real/', { timeout: 10_000 });
   });
+
+  test('a work keeps its file-name id even though its URL slug differs', async ({ page }) => {
+    await page.goto('/id/sys/');
+
+    await expect(page).toHaveURL('/sangre-y-sueno/', { timeout: 10_000 });
+  });
 });

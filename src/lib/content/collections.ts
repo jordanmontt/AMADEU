@@ -22,6 +22,8 @@ export type ArtworkEntry = Entry<Artwork>;
 export type VideoEntry = Entry<Video>;
 export type PersonEntry = Entry<Person>;
 
+export type CollectionName = keyof Collections;
+
 export interface Collections {
   readonly works: readonly WorkEntry[];
   readonly texts: readonly TextEntry[];

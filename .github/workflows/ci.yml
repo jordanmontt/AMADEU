@@ -29,6 +29,9 @@ jobs:
       - run: npm run lint
       - run: npm run format:check
       - run: npm run test:coverage
+      # The build re-encodes audio over 25 MiB with ffmpeg (ADR 0045).
+      - name: Install ffmpeg
+        run: command -v ffmpeg || (sudo apt-get update && sudo apt-get install -y ffmpeg)
       - run: npm run build
 
   e2e:

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { aText, aVideo, aWork, anArtwork } from '../../tests/support/builders';
-import { artworkPath, permalinkPath, textPath, videoPath, workPath } from './routes';
+import { adminEditPath, artworkPath, permalinkPath, textPath, videoPath, workPath } from './routes';
 
 describe('routes', () => {
   const work = aWork('sys', { slug: 'sangre-y-sueno' });
@@ -28,5 +28,11 @@ describe('routes', () => {
 
   it('builds the permanent link of an id', () => {
     expect(permalinkPath('t-0012')).toBe('/id/t-0012/');
+  });
+
+  it('builds the admin edit link of an entry', () => {
+    expect(adminEditPath('artworks', 'dibujo-93')).toBe(
+      '/admin/#/collections/artworks/entries/dibujo-93',
+    );
   });
 });

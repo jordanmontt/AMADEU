@@ -1,6 +1,6 @@
 ---
 title: Texto pendiente
-work: sangre-y-sueno
+work: sys
 section: cancionero
 order: 3
 kind: song

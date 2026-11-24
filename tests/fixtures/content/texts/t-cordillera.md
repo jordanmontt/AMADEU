@@ -1,6 +1,6 @@
 ---
 title: Cordillera Real
-work: sangre-y-sueno
+work: sys
 section: cancionero
 order: 1
 kind: song
