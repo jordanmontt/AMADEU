@@ -1,0 +1,49 @@
+---
+/**
+ * Page shell: language, metadata and the skip link (WCAG 2.4.1).
+ */
+import { es } from '../i18n/es';
+import '../styles/base.css';
+
+interface Props {
+  /** Page title, without the site name. Omit on the home page. */
+  title?: string;
+  description?: string | undefined;
+}
+
+const { title, description = es.site.tagline } = Astro.props;
+const fullTitle = title === undefined ? es.site.name : `${title} · ${es.site.name}`;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{fullTitle}</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">
+      {es.site.skipToContent}
+    </a>
+    <header>
+      <a href="/">{es.site.name}</a>
+    </header>
+    <main id="content">
+      <slot />
+    </main>
+  </body>
+</html>
+
+<style>
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+  }
+  .skip-link:focus {
+    left: 1rem;
+    top: 1rem;
+  }
+</style>

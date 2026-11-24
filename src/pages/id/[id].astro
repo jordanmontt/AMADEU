@@ -1,0 +1,22 @@
+---
+/**
+ * Permanent links (ADR 0037): `/id/<id>/` redirects to the entry's current URL.
+ * A static redirect page works on any host, including the future Android app.
+ */
+import type { GetStaticPaths } from 'astro';
+import { catalog } from '../../data/catalog';
+
+export const getStaticPaths = (async () => {
+  const archive = await catalog();
+  return archive.permalinks().map((link) => ({
+    params: { id: link.id },
+    props: { target: link.target },
+  }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  target: string;
+}
+
+return Astro.redirect(Astro.props.target);
+---

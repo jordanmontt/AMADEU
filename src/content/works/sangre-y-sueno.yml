@@ -1,0 +1,17 @@
+title: Sangre y Sueño
+subtitle: Poemario, cancionero y grabaciones
+slug: sangre-y-sueno
+status: published
+year: '1981'
+order: 1
+# Provisional sections, following Tomo I of El Regocijo de Vivir (Plural, 2012).
+# The canonical edition will change them (ADR 0021, 0023).
+sections:
+  - id: relatos-poeticos
+    title: Relatos poéticos de Diego Calahumana
+    slug: relatos-poeticos
+    order: 1
+  - id: cancionero
+    title: Libro de canciones
+    slug: cancionero
+    order: 2

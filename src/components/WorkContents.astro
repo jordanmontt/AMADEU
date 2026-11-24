@@ -1,0 +1,28 @@
+---
+/**
+ * Table of contents of a work: its sections in editorial order, each with its texts.
+ */
+import type { TextEntry, WorkEntry } from '../lib/content/collections';
+import type { Section } from '../lib/content/schemas';
+import { textPath } from '../lib/routes';
+
+interface Props {
+  work: WorkEntry;
+  sections: readonly { section: Section; texts: readonly TextEntry[] }[];
+}
+
+const { work, sections } = Astro.props;
+---
+
+{sections.map(({ section, texts }) => (
+  <section aria-labelledby={`section-${section.id}`}>
+    <h2 id={`section-${section.id}`}>{section.title}</h2>
+    <ol>
+      {texts.map((text) => (
+        <li>
+          <a href={textPath(work, text)}>{text.data.title}</a>
+        </li>
+      ))}
+    </ol>
+  </section>
+))}

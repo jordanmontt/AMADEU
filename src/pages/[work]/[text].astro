@@ -1,0 +1,39 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { catalog } from '../../data/catalog';
+import { es } from '../../i18n/es';
+import type { TextEntry, WorkEntry } from '../../lib/content/collections';
+import { textSlug, workPath } from '../../lib/routes';
+
+export const getStaticPaths = (async () => {
+  const archive = await catalog();
+  return archive.publishedWorks().flatMap((work) =>
+    archive.textsOf(work).map((text) => ({
+      params: { work: work.data.slug, text: textSlug(text) },
+      props: { work, text },
+    })),
+  );
+}) satisfies GetStaticPaths;
+
+interface Props {
+  work: WorkEntry;
+  text: TextEntry;
+}
+
+const { work, text } = Astro.props;
+const archive = await catalog();
+const versions = archive.recordingVersions(text);
+---
+
+<BaseLayout title={text.data.title}>
+  <p>
+    <a href={workPath(work)}>
+      {es.text.backToWork}: {work.data.title}
+    </a>
+  </p>
+  <h1>{text.data.title}</h1>
+  {text.data.provisional && <p>{es.text.provisionalNote}</p>}
+  <pre class="verses">{text.body}</pre>
+  {versions.kind === 'unavailable' && <p>{es.text.recordingUnavailable}</p>}
+</BaseLayout>
