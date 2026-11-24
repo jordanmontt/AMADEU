@@ -1,0 +1,557 @@
+# Initial import of drawings, paintings, photos and posters (RT §10, step 3).
+# Titles, descriptions (alt) and links to songs were written from a visual review of each scan
+# and its handwritten verses; the Foundation confirms or corrects them from the admin.
+- source: 000 ARCHIVO MARCELO/Imagenes/cuadro17.tif
+  id: cuadro-17
+  title: Sangre de mi propia sangre
+  kind: painting
+  technique: Pintura
+  inscription: Sangre de mi propia sangre
+  place: Nueva York
+  texts:
+    - sangre-de-mi-propia-sangre
+  alt: 'Pintura en colores: el hombre del sombrero de copa flota en el cielo junto a una muchacha, una flor, una guitarra, un reloj de bolsillo, un caballito de madera y una bandera.'
+  rights: cleared
+  review: Relación con la canción propuesta en la carga inicial a partir de la inscripción; confirmar.
+- source: 000 ARCHIVO MARCELO 2/Imagenes/93.tif
+  id: dibujo-93
+  title: Alcalde de la canción
+  kind: drawing
+  technique: Tinta sobre papel
+  inscription: Alcalde de la canción
+  texts:
+    - alcalde-de-la-cancion
+  alt: 'Dibujo a tinta: el hombre del sombrero de copa toca la guitarra frente a una iglesia colonial y casas, con un largo verso manuscrito.'
+  rights: cleared
+  review: Relación con la canción propuesta en la carga inicial a partir de la inscripción; confirmar.
+- source: 000 ARCHIVO MARCELO 4/Imagenes/1A.tif
+  id: dibujo-1a
+  title: Alcalde de la canción (boceto)
+  kind: drawing
+  technique: Tinta sobre papel
+  inscription: Alcalde de la canción
+  texts:
+    - alcalde-de-la-cancion
+  alt: 'Boceto a tinta: el hombre del sombrero de copa toca la guitarra frente a una iglesia y casas.'
+  rights: cleared
+  review: Relación con la canción propuesta en la carga inicial a partir de la inscripción; confirmar.
+- source: 000 ARCHIVO MARCELO 2/Imagenes/Copia de 12.tif
+  id: dibujo-12
+  title: Sangre y sueño (hoja)
+  kind: drawing
+  technique: Tinta sobre papel
+  inscription: Sangre y sueño
+  texts:
+    - sangre-y-sueno-cancion
+  alt: 'Hoja de siete viñetas a tinta: un bosque de pinos, pájaros, peñascos, un balcón, una pareja, jinetes y un corcel.'
+  rights: cleared
+  review: Relación con la canción propuesta en la carga inicial a partir de la inscripción; confirmar.
+- source: 000 ARCHIVO MARCELO 2/Imagenes/12A.tif
+  id: dibujo-12a
+  title: Sangre y sueño
+  kind: drawing
+  technique: Tinta sobre papel
+  inscription: Sangre y sueño
+  sheet: dibujo-12
+  texts:
+    - sangre-y-sueno-cancion
+  alt: Viñeta a tinta de un bosque de pinos.
+  rights: cleared
+  review: Relación con la canción propuesta en la carga inicial a partir de la inscripción; confirmar.
+- source: 000 ARCHIVO MARCELO 2/Imagenes/12B.tif
+  id: dibujo-12b
+  title: Figura en un balcón
+  kind: drawing
+  technique: Tinta sobre papel
+  sheet: dibujo-12
+  texts: []
+  alt: 'Viñeta a tinta: una figura con sombrero en un balcón frente al mar y una nube.'
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 3/Imagenes/12C.tif
+  id: dibujo-12c
+  title: Ser diez mil pájaros
+  kind: drawing
+  technique: Tinta sobre papel
+  inscription: Ser diez mil pájaros
+  sheet: dibujo-12
+  texts:
+    - sangre-y-sueno-cancion
+  alt: 'Viñeta a tinta: una bandada de pájaros con las alas abiertas.'
+  rights: cleared
+  review: Relación con la canción propuesta en la carga inicial a partir de la inscripción; confirmar.
+- source: 000 ARCHIVO MARCELO 2/Imagenes/12D.tif
+  id: dibujo-12d
+  title: La pareja
+  kind: drawing
+  technique: Tinta sobre papel
+  sheet: dibujo-12
+  texts: []
+  alt: 'Viñeta a tinta: el hombre del sombrero de copa abraza a una novia; un corazón atravesado por una flecha.'
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 3/Imagenes/12E.tif
+  id: dibujo-12e
+  title: Peñascos de una altiva cordillera
+  kind: drawing
+  technique: Tinta sobre papel
+  inscription: …peñascos de una altiva cordillera
+  sheet: dibujo-12
+  texts:
+    - sangre-y-sueno-cancion
+  alt: 'Viñeta a tinta: paisaje de peñascos de montaña.'
+  rights: cleared
+  review: Relación con la canción propuesta en la carga inicial a partir de la inscripción; confirmar.
+- source: 000 ARCHIVO MARCELO 3/Imagenes/12F.tif
+  id: dibujo-12f
+  title: Jinetes
+  kind: drawing
+  technique: Tinta sobre papel
+  sheet: dibujo-12
+  texts: []
+  alt: 'Viñeta a tinta: jinetes con sombrero de copa y lanzas, superpuestos.'
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 4/Imagenes/12G.tif
+  id: dibujo-12g
+  title: Ser el brioso corcel del sueño
+  kind: drawing
+  technique: Tinta sobre papel
+  inscription: Ser el brioso corcel del sueño
+  sheet: dibujo-12
+  texts:
+    - sangre-y-sueno-cancion
+  alt: 'Viñeta a tinta: un corcel garabateado sobre un rostro.'
+  rights: cleared
+  review: Relación con la canción propuesta en la carga inicial a partir de la inscripción; confirmar.
+- source: 000 ARCHIVO MARCELO 3/Imagenes/12.tif
+  id: dibujo-locura-y-arte
+  title: Locura y arte
+  kind: drawing
+  technique: Tinta sobre papel ocre
+  inscription: Locura y arte
+  date: '1985'
+  texts: []
+  alt: Retrato a tinta con tramado de un hombre con bigote, anteojos redondos y corbata.
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 2/Imagenes/8.tif
+  id: dibujo-8
+  title: Tengo miedo (hoja)
+  kind: drawing
+  technique: Tinta sobre papel
+  inscription: Tengo miedo
+  texts:
+    - tengo-miedo-del-encuentro-con-mi-propio-corazon
+  alt: 'Hoja de cuatro viñetas a tinta: un espejo, dolientes, ángeles alados y un hombre que toca la guitarra.'
+  rights: cleared
+  review: Relación con la canción propuesta en la carga inicial a partir de la inscripción; confirmar.
+- source: 000 ARCHIVO MARCELO 3/Imagenes/8B.tif
+  id: dibujo-8b
+  title: Dolientes
+  kind: drawing
+  technique: Tinta sobre papel
+  sheet: dibujo-8
+  texts: []
+  alt: 'Viñeta a tinta: una fila de figuras de luto, una con sombrero de copa, y un corazón atravesado por una daga.'
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 2/Imagenes/8C.tif
+  id: dibujo-8c
+  title: Ángeles
+  kind: drawing
+  technique: Tinta sobre papel
+  sheet: dibujo-8
+  texts: []
+  alt: 'Viñeta a tinta: figuras de ángeles alados y un corazón atravesado por una flecha.'
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 2/Imagenes/8D.tif
+  id: dibujo-8d
+  title: Mi nueva canción
+  kind: drawing
+  technique: Tinta sobre papel
+  inscription: …mi nueva canción
+  sheet: dibujo-8
+  texts: []
+  alt: 'Viñeta a tinta: un hombre con sombrero de pluma toca la guitarra; un corazón atravesado por una daga.'
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 3/Imagenes/14.tif
+  id: dibujo-14
+  title: Tengo miedo (hoja II)
+  kind: drawing
+  technique: Tinta sobre papel
+  inscription: Tengo miedo
+  texts:
+    - tengo-miedo-del-encuentro-con-mi-propio-corazon
+  alt: 'Hoja de dos viñetas a tinta: dos hombres de sombrero de copa ante un espejo y un cementerio con cruces.'
+  rights: cleared
+  review: Relación con la canción propuesta en la carga inicial a partir de la inscripción; confirmar.
+- source: 000 ARCHIVO MARCELO 4/Imagenes/14A.tif
+  id: dibujo-14a
+  title: Tengo miedo del encuentro con mi propio corazón
+  kind: drawing
+  technique: Tinta sobre papel
+  inscription: Tengo miedo del encuentro con mi propio corazón
+  sheet: dibujo-14
+  texts:
+    - tengo-miedo-del-encuentro-con-mi-propio-corazon
+  alt: 'Viñeta a tinta: dos hombres de sombrero de copa frente a un espejo.'
+  rights: cleared
+  review: Relación con la canción propuesta en la carga inicial a partir de la inscripción; confirmar.
+- source: 000 ARCHIVO MARCELO 4/Imagenes/14B.tif
+  id: dibujo-14b
+  title: Cementerio
+  kind: drawing
+  technique: Tinta sobre papel
+  sheet: dibujo-14
+  texts: []
+  alt: 'Viñeta a tinta: un cementerio con cruces y banderas en una colina.'
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 2/Imagenes/9.tif
+  id: dibujo-9
+  title: Ayer nomás (hoja)
+  kind: drawing
+  technique: Tinta sobre papel
+  inscription: Ayer nomás
+  texts:
+    - ayer-nomas
+  alt: 'Hoja de tres viñetas a tinta: un rostro garabateado, una cabeza con los ojos vendados y una cabeza oscura.'
+  rights: cleared
+  review: Relación con la canción propuesta en la carga inicial a partir de la inscripción; confirmar.
+- source: 000 ARCHIVO MARCELO 2/Imagenes/9A.tif
+  id: dibujo-9a
+  title: Te dije que es muy grave
+  kind: drawing
+  technique: Tinta sobre papel
+  inscription: Te dije que es muy grave…
+  sheet: dibujo-9
+  texts:
+    - ayer-nomas
+  alt: 'Viñeta a tinta: un rostro garabateado con ojos en espiral.'
+  rights: cleared
+  review: Relación con la canción propuesta en la carga inicial a partir de la inscripción; confirmar.
+- source: 000 ARCHIVO MARCELO 3/Imagenes/9B.tif
+  id: dibujo-9b
+  title: Capitán del porvenir
+  kind: drawing
+  technique: Tinta sobre papel
+  inscription: Ayer nomás… capitán del porvenir
+  sheet: dibujo-9
+  texts:
+    - ayer-nomas
+  alt: 'Viñeta a tinta: una cabeza con los ojos vendados.'
+  rights: cleared
+  review: Relación con la canción propuesta en la carga inicial a partir de la inscripción; confirmar.
+- source: 000 ARCHIVO MARCELO 4/Imagenes/10.tif
+  id: dibujo-10
+  title: Salva tu forma de ser (hoja)
+  kind: drawing
+  technique: Tinta sobre papel
+  inscription: Salva tu forma de ser
+  texts:
+    - salva-tu-forma-de-ser
+  alt: 'Hoja de cinco viñetas a tinta: una habitación vacía, el hombre del sombrero de copa dos veces, guerreros con un caballo y un hombre alado.'
+  rights: cleared
+  review: Relación con la canción propuesta en la carga inicial a partir de la inscripción; confirmar.
+- source: 000 ARCHIVO MARCELO 4/Imagenes/10A.tif
+  id: dibujo-10a
+  title: Habitación vacía
+  kind: drawing
+  technique: Tinta sobre papel
+  sheet: dibujo-10
+  texts: []
+  alt: 'Viñeta a tinta: una habitación vacía en perspectiva, con cama y silla.'
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 4/Imagenes/10B.tif
+  id: dibujo-10b
+  title: Esta canción es el grito
+  kind: drawing
+  technique: Tinta sobre papel
+  inscription: Esta canción es el grito…
+  sheet: dibujo-10
+  texts: []
+  alt: 'Viñeta a tinta: el hombre del sombrero de copa de espaldas, con un pájaro de luz en el pecho.'
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 4/Imagenes/10C.tif
+  id: dibujo-10c
+  title: Oye el oráculo oscuro del alma
+  kind: drawing
+  technique: Tinta sobre papel
+  inscription: Oye el oráculo oscuro del alma
+  sheet: dibujo-10
+  texts: []
+  alt: 'Viñeta a tinta: un guerrero con escudo, una cabeza de caballo y una fila de lanceros.'
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 3/Imagenes/10D.tif
+  id: dibujo-10d
+  title: Aunque te aparten
+  kind: drawing
+  technique: Tinta sobre papel
+  inscription: Aunque te aparten…
+  sheet: dibujo-10
+  texts: []
+  alt: 'Viñeta a tinta: silueta del hombre del sombrero de copa con pluma y abrigo oscuro.'
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 3/Imagenes/10E.tif
+  id: dibujo-10e
+  title: Ábrete, yérguete, ríete, canta
+  kind: drawing
+  technique: Tinta sobre papel
+  inscription: Ábrete, yérguete, ríete, canta
+  sheet: dibujo-10
+  texts: []
+  alt: 'Viñeta a tinta: el hombre del sombrero de copa con los brazos abiertos como alas.'
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 4/Imagenes/11.tif
+  id: dibujo-11
+  title: Balada del amor imposible (hoja)
+  kind: drawing
+  technique: Tinta sobre papel
+  inscription: Balada del amor imposible
+  texts:
+    - balada-del-amor-imposible
+  alt: 'Hoja de cuatro viñetas a tinta: el hombre del sombrero de copa, una arquera alada, una figura voladora con luna en forma de corazón y una diosa alada.'
+  rights: cleared
+  review: Relación con la canción propuesta en la carga inicial a partir de la inscripción; confirmar.
+- source: 000 ARCHIVO MARCELO 4/Imagenes/11A.tif
+  id: dibujo-11a
+  title: Me hirió la espina de un gran amor
+  kind: drawing
+  technique: Tinta sobre papel
+  inscription: …me hirió la espina de un gran amor
+  sheet: dibujo-11
+  texts:
+    - balada-del-amor-imposible
+  alt: 'Viñeta a tinta: el hombre del sombrero de copa, con un corazón en el pecho, sostiene una espina larga.'
+  rights: cleared
+  review: Relación con la canción propuesta en la carga inicial a partir de la inscripción; confirmar.
+- source: 000 ARCHIVO MARCELO 4/Imagenes/11B.tif
+  id: dibujo-11b
+  title: Tú secuestraste mi voz
+  kind: drawing
+  technique: Tinta sobre papel
+  inscription: Tú secuestraste mi voz…
+  sheet: dibujo-11
+  texts:
+    - balada-del-amor-imposible
+  alt: 'Viñeta a tinta: una mujer alada desnuda con arco, entre nubes.'
+  rights: cleared
+  review: Relación con la canción propuesta en la carga inicial a partir de la inscripción; confirmar.
+- source: 000 ARCHIVO MARCELO 3/Imagenes/11C.tif
+  id: dibujo-11c
+  title: Diosa del sueño
+  kind: drawing
+  technique: Tinta sobre papel
+  inscription: Diosa del sueño…
+  sheet: dibujo-11
+  texts:
+    - balada-del-amor-imposible
+  alt: 'Viñeta a tinta: figuras voladoras y una luna en forma de corazón.'
+  rights: cleared
+  review: Relación con la canción propuesta en la carga inicial a partir de la inscripción; confirmar.
+- source: 000 ARCHIVO MARCELO 4/Imagenes/13.tif
+  id: dibujo-13
+  title: Árbol de fuego (hoja)
+  kind: drawing
+  technique: Tinta sobre papel
+  inscription: Árbol de fuego
+  texts:
+    - arbol-que-nace-de-ti
+  alt: 'Hoja de cuatro viñetas a tinta: un árbol de fuego, un árbol garabateado, una mujer con pájaros y un árbol solitario.'
+  rights: cleared
+  review: Relación con la canción propuesta en la carga inicial a partir de la inscripción; confirmar.
+- source: 000 ARCHIVO MARCELO 3/Imagenes/13A.tif
+  id: dibujo-13a
+  title: Árbol de fuego
+  kind: drawing
+  technique: Tinta sobre papel
+  inscription: Árbol de fuego
+  sheet: dibujo-13
+  texts:
+    - arbol-que-nace-de-ti
+  alt: 'Viñeta a tinta: un árbol con ramas que irradian como llamas.'
+  rights: cleared
+  review: Relación con la canción propuesta en la carga inicial a partir de la inscripción; confirmar.
+- source: 000 ARCHIVO MARCELO 3/Imagenes/13C.tif
+  id: dibujo-13c
+  title: Alas blancas
+  kind: drawing
+  technique: Tinta sobre papel
+  inscription: …alas blancas
+  sheet: dibujo-13
+  texts:
+    - arbol-que-nace-de-ti
+  alt: 'Viñeta a tinta: una mujer con sombrero ancho y palomas posadas sobre ella.'
+  rights: cleared
+  review: Relación con la canción propuesta en la carga inicial a partir de la inscripción; confirmar.
+- source: 000 ARCHIVO MARCELO 2/Imagenes/27C.tif
+  id: dibujo-27c
+  title: El cacique de la soledad
+  kind: drawing
+  technique: Tinta sobre papel
+  inscription: Soy el cacique de esta vasta soledad
+  texts:
+    - el-cacique-de-la-soledad
+  alt: 'Dibujo a tinta: el hombre del sombrero de copa con poncho a rayas y bastón, frente a montañas.'
+  rights: cleared
+  review: Relación con la canción propuesta en la carga inicial a partir de la inscripción; confirmar.
+- source: 000 ARCHIVO MARCELO 4/Imagenes/29B.tif
+  id: dibujo-29b
+  title: Quiero romper el dolor
+  kind: drawing
+  technique: Tinta sobre papel
+  inscription: Quiero romper el dolor, darle un sentido cantando
+  texts: []
+  alt: 'Dibujo a tinta con grandes manchas negras: el hombre del sombrero de copa toca la guitarra entre notas musicales y una clave de sol.'
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 2/Imagenes/15B.tif
+  id: dibujo-15b
+  title: Trompetas de extraño fulgor
+  kind: drawing
+  technique: Tinta sobre papel
+  inscription: …trompetas de extraño fulgor
+  texts: []
+  alt: 'Boceto a tinta: tres figuras con sombrero de copa levantan trompetas.'
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 2/Imagenes/15D.tif
+  id: dibujo-15d
+  title: Llega el luto y el fuego
+  kind: drawing
+  technique: Tinta sobre papel
+  inscription: Llega el luto y el fuego
+  texts: []
+  alt: 'Boceto a tinta muy suelto: figuras con flores y una mujer desnuda.'
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 3/Imagenes/15A.tif
+  id: dibujo-15a
+  title: Mi primera verdad
+  kind: drawing
+  technique: Tinta sobre papel
+  inscription: Mi primera verdad…
+  texts: []
+  alt: Dibujo a tinta de un dormitorio con cama, mesa, ventana y silla.
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 4/Imagenes/15C.tif
+  id: dibujo-15c
+  title: Bajo el árbol prohibido
+  kind: drawing
+  technique: Tinta sobre papel
+  inscription: …bajo el árbol prohibido
+  texts: []
+  alt: 'Dibujo a tinta: un gran árbol bajo las estrellas con una pequeña figura debajo.'
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 2/Imagenes/cuadro18.tif
+  id: cuadro-18
+  title: El pintor
+  kind: painting
+  technique: Pintura
+  texts: []
+  alt: 'Pintura en colores: un pintor con sombrero de copa y paleta pinta una manzana junto a una mujer desnuda, sobre un campo amarillo.'
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 2/Imagenes/cuadro2.tif
+  id: cuadro-2
+  title: Cordillera Real
+  kind: watercolor
+  technique: Acuarela
+  inscription: Cordillera Real
+  texts: []
+  alt: Acuarela de cielo y montañas con una pequeña figura de sombrero de copa, un verso manuscrito y borde verde.
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 2/Imagenes/cuadro20.tif
+  id: cuadro-20
+  title: Flores
+  kind: painting
+  technique: Óleo
+  date: '1991'
+  texts: []
+  alt: Óleo de flores densas, parecidas a cempasúchiles, sobre fondo gris azulado.
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 2/Imagenes/cuadro4.tif
+  id: cuadro-4
+  title: Ciclista en el altiplano
+  kind: watercolor
+  technique: Acuarela
+  date: '1993'
+  place: Nueva York
+  texts: []
+  alt: 'Acuarela: una figura con sombrero morado y bufanda en bicicleta roja sobre el altiplano, con luna e iglesia.'
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 3/Imagenes/cuadro1.tif
+  id: cuadro-1
+  title: Mujer de vestido rojo
+  kind: watercolor
+  technique: Acuarela y crayón
+  texts: []
+  alt: 'Acuarela: una mujer de vestido rojo y sombrero de plumas, con un sol rojo, franjas de arcoíris y montañas.'
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 3/Imagenes/cuadro10.tif
+  id: cuadro-10
+  title: Lunita lunita
+  kind: watercolor
+  technique: Acuarela y tinta
+  inscription: Lunita lunita
+  date: '1993'
+  place: Nueva York
+  texts: []
+  alt: 'Acuarela y tinta: el hombre del sombrero de copa con un paraguas de arcoíris, un unicornio, escudos y mujeres.'
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 3/Imagenes/cuadro16.tif
+  id: cuadro-16
+  title: Jinetes en el cielo
+  kind: painting
+  technique: Pintura
+  date: '1993'
+  place: Nueva York
+  texts: []
+  alt: 'Pintura en colores: el hombre del sombrero de copa y una mujer cabalgan entre nubes en un cielo azul.'
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 3/Imagenes/cuadro5.tif
+  id: cuadro-5
+  title: Canción serena para esposos hechizados
+  kind: watercolor
+  technique: Acuarela y tinta
+  inscription: Canción serena para esposos hechizados
+  date: '1993'
+  place: Nueva York
+  texts:
+    - cancion-serena-para-esposos-hechizados
+  alt: 'Acuarela y tinta: una pareja flota entre instrumentos musicales: piano, arpa, guitarras, trompeta, violín, flauta y tambor.'
+  rights: cleared
+  review: Relación con la canción propuesta en la carga inicial a partir de la inscripción; confirmar.
+- source: 000 ARCHIVO MARCELO 4/Imagenes/cuadro14.tif
+  id: cuadro-14
+  title: Barca de luna
+  kind: painting
+  technique: Pintura
+  date: '1993'
+  place: Nueva York
+  texts: []
+  alt: 'Pintura en colores: una pareja desnuda recostada en una barca con forma de luna creciente, con flores y un sombrero de copa.'
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 4/Imagenes/cuadro19.tif
+  id: cuadro-19
+  title: El canto que va brotando
+  kind: painting
+  technique: Pintura
+  inscription: El canto que va brotando…
+  date: '1993'
+  place: Nueva York
+  texts:
+    - el-canto-que-va-brotando-desde-el-arbol-del-amor
+  alt: 'Pintura en colores: el hombre del sombrero de copa toca el violín junto a una naranja gigante, con notas musicales en el aire.'
+  rights: cleared
+  review: Relación con la canción propuesta en la carga inicial a partir de la inscripción; confirmar.
+- source: 000 ARCHIVO MARCELO 4/Imagenes/img20250501_22212983.tif
+  id: foto-marcelo-microfono
+  title: Marcelo de Urioste canta al micrófono
+  kind: photo
+  technique: Fotografía en blanco y negro
+  texts: []
+  alt: Fotografía en blanco y negro de Marcelo de Urioste, de pelo rizado, anteojos redondos y bigote, cantando ante un micrófono.
+  rights: pending
+  review: Autoría y derechos por confirmar.
+- source: 000 ARCHIVO MARCELO 4/Imagenes/Afiche Concierto MDU 2018.JPG
+  id: afiche-concierto-2018
+  title: Afiche del concierto «Sangre y Sueño» (2018)
+  kind: poster
+  technique: Afiche
+  date: '2018'
+  texts: []
+  alt: Afiche del concierto homenaje «Sangre y Sueño, canciones y música de Marcelo Urioste», 6 de julio, Teatro Municipal Alberto Saavedra Pérez, con una foto de Marcelo tocando la guitarra.
+  rights: pending
+  review: Autoría y derechos por confirmar.

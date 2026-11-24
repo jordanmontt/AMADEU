@@ -7,7 +7,13 @@
  * - Gallery images and videos use their entry id, which never changes.
  * - `/id/<id>/` is the permanent link of any page-bearing entry.
  */
-import type { ArtworkEntry, TextEntry, VideoEntry, WorkEntry } from './content/collections';
+import type {
+  ArtworkEntry,
+  CollectionName,
+  TextEntry,
+  VideoEntry,
+  WorkEntry,
+} from './content/collections';
 import { slugify } from './slug';
 
 /** Top-level routes owned by the site; no work slug may use one of them (RT-15). */
@@ -45,4 +51,9 @@ export function videoPath(video: VideoEntry): string {
 
 export function permalinkPath(entryId: string): string {
   return `/id/${entryId}/`;
+}
+
+/** Where an entry is edited in the admin panel (Sveltia CMS). */
+export function adminEditPath(collection: CollectionName, entryId: string): string {
+  return `/admin/#/collections/${collection}/entries/${entryId}`;
 }

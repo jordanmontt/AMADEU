@@ -1,5 +1,6 @@
 /**
- * Builds the catalog of published content from Astro's content collections.
+ * Builds the catalog of published content (and, for the admin, all content) from Astro's
+ * content collections.
  *
  * This is the only place that reads `astro:content`; everything else works on plain data
  * (`src/lib/`), so it can be unit-tested without Astro. Covered by the build and E2E tests.
@@ -8,7 +9,8 @@ import { getCollection } from 'astro:content';
 import { Catalog } from '../lib/catalog';
 import type { Collections } from '../lib/content/collections';
 
-let cached: Promise<Catalog> | undefined;
+let cachedContent: Promise<Collections> | undefined;
+let cachedCatalog: Promise<Catalog> | undefined;
 
 async function loadCollections(): Promise<Collections> {
   const [works, texts, recordings, artworks, videos, people] = await Promise.all([
@@ -29,8 +31,14 @@ async function loadCollections(): Promise<Collections> {
   };
 }
 
+/** All content, published or not. Only for admin pages (e.g. the pending tasks). */
+export function allContent(): Promise<Collections> {
+  cachedContent ??= loadCollections();
+  return cachedContent;
+}
+
 /** The published catalog, loaded once per build. */
 export function catalog(): Promise<Catalog> {
-  cached ??= loadCollections().then((all) => Catalog.published(all));
-  return cached;
+  cachedCatalog ??= allContent().then((all) => Catalog.published(all));
+  return cachedCatalog;
 }

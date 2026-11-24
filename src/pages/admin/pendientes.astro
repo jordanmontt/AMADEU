@@ -1,0 +1,19 @@
+---
+/**
+ * Pending tasks for the Foundation, computed from all content at build time (RF-72,
+ * ADR 0046). Not linked from the public site and kept out of search engines.
+ */
+import PendingTaskList from '../../components/PendingTaskList.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { allContent } from '../../data/catalog';
+import { es } from '../../i18n/es';
+import { groupPendingTasks, pendingTasks } from '../../lib/content/pending-tasks';
+
+const groups = groupPendingTasks(pendingTasks(await allContent()));
+---
+
+<BaseLayout title={es.pendingTasks.title} noindex>
+  <h1>{es.pendingTasks.title}</h1>
+  <p>{es.pendingTasks.intro}</p>
+  <PendingTaskList groups={groups} />
+</BaseLayout>

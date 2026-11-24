@@ -1,6 +1,6 @@
 ---
 title: Romance de prueba
-work: sangre-y-sueno
+work: sys
 section: relatos
 order: 1
 kind: poem

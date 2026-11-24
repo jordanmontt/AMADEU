@@ -1,0 +1,41 @@
+# Initial import of video records (RT §10, step 4). Only metadata: the files are uploaded to the
+# Foundation's YouTube channel later and their youtubeId added from the admin.
+# "America Precolombina" exists 8 times, byte-identical: only one copy is listed.
+- source: 000 ARCHIVO MARCELO/Videos Marcelo/El Regocijo de Vivir Los Relatos Poeticos y Sangre y Sueño 1996.mp4
+  id: presentacion-el-regocijo-de-vivir-1996
+  title: 'El regocijo de vivir: presentación de los Relatos poéticos y Sangre y Sueño'
+  date: '1996'
+  texts: []
+  review: Probablemente la presentación del libro de 1996; autoría de la grabación y derechos por confirmar.
+- source: 000 ARCHIVO MARCELO/Videos Marcelo/VIdeos Programa TVB/Altiplano Boliviano.mp4
+  id: los-caminos-del-hombre-altiplano-boliviano
+  title: Altiplano boliviano
+  series: Los Caminos del Hombre
+- source: 000 ARCHIVO MARCELO 3/Videos Marcelo/VIdeos Programa TVB/America Colonial (Primera Parte).mp4
+  id: los-caminos-del-hombre-america-colonial-1
+  title: América colonial (primera parte)
+  series: Los Caminos del Hombre
+- source: 000 ARCHIVO MARCELO 2/Videos Marcelo/VIdeos Programa TVB/America Colonial (Segunda Parte).mp4
+  id: los-caminos-del-hombre-america-colonial-2
+  title: América colonial (segunda parte)
+  series: Los Caminos del Hombre
+- source: 000 ARCHIVO MARCELO 3/Videos Marcelo/VIdeos Programa TVB/America Latina en el Siglo de Las Luces.mp4
+  id: los-caminos-del-hombre-siglo-de-las-luces
+  title: América Latina en el Siglo de las Luces
+  series: Los Caminos del Hombre
+- source: 000 ARCHIVO MARCELO 4/Videos Marcelo/VIdeos Programa TVB/America Latina Siglo XIX.mp4
+  id: los-caminos-del-hombre-siglo-xix
+  title: América Latina, siglo XIX
+  series: Los Caminos del Hombre
+- source: 000 ARCHIVO MARCELO 2/Videos Marcelo/VIdeos Programa TVB/America Precolombina.mp4
+  id: los-caminos-del-hombre-america-precolombina
+  title: América precolombina
+  series: Los Caminos del Hombre
+- source: 000 ARCHIVO MARCELO 2/Videos Marcelo/VIdeos Programa TVB/Arcillas y Textiles Ines Cordova.mp4
+  id: los-caminos-del-hombre-arcillas-y-textiles
+  title: Arcillas y textiles de Inés Córdova
+  series: Los Caminos del Hombre
+- source: 000 ARCHIVO MARCELO 4/Videos Marcelo/VIdeos Programa TVB/Arquitectura Virreynal II.mp4
+  id: los-caminos-del-hombre-arquitectura-virreinal-2
+  title: Arquitectura virreinal II
+  series: Los Caminos del Hombre

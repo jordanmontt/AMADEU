@@ -1,0 +1,21 @@
+# Initial import of the provisional texts of Sangre y Sueño (ADR 0021, 0024).
+# Source: El Regocijo de Vivir, Tomo I (Plural editores, 2012). PDF pages equal printed pages.
+pdf: 000 ARCHIVO MARCELO 3/Textos marcelo/El Regocijo de Vivir-Tomo I.pdf
+work: sangre-y-sueno
+edition:
+  name: El Regocijo de Vivir, Tomo I
+  year: '2012'
+  publisher: Plural editores
+sections:
+  - section: cancionero
+    kind: song
+    firstPage: 11
+    lastPage: 98
+  - section: relatos-poeticos
+    kind: poem
+    firstPage: 103
+    lastPage: 242
+# Obvious misprints in printed titles. The printed form is kept as an alternative title.
+titleCorrections:
+  Balada del amor imposile: Balada del amor imposible
+  Romande de la madre: Romance de la madre

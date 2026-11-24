@@ -60,7 +60,7 @@ export function aRecording(id: string, fields: Input = {}): RecordingEntry {
       title: `Recording ${id}`,
       kind: 'song',
       durationSeconds: 120,
-      audio: `audio/${id}.mp3`,
+      audio: `${id}.mp3`,
       rights: 'cleared',
       ...fields,
     }),
@@ -73,9 +73,6 @@ export function anArtwork(id: string, fields: Input = {}): ArtworkEntry {
     data: artworkSchema.parse({
       title: `Artwork ${id}`,
       kind: 'drawing',
-      image: `images/${id}.webp`,
-      width: 2400,
-      height: 1600,
       alt: `Description of ${id}`,
       rights: 'cleared',
       ...fields,

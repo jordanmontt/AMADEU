@@ -1,8 +1,6 @@
 title: Dibujo de prueba
 kind: drawing
 texts: [t-cordillera]
-image: images/dibujo-prueba.webp
-width: 400
-height: 300
+image: ../media/images/dibujo-prueba.webp
 alt: Un hombre con sombrero de copa toca la guitarra
 rights: cleared

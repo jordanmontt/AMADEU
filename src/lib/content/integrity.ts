@@ -6,9 +6,9 @@
  * lists every problem at once.
  */
 import { RESERVED_ROUTES, textSlug } from '../routes';
-import type { Collections } from './collections';
+import type { CollectionName, Collections } from './collections';
 
-export type CollectionName = keyof Collections;
+export type { CollectionName } from './collections';
 
 export interface IntegrityProblem {
   readonly collection: CollectionName;

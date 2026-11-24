@@ -54,7 +54,7 @@ See [architecture.md](architecture.md) for C4 diagrams. In short:
 
 - **RT-10. The repository is the database.** Content lives in `src/content/` and is validated by Zod schemas at build time. No database, no server ([ADR 0008](adr/0008-no-database.md)).
 - **RT-11. Permanent identity.** Every entry has an `id` that **never changes** and does not depend on title or order (RF-58). Relations between collections always use `id`, never a title or slug.
-  - An entry's id is its **file name** (without extension), lowercase kebab-case. It is set once, when the entry is created (by the import script or the admin), and never renamed afterwards.
+  - An entry's id is its **file name** (without extension), lowercase kebab-case. It is set once, when the entry is created (by the import script or the admin), and never renamed afterwards. `src/content.config.ts` passes a `generateId` to Astro's `glob()` loader, because Astro would otherwise use a `slug` field as the id.
   - Ids are unique across page-bearing collections (works, texts, artworks, videos), because `/id/<id>/` must be unambiguous. Enforced by the content integrity tests.
 - **RT-12. Slug separate from ID.** A text's URL slug derives from its current title and may change; works have an explicit permanent slug; gallery images and videos use their id in the URL. The stable link for everything is `/id/<id>/` (§7.2).
 - **RT-13. Explicit order.** Sections and texts have an editable `order` field; nothing is sorted alphabetically by default.
@@ -67,9 +67,10 @@ See [architecture.md](architecture.md) for C4 diagrams. In short:
 src/content/
 ├── works/        work (YAML)        — Sangre y Sueño, "coming soon" works
 ├── texts/        text (Markdown)    — poems and songs; the body is the text
-├── recordings/   recording (YAML)   — audio file in public/audio/
+├── recordings/   recording (YAML)
 ├── artworks/     image (YAML)       — drawings, watercolours, paintings, photos, documents
-├── media/images/ image files        — uploaded from the admin, optimized by Astro
+├── media/audio/  MP3 files          — published at /audio/<file> (RT-21)
+├── media/images/ image files        — optimized by Astro
 ├── videos/       video (YAML)       — YouTube
 ├── people/       person (YAML)      — credits (musicians, engineers, editors)
 └── pages/        page (Markdown)    — biography, presentation, site credits
@@ -86,17 +87,17 @@ Every entry also has its `id` (the file name), which is not a field.
 **`texts`**:
 - Identity: `title`, `altTitles[]` (`{ title, source }`). The URL slug is derived from `title`.
 - Placement: `work` (ref works), `section` (section id within the work), `order`.
-- Content: `kind` (`poem` | `song`), Markdown body (the text), `criticalNotes` (optional Markdown), `facsimile[]` (ref artworks).
+- Content: `kind` (`poem` | `song`), the body (the verses: one verse per line, stanzas separated by a blank line), `dedication`, `notes` (notes printed with the text in its source edition), `criticalNotes` (optional Markdown written for this archive), `facsimile[]` (ref artworks).
 - Source: `edition` (`{ name, year, publisher, pages }`), `provisional` (boolean).
 - Related media: `primaryRecording` (ref recordings): which of the recordings pointing to this text is shown first. Recordings, illustrations and videos are linked from their own side (see below).
-- Rights: `rights`, `rightsHolder`, `license`.
+- Rights: `rights`, `rightsHolder`, `license`. Review: `review` (see below).
 
 **`recordings`**:
 - Identity: `title`, `altTitles[]`, `texts[]` (ref texts; may be empty, e.g. an interview).
 - Kind: `kind` (`song` | `recital` | `reading` | `interview` | `lecture` | `instrumental`).
 - Date and provenance: `date`, `collection` (e.g. "LP Discolandia 1984", "Grabación casera 1993–95", "Recital Goethe-Institut 1981"), `venue`.
 - Credits: `performers[]`, `credits[]` (`{ person: ref people, role }`).
-- Audio: `durationSeconds`, `audio` (site path of a file in `public/audio/`, e.g. `/audio/cordillera-real-lp-1984.mp3`), `originalUrl` (Internet Archive).
+- Audio: `durationSeconds`, `audio` (file name in `media/audio/`, e.g. `cordillera-real-casera.mp3`), `originalUrl` (Internet Archive).
 - Other: `trackNumber`, `notes`, `rights`, `rightsHolder`, `license`.
 
 **`artworks`**:
@@ -114,6 +115,8 @@ Every entry also has its `id` (the file name), which is not a field.
 - Rights: `rights`, `rightsHolder`, `license`.
 
 **Relations are stored on one side only.** Media point to the texts they belong to (`recording.texts`, `artwork.texts`, `video.texts`) and a panel points to its sheet; the `Catalog` derives the other direction, so the two sides can never disagree. The only relation stored on a text is a choice among those (`primaryRecording`) or an ordered list (`facsimile`).
+
+**Review field** (texts, recordings, artworks, videos): `review` says what the Foundation still has to check about the entry (a doubt, a missing date, a link to confirm). It is listed among the pending tasks (RT-37) until an editor removes it. `notes`, by contrast, are permanent archival notes about the item itself.
 
 **Common rights fields**:
 - `rights`: `cleared` | `pending` | `restricted`. **Only `cleared` is published** (RF-57).
@@ -140,23 +143,24 @@ Every record page also emits schema.org JSON-LD (`CreativeWork`, `MusicRecording
 ## 5. Media
 
 - **RT-20. Images and audio live in this repository** ([ADR 0044](adr/0044-media-in-the-repository.md)). No payment card is registered anywhere, and the editor must upload media on their own; Sveltia uploads into the repository it edits. Expected size after the full import: ≈ 500 MB (GitHub recommends < 1 GB and blocks files > 100 MB). Monitor it with `git count-objects -vH`; the migration path is a separate content repository read through `CONTENT_DIR`.
-- **RT-21. Audio** is stored in `public/audio/` and published as static files. Files ≤ 25 MiB are served unchanged (128 kbps, 44.1 kHz). **Known limitation:** files > 25 MiB (Cloudflare Pages' per-file limit) are re-encoded at build time to mono 64 kbps; recordings longer than ≈ 52 min cannot be published unsplit ([ADR 0045](adr/0045-long-audio-recompressed-at-build.md)).
+- **RT-21. Audio** is stored in `src/content/media/audio/`. A static endpoint (`src/pages/audio/[file].ts`) publishes the audio of every **published** recording at `/audio/<file>`; unpublished recordings' audio never reaches the site. Files ≤ 25 MiB are served unchanged (128 kbps, 44.1 kHz). **Known limitation:** files > 25 MiB (Cloudflare Pages' per-file limit) are re-encoded at build time to mono 64 kbps; recordings longer than ≈ 52 min cannot be published unsplit ([ADR 0045](adr/0045-long-audio-recompressed-at-build.md)).
 - **RT-22. Images** are stored in `src/content/media/images/` at no more than ~2400 px on the longest side (the import scripts downscale TIFF scans; the admin limits upload size). Astro generates responsive WebP sizes and intrinsic dimensions at build time. TIFF masters (11–342 MB) are **not** stored in the repository.
 - **RT-23. Upload limits in the admin** (RF-67): images ≤ 10 MB, audio ≤ 95 MB (under GitHub's 100 MB limit), with Spanish messages explaining the limit.
 - **RT-24. Videos on YouTube** (Foundation channel), embedded via `youtube-nocookie.com` behind a facade (thumbnail + button) that loads the iframe only on click (RF-31). Duplicates are removed before upload ("America Precolombina" exists 8 times).
 - **RT-25. Preservation on Internet Archive.** Masters (TIFF, master audio, video) go to a Foundation collection; the record stores `originalUrl`. In v1 the Foundation (or the developer during the initial import) uploads them outside the CMS.
 - **RT-26. File names** are normalized (lowercase, no accents, no spaces), by the import scripts and by Sveltia's slug settings.
-- **RT-27. Media paths are site-relative** (`/audio/…`, images resolved by Astro), so the site, its media and the future Android app always ship together and no media base URL is needed.
+- **RT-27. Media live with the content** (`<content folder>/media/`): audio is published at `/audio/…` and images are resolved by Astro, so the site, its media and the future Android app always ship together and no media base URL is needed.
 
 ## 6. Admin panel
 
 - **RT-30. Sveltia CMS** served as a static SPA at `/admin` (`public/admin/index.html` + `config.yml`) ([ADR 0028](adr/0028-sveltia-cms.md)).
 - **RT-31. Authentication with Sveltia CMS Additions** (free Cloudflare Worker): the editor logs in with a **username and password** created by the administrator; no GitHub account. ([ADR 0029](adr/0029-admin-username-password.md)).
-- **RT-32. Uploads into the repository** with Sveltia's default (internal) media library: per-field folders `src/content/media/images/` (images) and `public/audio/` (audio), with the upload limits of RT-23.
+- **RT-32. Uploads into the repository** with Sveltia's default (internal) media library: per-field folders `src/content/media/images/` (images) and `src/content/media/audio/` (audio), with the upload limits of RT-23.
 - **RT-33. Spanish UI** (`es`). Every field label, hint and message is in Spanish.
 - **RT-34. Relations** use Sveltia `relation` fields that store `id`s, and `reference()` in the Astro schemas.
 - **RT-35. Direct publishing** (RF-70). No editorial workflow: every save is a commit on `main` that triggers the pipeline ([ADR 0031](adr/0031-direct-publishing.md)).
 - **RT-36. Astro compatibility.** Follow Sveltia's official Astro guide: collection folders match the `glob()` loader `base`; `omit_empty_optional_fields: true`; artwork images use Astro's `image()` helper.
+- **RT-37. Pending tasks** (RF-72, [ADR 0046](adr/0046-pending-tasks-derived-from-content.md)). `/admin/pendientes/` lists what the Foundation still has to do, **computed from the content at build time** by `src/lib/content/pending-tasks.ts`: rights to confirm, `review` notes, songs without a recording, music recordings without a text, videos not on YouTube, provisional texts, artworks without an inventory code. Each task links to the entry in the admin. There is no separate task list: fixing the content removes the task. The page is not linked from the public site and is marked `noindex`; it shows titles of unpublished entries, which is acceptable because they are not sensitive.
 
 ## 7. Routes and URLs
 
@@ -252,14 +256,14 @@ Rules:
 
 ## 10. Initial content import (RF-59)
 
-TypeScript scripts in `scripts/import/`, run once locally (`tsx`). Each script's pure logic (parsing, matching, normalization) lives in `src/lib/` or `scripts/lib/` and is unit-tested; the scripts themselves only do I/O.
+TypeScript scripts in `scripts/import/`, run once locally with `npx tsx scripts/import/<name>.ts` ([ADR 0047](adr/0047-initial-import.md)). Pure logic lives in `scripts/lib/` and is unit-tested in `tests/scripts/`; the scripts only do I/O. Each script reads a **reviewable manifest** in `scripts/import/data/`, reads the archive from `ARCHIVE_DIR` (default `../Archivos Digitales`), and **never overwrites an existing entry** unless run with `--force`, so editors' changes are safe.
 
-1. **Texts.** Extract text from the Tomo I PDF (pp. 11–98 songbook; pp. 103–239 poetic tales) with Ghostscript `txtwrite`, segment by poem, and generate `texts/*.md` with `provisional: true`, `edition` and `altTitles`.
-2. **Recordings.** Read the MP3s, get durations with `ffprobe`, normalize names, copy to `public/audio/`, and generate `recordings/*.yml`. Link to texts by fuzzy title matching, then review by hand.
-3. **Images.** Convert TIFFs to ~2400 px WebP with `sharp` into `src/content/media/images/`, and generate `artworks/*.yml` with `sourceFile`. Inventory codes and text relations are completed by hand or by the Foundation.
-4. **Videos.** Generate `videos/*.yml` from the inventory; `youtubeId` is filled in after uploading.
+1. **Texts** (`texts.ts`, `tomo-i.yml`). Ghostscript `txtwrite -dTextFormat=1` gives every line with its position, font and size. A bold 14–16 pt line starts a text; a vertical gap larger than the 15 pt line spacing starts a stanza; 9 pt lines are page numbers, dedications or printed notes. Result: 69 songs (pp. 11–98) and 48 poetic tales (pp. 103–239) with `provisional: true`, `edition` (with page) and spaced `order` values. Obvious misprints in titles are corrected, keeping the printed form in `altTitles`. A text's id is its title's slug, with `-cancion` / `-poema` appended when a work already uses it.
+2. **Recordings** (`recordings.ts`, `recordings.yml`). One manifest item per source file, with its text links, collection, date, rights and `review`. Audio is copied (audio-only MP4s are converted to MP3) into `src/content/media/audio/`; durations come from `ffprobe`. Items marked `primary` set the text's `primaryRecording` when the text has none.
+3. **Images** (`artworks.ts`, `artworks.yml`). Each scan is converted with `sharp` to a ≤ 2400 px WebP in `src/content/media/images/`. Titles, descriptions (`alt`), inscriptions, sheets/panels and proposed text links come from a visual review of each scan; proposed links carry a `review` to confirm.
+4. **Videos** (`videos.ts`, `videos.yml`). Records only, with durations from `ffprobe`; all start as `pending` until rights are confirmed and the YouTube id is added.
 
-Scripts read the digitized archive from a configurable path outside the repository (`ARCHIVE_DIR`) and **never** commit media.
+The result of the first import (2026-11-24): 117 texts, 83 recordings (≈ 442 MB of audio), 53 artworks (≈ 16 MB of WebP), 9 videos.
 
 ## 11. Accounts and ownership
 

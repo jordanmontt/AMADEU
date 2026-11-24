@@ -1,6 +1,6 @@
 ---
 title: Luna Andina
-work: sangre-y-sueno
+work: sys
 section: cancionero
 order: 2
 kind: song

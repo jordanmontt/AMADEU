@@ -1,0 +1,745 @@
+# Initial import of recordings (RT §10, step 2). One item per source file in the archive.
+# Collections, dates and links come from the inventory and file names; notes mark what to confirm.
+- source: 000 ARCHIVO MARCELO 2/Audios Marcelo/Alcalde de la Cancion.mp3
+  id: alcalde-de-la-cancion-casera
+  title: Alcalde de la canción
+  kind: song
+  texts:
+    - alcalde-de-la-cancion
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 2/Audios Marcelo/Amiga mia.mp3
+  id: amiga-mia-casera
+  title: Amiga mia
+  kind: song
+  texts:
+    - amiga-mia
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 2/Audios Marcelo/Cancion Serena Para Esposos Hechizados solo guitarra.mp3
+  id: cancion-serena-para-esposos-hechizados-guitarra
+  title: Canción serena para esposos hechizados (solo guitarra)
+  kind: instrumental
+  texts:
+    - cancion-serena-para-esposos-hechizados
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 2/Audios Marcelo/Capitana de la Miel.mp3
+  id: capitana-de-la-miel-casera
+  title: Capitana de la miel
+  kind: song
+  texts:
+    - capitana-de-la-miel
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 2/Audios Marcelo/Cordillera Real.mp3
+  id: cordillera-real-casera
+  title: Cordillera Real
+  kind: song
+  texts: []
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+  review: No hay un texto con este título en el Tomo I; ¿corresponde a «Cordillera de Los Andes»?
+- source: 000 ARCHIVO MARCELO 2/Audios Marcelo/Cristal de Silencio Segunda Parte.mp3
+  id: cristal-de-silencio-lectura-2
+  title: Cristal de silencio (lectura, segunda parte)
+  kind: reading
+  texts: []
+  collection: Poesía sonora
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 2/Audios Marcelo/Duo de Violin y Mar.mp3
+  id: duo-del-violin-y-el-mar-casera
+  title: Duo del violín y el mar
+  kind: song
+  texts:
+    - duo-del-violin-y-el-mar
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 2/Audios Marcelo/El Albañil.mp3
+  id: el-albanil-casera
+  title: El albañil
+  kind: song
+  texts:
+    - el-albanil
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 2/Audios Marcelo/El arbol de la vida.mp3
+  id: el-arbol-de-la-vida-casera
+  title: El árbol de la vida
+  kind: song
+  texts:
+    - el-arbol-de-la-vida
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 2/Audios Marcelo/El mas Tierno Esplendor.mp3
+  id: el-mas-tierno-esplendor-casera
+  title: El más tierno esplendor
+  kind: song
+  texts:
+    - el-mas-tierno-esplendor
+  primary: true
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 2/Audios Marcelo/En nombre del amor.mp3
+  id: en-nombre-del-amor-casera
+  title: En nombre del amor
+  kind: song
+  texts:
+    - en-nombre-del-amor
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 2/Audios Marcelo/Juglar Amador.mp3
+  id: juglar-amador-casera
+  title: Juglar amador
+  kind: song
+  texts:
+    - juglar-amador
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+  review: Misma duración que «Navigari neccesse est»; revisar si el archivo está bien nombrado.
+- source: 000 ARCHIVO MARCELO 2/Audios Marcelo/Madre.mp3
+  id: madre-casera
+  title: Madre
+  kind: song
+  texts:
+    - madre
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 2/Audios Marcelo/Para verte.mp3
+  id: para-verte-casera
+  title: Para verte
+  kind: song
+  texts:
+    - para-verte
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 2/Audios Marcelo/Por el duro camino de la libertad.mp3
+  id: por-el-duro-camino-de-la-libertad-casera
+  title: Por el duro camino de la libertad
+  kind: song
+  texts:
+    - por-el-duro-camino-de-la-libertad
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 2/Audios Marcelo/Porque hoy me agredio la terrible vision (2).mp3
+  id: porque-hoy-me-agredio-la-terrible-vision-casera-2
+  title: Porque hoy me agredió la terrible visión
+  kind: song
+  texts:
+    - porque-hoy-me-agredio-la-terrible-vision
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+  notes: Segunda toma.
+- source: 000 ARCHIVO MARCELO 2/Audios Marcelo/Porque hoy me agredio la terrible vision.mp3
+  id: porque-hoy-me-agredio-la-terrible-vision-casera
+  title: Porque hoy me agredió la terrible visión
+  kind: song
+  texts:
+    - porque-hoy-me-agredio-la-terrible-vision
+  primary: true
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 2/Audios Marcelo/Prisionero del Amor.mp3
+  id: prisionero-del-amor-casera
+  title: Prisionero del amor
+  kind: song
+  texts:
+    - prisionero-del-amor
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 2/Audios Marcelo/Quiero decir que faltas.mp3
+  id: quiero-decir-que-faltas-casera
+  title: Quiero decir que faltas
+  kind: song
+  texts:
+    - quiero-decir-que-faltas
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 2/Audios Marcelo/Salva tu forma de ser.mp3
+  id: salva-tu-forma-de-ser-casera
+  title: Salva tu forma de ser
+  kind: song
+  texts:
+    - salva-tu-forma-de-ser
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 2/Audios Marcelo/Sangre de mi propia sangre.mp3
+  id: sangre-de-mi-propia-sangre-casera
+  title: Sangre de mi propia sangre
+  kind: song
+  texts:
+    - sangre-de-mi-propia-sangre
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 2/Audios Marcelo/Son tigres de papel.mp3
+  id: son-tigres-de-papel-casera
+  title: Son tigres de papel
+  kind: song
+  texts:
+    - son-tigres-de-papel
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 2/Audios Marcelo/Tu has nacido para ser mujer.mp3
+  id: tu-has-nacido-para-ser-mujer-casera
+  title: Tu has nacido para ser mujer
+  kind: song
+  texts:
+    - tu-has-nacido-para-ser-mujer
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 2/Audios Marcelo/Ya que la Vida Es Asi.mp3
+  id: ya-que-la-vida-es-asi-casera
+  title: Ya que la vida es así
+  kind: song
+  texts:
+    - ya-que-la-vida-es-asi
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 2/Audios Marcelo/Recitales y Tracks/TRACK008.mp3
+  id: track-008
+  title: Track 008
+  kind: song
+  texts: []
+  rights: pending
+  review: Procedencia, fecha y derechos por confirmar.
+- source: 000 ARCHIVO MARCELO 2/Videos Marcelo/Alcalde de la Cancion.mp4
+  id: alcalde-de-la-cancion-mp4
+  title: Alcalde de la canción
+  kind: song
+  texts:
+    - alcalde-de-la-cancion
+  rights: pending
+  review: Procedencia, fecha y derechos por confirmar.
+- source: 000 ARCHIVO MARCELO 3/Audios Marcelo/Arbol de fuego y de sangre con 1 2 3 al inicio.mp3
+  id: arbol-de-fuego-y-de-sangre-casera
+  title: Árbol de fuego y de sangre
+  kind: song
+  texts:
+    - arbol-de-fuego-y-de-sangre
+  primary: true
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+  notes: Toma con conteo («1, 2, 3») al inicio.
+- source: 000 ARCHIVO MARCELO 3/Audios Marcelo/Arbol de fuego y de sangre y Balada del amor imposible- Editar.mp3
+  id: arbol-de-fuego-y-balada-del-amor-imposible-casera
+  title: Árbol de fuego y de sangre / Balada del amor imposible
+  kind: song
+  texts:
+    - arbol-de-fuego-y-de-sangre
+    - balada-del-amor-imposible
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+  notes: Contiene dos canciones seguidas; el archivo original estaba marcado «Editar».
+- source: 000 ARCHIVO MARCELO 3/Audios Marcelo/Arbol que nace de ti.mp3
+  id: arbol-que-nace-de-ti-casera
+  title: Árbol que nace de ti
+  kind: song
+  texts:
+    - arbol-que-nace-de-ti
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 3/Audios Marcelo/Balada de la Doncella, el Ruiseñor y La Fuente.mp3
+  id: balada-de-la-doncella-el-ruisenor-y-la-fuente-casera
+  title: Balada de la doncella, el ruiseñor y la fuente
+  kind: song
+  texts:
+    - balada-de-la-doncella-el-ruisenor-y-la-fuente
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 3/Audios Marcelo/Barcos Lejanos Sagradas Siembras.mp3
+  id: barcos-lejanos-sagradas-siembras-casera
+  title: Barcos lejanos, sagradas siembras
+  kind: song
+  texts:
+    - barcos-lejanos-sagradas-siembras
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 3/Audios Marcelo/Cabaleros Andantes.mp3
+  id: caballeros-andantes-casera
+  title: Caballeros andantes
+  kind: song
+  texts:
+    - caballeros-andantes
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 3/Audios Marcelo/Cancion Serena para Esposos Hechizados.mp3
+  id: cancion-serena-para-esposos-hechizados-casera
+  title: Canción serena para esposos hechizados
+  kind: song
+  texts:
+    - cancion-serena-para-esposos-hechizados
+  primary: true
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 3/Audios Marcelo/El Principito.mp3
+  id: el-principito-casera
+  title: El Principito
+  kind: song
+  texts:
+    - el-principito
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 3/Audios Marcelo/El Reino Verdadero con 1 2 3 al inicio.mp3
+  id: el-reino-verdadero-casera-conteo
+  title: El reino verdadero
+  kind: song
+  texts:
+    - el-reino-verdadero
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+  notes: Toma con conteo («1, 2, 3») al inicio.
+- source: 000 ARCHIVO MARCELO 3/Audios Marcelo/El canto que va brotando desde arbol del amor.mp3
+  id: el-canto-que-va-brotando-desde-el-arbol-del-amor-casera
+  title: El canto que va brotando desde el árbol del amor
+  kind: song
+  texts:
+    - el-canto-que-va-brotando-desde-el-arbol-del-amor
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 3/Audios Marcelo/En blancos nichos de cal.mp3
+  id: en-blancos-nichos-de-cal-casera
+  title: En blancos nichos de cal
+  kind: song
+  texts:
+    - en-blancos-nichos-de-cal
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 3/Audios Marcelo/En la melodia de un viejo cantor.mp3
+  id: en-la-melodia-de-un-viejo-cantor-casera
+  title: En la melodía de un viejo cantor
+  kind: song
+  texts:
+    - en-la-melodia-de-un-viejo-cantor
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 3/Audios Marcelo/Hacia Un Pais de Agua Fresca.mp3
+  id: hacia-un-pais-de-agua-fresca-casera
+  title: Hacia un país de agua fresca
+  kind: song
+  texts:
+    - hacia-un-pais-de-agua-fresca
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 3/Audios Marcelo/La Casa de la Libertad.mp3
+  id: la-casa-de-la-libertad-casera
+  title: La Casa de la Libertad
+  kind: song
+  texts:
+    - la-casa-de-la-libertad
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 3/Audios Marcelo/La almohada guardaba su olor a jazmin.mp3
+  id: la-almohada-guardaba-su-olor-a-jazmin-casera
+  title: La almohada guardaba su olor a jazmín
+  kind: song
+  texts:
+    - la-almohada-guardaba-su-olor-a-jazmin
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 3/Audios Marcelo/Mis Hermanos.mp3
+  id: mis-hermanos-casera
+  title: Mis hermanos
+  kind: song
+  texts:
+    - mis-hermanos
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 3/Audios Marcelo/Mujer.mp3
+  id: mujer-casera
+  title: Mujer
+  kind: song
+  texts:
+    - mujer
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 3/Audios Marcelo/Niñez.mp3
+  id: ninez-casera
+  title: Niñez
+  kind: song
+  texts: []
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+  review: No hay un texto con este título en el Tomo I; ¿corresponde a otra canción?
+- source: 000 ARCHIVO MARCELO 3/Audios Marcelo/Nuestra Señora de La Paz.mp3
+  id: nuestra-senora-de-la-paz-casera
+  title: Nuestra Señora de La Paz
+  kind: song
+  texts:
+    - nuestra-senora-de-la-paz
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 3/Audios Marcelo/Persistire.mp3
+  id: persistire-casera
+  title: Persistiré
+  kind: song
+  texts:
+    - persistire
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 3/Audios Marcelo/Sombra de Hitler.mp3
+  id: sombra-de-hitler-casera
+  title: Sombra de Hitler
+  kind: song
+  texts:
+    - sombra-de-hitler
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 3/Audios Marcelo/Talisman de Viento.mp3
+  id: talisman-de-viento-lectura
+  title: Talismán de viento (lectura)
+  kind: reading
+  texts: []
+  collection: Poesía sonora
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 3/Audios Marcelo/Recitales y Tracks/Inauguracion del Espacio Portales en La Paz.mp3
+  id: inauguracion-espacio-portales
+  title: Inauguración del Espacio Portales en La Paz
+  kind: recital
+  texts: []
+  collection: Recitales
+  venue: Espacio Portales, La Paz
+  rights: cleared
+  review: Fecha por confirmar.
+- source: 000 ARCHIVO MARCELO 3/Audios Marcelo/Recitales y Tracks/TRACK017.mp3
+  id: track-017
+  title: Track 017
+  kind: song
+  texts: []
+  rights: pending
+  review: Procedencia, fecha y derechos por confirmar.
+- source: 000 ARCHIVO MARCELO 3/Audios Marcelo/Recitales y Tracks/Talisman de Viento 1986.mp3
+  id: talisman-de-viento-lectura-1986
+  title: Talismán de viento (lectura, 1986)
+  kind: reading
+  texts: []
+  collection: Poesía sonora
+  date: '1986'
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 3/Videos Marcelo/America.mp4
+  id: america-mp4
+  title: América
+  kind: song
+  texts:
+    - america
+  rights: pending
+  review: Procedencia, fecha y derechos por confirmar.
+- source: 000 ARCHIVO MARCELO 4/Audios Marcelo/Amasar el viejo pan con nueva harina.mp3
+  id: amasar-el-viejo-pan-con-nueva-harina-casera
+  title: Amasar el viejo pan con nueva harina
+  kind: song
+  texts:
+    - amasar-el-viejo-pan-con-nueva-harina
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 4/Audios Marcelo/America.mp3
+  id: america-casera
+  title: América
+  kind: song
+  texts:
+    - america
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 4/Audios Marcelo/Ayer Nomas.mp3
+  id: ayer-nomas-casera
+  title: Ayer nomas
+  kind: song
+  texts:
+    - ayer-nomas
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 4/Audios Marcelo/Balada del Amor Imposible.mp3
+  id: balada-del-amor-imposible-casera
+  title: Balada del amor imposible
+  kind: song
+  texts:
+    - balada-del-amor-imposible
+  primary: true
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 4/Audios Marcelo/Carta a Rafael.mp3
+  id: carta-a-rafael-casera
+  title: Carta a Rafael
+  kind: song
+  texts:
+    - carta-a-rafael
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 4/Audios Marcelo/Cristal de Silencio Primera Parte.mp3
+  id: cristal-de-silencio-lectura-1
+  title: Cristal de silencio (lectura, primera parte)
+  kind: reading
+  texts: []
+  collection: Poesía sonora
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 4/Audios Marcelo/El Cacique de La Soledad.mp3
+  id: el-cacique-de-la-soledad-casera
+  title: El cacique de la soledad
+  kind: song
+  texts:
+    - el-cacique-de-la-soledad
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 4/Audios Marcelo/El Mas Tierno Esplendor Acustico y se Corta.mp3
+  id: el-mas-tierno-esplendor-acustica-incompleta
+  title: El más tierno esplendor (versión acústica, incompleta)
+  kind: song
+  texts:
+    - el-mas-tierno-esplendor
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+  notes: La grabación se corta antes del final.
+- source: 000 ARCHIVO MARCELO 4/Audios Marcelo/El Recinto Sagrado de tu Soledad.mp3
+  id: el-recinto-sagrado-de-tu-soledad-casera
+  title: El recinto sagrado de tu soledad
+  kind: song
+  texts:
+    - el-recinto-sagrado-de-tu-soledad
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 4/Audios Marcelo/El Reino Verdadero.mp3
+  id: el-reino-verdadero-casera
+  title: El reino verdadero
+  kind: song
+  texts:
+    - el-reino-verdadero
+  primary: true
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 4/Audios Marcelo/En todas las Trincheras del Amor.mp3
+  id: en-todas-las-trincheras-del-amor-casera
+  title: En todas las trincheras del amor
+  kind: song
+  texts:
+    - en-todas-las-trincheras-del-amor
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 4/Audios Marcelo/Fuego Desvelado.mp3
+  id: fuego-desvelado-lectura
+  title: Fuego desvelado (lectura)
+  kind: reading
+  texts: []
+  collection: Poesía sonora
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 4/Audios Marcelo/Hasta la muerte.mp3
+  id: hasta-la-muerte-casera
+  title: Hasta la muerte
+  kind: song
+  texts:
+    - hasta-la-muerte
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 4/Audios Marcelo/La emperatriz del amor.mp3
+  id: la-emperatriz-del-amor-casera
+  title: La emperatriz del amor
+  kind: song
+  texts:
+    - la-emperatriz-del-amor
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 4/Audios Marcelo/La enamorada del sol.mp3
+  id: la-enamorada-del-sol-casera
+  title: La enamorada del sol
+  kind: song
+  texts:
+    - la-enamorada-del-sol
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 4/Audios Marcelo/Los decretos del amor.mp3
+  id: los-decretos-del-amor-casera
+  title: Los decretos del amor
+  kind: song
+  texts:
+    - los-decretos-del-amor
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 4/Audios Marcelo/Naturaleza muerte con juglar.mp3
+  id: naturaleza-muerta-con-juglar-casera
+  title: Naturaleza muerta con juglar
+  kind: song
+  texts:
+    - naturaleza-muerta-con-juglar
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 4/Audios Marcelo/Navigari Neccesse Est Vivire non Neccesse.mp3
+  id: navigari-neccesse-est-vivire-non-neccesse-casera
+  title: Navigari neccesse est, vivire non neccesse
+  kind: song
+  texts:
+    - navigari-neccesse-est-vivire-non-neccesse
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+  review: Misma duración que «Juglar amador»; revisar si el archivo está bien nombrado.
+- source: 000 ARCHIVO MARCELO 4/Audios Marcelo/No pudo ser.mp3
+  id: no-pudo-ser-casera
+  title: No pudo ser
+  kind: song
+  texts:
+    - no-pudo-ser
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 4/Audios Marcelo/Plan de viaje.mp3
+  id: plan-de-viaje-casera
+  title: Plan de viaje
+  kind: song
+  texts:
+    - plan-de-viaje
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 4/Audios Marcelo/Sangre y Sueño.mp3
+  id: sangre-y-sueno-casera
+  title: Sangre y sueño
+  kind: song
+  texts:
+    - sangre-y-sueno-cancion
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 4/Audios Marcelo/Soy una lagrima oscura que va rodando hacia el mar.mp3
+  id: soy-una-lagrima-oscura-que-va-rodando-hacia-el-mar-casera
+  title: Soy una lágrima oscura que va rodando hacia el mar
+  kind: song
+  texts:
+    - soy-una-lagrima-oscura-que-va-rodando-hacia-el-mar
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 4/Audios Marcelo/Tengo miedo del encuentro con mi propio corazon.mp3
+  id: tengo-miedo-del-encuentro-con-mi-propio-corazon-casera
+  title: Tengo miedo del encuentro con mi propio corazón
+  kind: song
+  texts:
+    - tengo-miedo-del-encuentro-con-mi-propio-corazon
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 4/Audios Marcelo/Teoria de tu nombre.mp3
+  id: teoria-de-tu-nombre-casera
+  title: Teoría de tu nombre
+  kind: song
+  texts:
+    - teoria-de-tu-nombre
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 4/Audios Marcelo/Todo y Siempre.mp3
+  id: todo-y-siempre-casera
+  title: Todo y siempre
+  kind: song
+  texts:
+    - todo-y-siempre
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 4/Audios Marcelo/Tristeza a orillas del mar.mp3
+  id: tristeza-a-orillas-del-mar-casera
+  title: Tristeza a orillas del mar
+  kind: song
+  texts:
+    - tristeza-a-orillas-del-mar
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 4/Audios Marcelo/Una simple declaracion de amor.mp3
+  id: una-simple-declaracion-de-amor-casera
+  title: Una simple declaración de amor
+  kind: song
+  texts:
+    - una-simple-declaracion-de-amor
+  collection: Grabación casera de Sangre y Sueño, voz y guitarra (1993–1995)
+  date: 1993/1995
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 4/Audios Marcelo/Recitales y Tracks/Primer Recital Goethe Institut 1981.mp3
+  id: recital-goethe-institut-1981
+  title: Primer recital, Goethe-Institut
+  kind: recital
+  texts: []
+  collection: Recitales
+  date: '1981'
+  venue: Goethe-Institut, La Paz
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 4/Audios Marcelo/Recitales y Tracks/Segundo Recital Alianza Francesa 1981.mp3
+  id: recital-alianza-francesa-1981
+  title: Segundo recital, Alianza Francesa
+  kind: recital
+  texts: []
+  collection: Recitales
+  date: '1981'
+  venue: Alianza Francesa, La Paz
+  rights: cleared
+- source: 000 ARCHIVO MARCELO 4/Audios Marcelo/Recitales y Tracks/TRACK111.mp3
+  id: track-111
+  title: Track 111
+  kind: song
+  texts: []
+  rights: pending
+  review: Procedencia, fecha y derechos por confirmar.
+- source: 000 ARCHIVO MARCELO 4/Videos Marcelo/Amasar el viejo pan con nueva harina.mp4
+  id: amasar-el-viejo-pan-con-nueva-harina-mp4
+  title: Amasar el viejo pan con nueva harina
+  kind: song
+  texts:
+    - amasar-el-viejo-pan-con-nueva-harina
+  rights: pending
+  review: Procedencia, fecha y derechos por confirmar.
