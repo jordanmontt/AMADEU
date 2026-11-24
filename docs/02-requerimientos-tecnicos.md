@@ -57,7 +57,7 @@
 - **RT-11. Identidad permanente.** Cada entrada tiene un `id` que **nunca cambia** y no depende del título ni del orden (RF-58). Las relaciones entre colecciones usan siempre `id`, nunca el título ni el slug.
   - Las entradas nuevas creadas en el admin reciben un ID corto generado automáticamente.
   - La carga inicial usa IDs legibles con prefijo, por ejemplo `sys-t-0012` para un texto de *Sangre y Sueño*.
-- **RT-12. Slug separado del ID.** El slug de la URL se deriva del título y puede cambiar. Ver §7.2 para las redirecciones.
+- **RT-12. Slug separado del ID.** El slug de la URL se deriva del título y puede cambiar. El enlace estable es `/id/<id>/` (ver §7.2).
 - **RT-13. Orden explícito.** Las secciones y los textos tienen un campo `order` editable. Nunca se ordena alfabéticamente por defecto.
 - **RT-14. Nombres en inglés.** Los campos y las carpetas van en inglés; las etiquetas que ve el editor en el admin van en español.
 
@@ -73,8 +73,7 @@ src/content/
 ├── people/       persona (YAML)     — créditos (músicos, ingenieros, editores)
 └── pages/        páginas (Markdown) — biografía, presentación, créditos del sitio
 src/data/
-├── timeline.yml  cronología
-└── slug-history.json  historial de slugs para redirecciones (generado)
+└── timeline.yml  cronología
 ```
 
 Campos principales. `ref(x)` es una referencia por `id` a la colección `x` y `[]` indica una lista.
@@ -194,20 +193,24 @@ Cada ficha incluye además metadatos `schema.org` en JSON-LD (`CreativeWork`, `M
 | `/buscar/` | Buscador |
 | `/admin/` | Panel de administración (sin indexar) |
 
-Las obras usan su propio slug en la raíz (`/<slug-obra>/`), así que las obras futuras siguen el mismo patrón.
+**Obras en la raíz** ([decisión 0038](decisiones/0038-obras-en-la-raiz.md)): cada obra usa su propio slug directamente después del dominio (`/<slug-obra>/`), no bajo `/obras/`. Las obras futuras siguen el mismo patrón. Por eso:
 
-### 7.2 Redirecciones automáticas (RT-12, RF-58)
+- **RT-15.** Los slugs de obra **no pueden coincidir** con las rutas reservadas del sitio: `obras`, `escuchar`, `galeria`, `leer`, `videos`, `marcelo`, `buscar`, `admin`, `id`. La CI rechaza la publicación si hay coincidencia.
 
-1. En cada compilación, un script compara el `slug` actual de cada `id` con `src/data/slug-history.json`.
-2. Si cambió, agrega el slug anterior al historial. La Action guarda ese cambio con un commit automático.
-3. A partir del historial genera el archivo `_redirects` de Cloudflare Pages (301 del slug viejo al nuevo).
-4. Además existe la ruta permanente `/id/<id>/`, que redirige siempre a la URL actual de la pieza. Es la forma de citar en documentos.
+### 7.2 Enlaces permanentes (RT-12, RF-58)
+
+[Decisión 0037](decisiones/0037-enlace-permanente-por-id.md), que reemplaza el historial de slugs de la decisión 0022.
+
+- El slug de una pieza se deriva de su título y **puede cambiar**. Si cambia, la URL anterior deja de existir; **no** se guarda historial de slugs.
+- Para citar y enlazar de forma estable existe la ruta permanente **`/id/<id>/`**, que siempre lleva a la URL actual de la pieza. En cada compilación se genera el archivo `_redirects` de Cloudflare Pages con una línea por pieza (`/id/<id>/ → URL actual`, 302), a partir del contenido actual, sin historial ni commits automáticos.
+- La ficha de cada pieza muestra su enlace permanente en «cómo citar».
+- Si más adelante hace falta conservar URLs antiguas, se puede agregar un historial de slugs sin rehacer nada.
 
 ### 7.3 QR
 
-- Destino: `https://marcelodeurioste.org/sangre-y-sueno/?ref=qr`, con el dominio por confirmar.
+- Destino previsto: `https://marcelodeurioste.org/sangre-y-sueno/?ref=qr`, con el dominio por confirmar.
 - La ruta `/sangre-y-sueno/` se considera **contrato permanente** (RF-61).
-- El QR se genera en vectorial (SVG/PDF) para la imprenta, con corrección de errores nivel M o superior.
+- **El QR se genera solo cuando el desarrollador lo solicite.** Cuando llegue ese momento: formato vectorial (SVG/PDF) para la imprenta, con corrección de errores nivel M o superior.
 
 ## 8. PWA, rendimiento, accesibilidad, idiomas
 
@@ -229,15 +232,15 @@ Las obras usan su propio slug en la raíz (`/<slug-obra>/`), así que las obras 
 
 - **RT-50. Pipeline en GitHub Actions** en cada push a `main`. Si cualquier paso falla, **no se publica** y el sitio anterior sigue en línea (RF-71). Los pasos:
   1. `astro check` (tipos) + validación de esquemas del contenido.
-  2. Comprobación de integridad: toda referencia por `id` existe; todo texto publicado tiene obra y sección válidas.
-  3. `astro build` + índice Pagefind + `_redirects`.
+  2. Comprobación de integridad: toda referencia por `id` existe; todo texto publicado tiene obra y sección válidas; ningún slug de obra usa una ruta reservada (RT-15).
+  3. `astro build` + índice Pagefind + `_redirects` de los enlaces `/id/<id>/`.
   4. Revisión de enlaces rotos internos. Las URLs de R2 se comprueban con `HEAD`.
   5. Despliegue a Cloudflare Pages.
 - **RT-51. Filtro de publicación:** se excluyen de la compilación las entradas con `rights` ≠ `cleared` o con obra en `draft`. Las obras `upcoming` solo muestran su tarjeta.
 - **RT-52. Entornos:**
   - **Prototipo:** `*.pages.dev` + `r2.dev`.
   - **Producción:** dominio de la Fundación + `media.` en R2. Las URLs de medios dependen de una variable de configuración (`PUBLIC_MEDIA_BASE_URL`), así que el cambio de dominio no toca el contenido.
-- **RT-53. Sin suite de pruebas pesada.** Se agregan pruebas unitarias solo para la lógica no trivial: redirecciones, ordenamiento y la cola del reproductor.
+- **RT-53. Sin suite de pruebas pesada.** Se agregan pruebas unitarias solo para la lógica no trivial: enlaces permanentes, ordenamiento y la cola del reproductor.
 
 ## 10. Carga inicial del contenido (RF-59)
 
@@ -276,7 +279,7 @@ Las credenciales y secretos (tokens de R2, de Cloudflare y del Worker de Additio
 
 - **RT-60.** Será el **mismo proyecto Astro** compilado con un filtro de obra (`BUILD_WORK=sangre-y-sueno`) que incluye solo esa obra y sus piezas relacionadas, empaquetado con **Capacitor** como app Android.
 - **RT-61.** Los textos, fichas e imágenes van **dentro** de la app para funcionar sin conexión. El audio se sigue sirviendo desde R2; la descarga sin conexión se evaluará entonces.
-- **RT-62.** Para no cerrar esa puerta, la v1 evita APIs que solo funcionan en un servidor web: sin funciones del servidor en el sitio público y con rutas relativas a una base configurable.
+- **RT-62.** Para no cerrar esa puerta, la v1 evita APIs que solo funcionan en un servidor web: sin funciones del servidor en el sitio público y con rutas relativas a una base configurable. Los enlaces `/id/<id>/` dependen de `_redirects` de Cloudflare; en la app se resuelven dentro de la propia app.
 
 ## 14. Pendientes técnicos a verificar en la implementación
 

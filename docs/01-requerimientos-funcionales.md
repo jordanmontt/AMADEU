@@ -126,7 +126,7 @@ Inicio
   - serie o colección, procedencia y créditos;
   - estado de derechos y licencia;
   - enlace al original de preservación, si existe;
-  - **cómo citar** la pieza.
+  - **cómo citar** la pieza, con su enlace permanente.
 - **RF-41.** Los campos siguen el estándar **Dublin Core** (ver RT, §4.3).
 
 ## 7. Experiencia
@@ -171,7 +171,7 @@ Inicio
   - cada texto tiene una **identidad permanente** que no depende de su título ni de su posición;
   - guarda sus **títulos alternativos** (el del Tomo I, el del disco y el de la grabación), que el buscador también encuentra;
   - su **orden** es explícito y editable;
-  - si cambia el título y con él la URL, la dirección anterior **redirige** automáticamente a la nueva.
+  - tiene un **enlace permanente** (`/id/<id>/`) que siempre lleva a su página actual aunque cambien el título y la URL. Ese es el enlace para citar; las URLs basadas en el título pueden cambiar.
 - **RF-59.** La carga inicial de *Sangre y Sueño* se hace de forma automatizada. Después, la Fundación completa y corrige las fichas desde el admin.
 
 ## 9. QR, medición y panel de administración

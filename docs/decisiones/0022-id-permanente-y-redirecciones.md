@@ -1,6 +1,6 @@
 # 0022. ID permanente, títulos alternativos, orden explícito y redirecciones
 
-- **Estado:** aceptada
+- **Estado:** aceptada; la parte de redirecciones fue reemplazada por la [0037](0037-enlace-permanente-por-id.md)
 - **Fecha:** 2026-11-24
 - **Requerimientos:** RF-58, RT-11 a RT-13, RT §7.2
 

@@ -28,7 +28,7 @@ Cada decisión de diseño se documenta en un archivo corto con cuatro partes: co
 | [0019](0019-cloudflare-pages-y-dominio.md) | Cloudflare Pages y dominio de la Fundación | aceptada |
 | [0020](0020-cuentas-a-nombre-de-la-fundacion.md) | Cuentas a nombre de la Fundación (excepto el repo, por ahora) | aceptada |
 | [0021](0021-texto-provisional-tomo-i.md) | Texto provisional del Tomo I hasta que exista el canónico | aceptada |
-| [0022](0022-id-permanente-y-redirecciones.md) | ID permanente, títulos alternativos, orden explícito y redirecciones | aceptada |
+| [0022](0022-id-permanente-y-redirecciones.md) | ID permanente, títulos alternativos, orden explícito y redirecciones | parcialmente reemplazada por 0037 |
 | [0023](0023-estructura-generica-de-obra.md) | Estructura genérica de obra: obra → secciones → textos | aceptada |
 | [0024](0024-carga-inicial-automatizada.md) | Carga inicial automatizada; la Fundación cura los datos | aceptada |
 | [0025](0025-goatcounter.md) | Estadísticas con GoatCounter | aceptada |
@@ -43,3 +43,5 @@ Cada decisión de diseño se documenta en un archivo corto con cuatro partes: co
 | [0034](0034-canciones-sin-grabacion.md) | Canciones sin grabación se muestran con una nota | aceptada |
 | [0035](0035-licencias.md) | Licencias: código MIT, contenido con todos los derechos reservados | aceptada |
 | [0036](0036-calidad-ci-minima.md) | Calidad mínima automatizada en CI | aceptada |
+| [0037](0037-enlace-permanente-por-id.md) | Enlace permanente por ID, sin historial de redirecciones | aceptada |
+| [0038](0038-obras-en-la-raiz.md) | Las obras viven en la raíz de la URL | aceptada |
