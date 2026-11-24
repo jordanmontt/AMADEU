@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './support/test';
 
 test.describe('navigation through a work', () => {
   test('the home page lists published works and announces upcoming ones', async ({ page }) => {
