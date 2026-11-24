@@ -53,3 +53,5 @@ Each design decision is recorded in a short file with context, decision, consequ
 | [0043](0043-architecture-documentation.md) | Architecture documented with arc42 and C4 (Mermaid) | Accepted |
 | [0044](0044-media-in-the-repository.md) | Images and audio live in this repository (no payment card) | Accepted |
 | [0045](0045-long-audio-recompressed-at-build.md) | Audio over 25 MiB is recompressed at build time (known limitation) | Accepted |
+| [0046](0046-pending-tasks-derived-from-content.md) | The Foundation's pending tasks are derived from the content | Accepted |
+| [0047](0047-initial-import.md) | Initial import from reviewable manifests, with initial rights statuses | Accepted |

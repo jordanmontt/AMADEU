@@ -70,7 +70,7 @@ flowchart TB
 | PWA layer | `@vite-pwa/astro` (Workbox) | Install, offline texts and search |
 | Admin | Sveltia CMS + Additions Worker | Form-based editing, image and audio upload into the repository |
 | Content store | Markdown/YAML in `src/content/` | The archive's data ("the repository is the database") |
-| Media | `src/content/media/images/`, `public/audio/` | Images (optimized by Astro at build) and audio (re-encoded at build when > 25 MiB, [ADR 0045](adr/0045-long-audio-recompressed-at-build.md)) |
+| Media | `src/content/media/images/`, `src/content/media/audio/` | Images (optimized by Astro at build) and audio (re-encoded at build when > 25 MiB, [ADR 0045](adr/0045-long-audio-recompressed-at-build.md)) |
 | Pipeline | GitHub Actions | Quality gate and deployment |
 
 ## 4. Components (C4 level 3, the static site)
@@ -85,6 +85,8 @@ flowchart TB
   catalog[src/lib/catalog.ts: Catalog read model]
   routes[src/lib/routes.ts: URLs]
   integrity[src/lib/content/integrity.ts: cross-entry rules]
+  tasks[src/lib/content/pending-tasks.ts: Foundation's pending tasks]
+  audio[src/data/audio.ts + src/pages/audio: publish audio, re-encode > 25 MiB]
   pages[src/pages/*: routes]
   components[src/components/*]
   i18n[src/i18n/es.ts: UI strings]
@@ -101,6 +103,9 @@ flowchart TB
   pages --> i18n
   components --> i18n
   files -. "content integrity tests" .-> integrity
+  loader --> tasks
+  pages --> tasks
+  pages --> audio
 ```
 
 Rules that keep the code testable and replaceable:
@@ -131,6 +136,8 @@ erDiagram
 - An entry's **id is its file name** and never changes. Relations store ids.
 - **Each relation is stored on one side only:** media point to texts; a panel points to its sheet. The `Catalog` derives the other direction, so the two sides can never disagree.
 - Rights (`cleared` / `pending` / `restricted`) live on texts, recordings, artworks and videos.
+- `review` (texts, recordings, artworks, videos) records what the Foundation still has to check; `notes` are permanent archival notes.
+- Media live next to the content: `media/audio/` (a recording stores the file name) and `media/images/` (an artwork stores a path relative to its file, resolved by Astro's `image()`).
 
 ## 5. Runtime views
 
@@ -164,7 +171,15 @@ At build time, `publishedCollections()` keeps only entries that may be public (R
 
 Relations to filtered-out entries stay in the data; the `Catalog` simply does not find them.
 
-### 5.3 Permanent links
+### 5.3 Pending tasks
+
+`/admin/pendientes/` is built from **all** content (published or not) by `pendingTasks()` ([ADR 0046](adr/0046-pending-tasks-derived-from-content.md)). Every task is a fact about the content (a `pending` rights status, a `review` note, a song with no recording…), so the list cannot drift from the archive: correcting the entry in the admin removes the task at the next publication.
+
+### 5.4 Audio publication
+
+`src/pages/audio/[file].ts` is a static endpoint with one path per **published** recording. At build time it reads the file from `media/audio/` and, through `audioPublishing()`, either copies it or re-encodes it to mono 64 kbps with ffmpeg when it exceeds Cloudflare Pages' 25 MiB limit ([ADR 0045](adr/0045-long-audio-recompressed-at-build.md)).
+
+### 5.5 Permanent links
 
 `/id/<id>/` pages are generated from `Catalog.permalinks()` as static redirect pages (`Astro.redirect` in static output produces a `meta refresh` page). This works on any static host and inside the future Android app. On Cloudflare, a `_redirects` file can be added later for an instant HTTP redirect.
 
@@ -172,7 +187,7 @@ Relations to filtered-out entries stay in the data; the `Catalog` simply does no
 
 | Environment | Site | Content and media |
 |---|---|---|
-| Local | `npm run dev` | `src/content/`, `public/audio/` |
+| Local | `npm run dev` | `src/content/` (with its `media/`) |
 | E2E | `npm run build:e2e` + `astro preview` | `tests/fixtures/content/` and its fixture media |
 | Prototype | `*.pages.dev` | from the repository |
 | Production | Foundation domain | from the repository |

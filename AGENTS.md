@@ -11,7 +11,7 @@ AMADEU is the static Astro 7 site (PWA) of the Marcelo de Urioste digital archiv
 - [docs/01-requerimientos-funcionales.md](docs/01-requerimientos-funcionales.md): functional requirements (`RF-…`, in Spanish).
 - [docs/adr/](docs/adr/README.md): decisions. A changed decision needs a new ADR that supersedes the old one; never delete or rewrite an accepted ADR.
 
-Source material (MP3s, TIFF scans, PDFs, inventory) lives **outside** the repository, in the parent folder. Never commit source masters (TIFF, WAV, full videos). Only web-sized images (`src/content/media/images/`, ≤ ~2400 px) and audio (`public/audio/`) belong in the repository ([ADR 0044](docs/adr/0044-media-in-the-repository.md)).
+Source material (MP3s, TIFF scans, PDFs, inventory) lives **outside** the repository, in the parent folder. Never commit source masters (TIFF, WAV, full videos). Only web-sized images (`src/content/media/images/`, ≤ ~2400 px) and audio (`src/content/media/audio/`) belong in the repository ([ADR 0044](docs/adr/0044-media-in-the-repository.md)).
 
 ## Rules
 

@@ -131,19 +131,20 @@ Datos útiles:
 
 La carpeta `Logos/` tiene 3 JPEG de WhatsApp (612 KB): la autocaricatura con sombrero de copa, la misma caricatura con el texto «CIC – Marcelo de Urioste – Centro de Investigación Cultural», y el retrato «Locura y arte». **No hay versión vectorial ni en alta resolución.**
 
-## 8. Pendientes de contenido
+## 8. Pendientes
+
+**Los pendientes sobre piezas del archivo** (derechos por confirmar, canciones sin grabación, relaciones dibujo–canción por confirmar, códigos de inventario, dudas como «Juglar Amador» frente a «Navigari», videos por subir a YouTube, textos provisionales) **ya no se listan aquí**. Se calculan a partir del contenido y se ven en la página **`/admin/pendientes/`** del sitio, que siempre está al día ([ADR 0046](../adr/0046-pending-tasks-derived-from-content.md)).
+
+Aquí quedan solo las tareas que no son datos de una pieza:
 
 | # | Pendiente | Responsable | Bloquea |
 |---|---|---|---|
 | 1 | Texto canónico de *Sangre y Sueño* | Editores | No (se usa el Tomo I provisional) |
 | 2 | Escaneo de la edición de 1981 para el facsímil | Fundación | No |
-| 3 | Autorizaciones: TVB/Bolivisión, Discolandia, Pro-Audio, Radio Cristal, Montgomery County y Plural | Fundación | Publicación de las piezas afectadas |
-| 4 | Audio de *Luna Andina*, *La clara melodía del amor* y *Lago Sagrado* (LP 1984) | Fundación | No (nota «no disponible») |
+| 3 | Gestionar las autorizaciones con TVB/Bolivisión, Discolandia, Pro-Audio, Radio Cristal, Montgomery County y Plural (las piezas afectadas aparecen en «Confirmar derechos») | Fundación | Publicación de las piezas afectadas |
+| 4 | Conseguir el audio del LP de 1984 (Discolandia) | Fundación | No |
 | 5 | Digitalizar el resto de *Los Caminos del Hombre* (≈ 35 de 50) | Fundación | No |
-| 6 | Escuchar «Juglar Amador» frente a «Navigari Neccesse Est» | Fundación | No |
-| 7 | Relacionar los códigos de inventario con los archivos de imagen | Fundación | No |
-| 8 | Confirmar las relaciones dibujo–canción de §3.2 | Fundación | No |
-| 9 | Logo en vectorial (vectorizar la caricatura) | Desarrollador / diseñador | Identidad visual final |
-| 10 | Comprar el dominio y crear las cuentas de la Fundación | Fundación + desarrollador | Paso a producción |
-| 11 | Confirmar la lista de obras «próximamente» | Fundación | No |
-| 12 | Subir los originales a Internet Archive | Fundación | No |
+| 6 | Logo en vectorial (vectorizar la caricatura) | Desarrollador / diseñador | Identidad visual final |
+| 7 | Comprar el dominio y crear las cuentas de la Fundación | Fundación + desarrollador | Paso a producción |
+| 8 | Confirmar la lista de obras «próximamente» | Fundación | No |
+| 9 | Subir los originales a Internet Archive | Fundación | No |

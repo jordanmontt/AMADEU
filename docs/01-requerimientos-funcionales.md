@@ -195,6 +195,10 @@ Inicio
 - **RF-69.** Permite **reordenar** secciones y textos.
 - **RF-70.** Lo que se guarda **se publica directamente**, en uno o dos minutos, sin paso de aprobación.
 - **RF-71.** Si una ficha tiene un error grave (falta un campo obligatorio o un enlace roto), la publicación se detiene y el sitio anterior sigue en línea.
+- **RF-72.** **Lista de pendientes de la Fundación** (`/admin/pendientes/`). Muestra todo lo que falta hacer en el archivo, agrupado y con un enlace para editar cada pieza: derechos por confirmar, dudas anotadas, canciones sin grabación, grabaciones sin canción, videos por subir a YouTube, textos provisionales e imágenes sin código de inventario.
+  - La lista **se calcula a partir del propio contenido** cada vez que se publica: es la única fuente de verdad. No hay una lista aparte que mantener; una tarea desaparece sola cuando se corrige la pieza ([ADR 0046](adr/0046-pending-tasks-derived-from-content.md)).
+  - Cada ficha tiene un campo **«Qué falta revisar»** para anotar dudas. Mientras tenga texto, la pieza aparece en la lista; al borrarlo, desaparece. Es distinto de las **notas**, que son información permanente de archivo.
+  - La página no aparece en el sitio público ni en los buscadores.
 
 ## 10. Aplicación Android (futuro)
 
@@ -204,7 +208,7 @@ Inicio
 
 ## 11. Pendientes de contenido
 
-Son tareas de la Fundación o de los editores, no decisiones de diseño. El detalle está en el [inventario](inventario/README.md).
+Son tareas de la Fundación o de los editores, no decisiones de diseño. Los pendientes sobre piezas concretas se ven en la lista de pendientes (RF-72); las demás tareas están en el [inventario](inventario/README.md).
 
 - El texto canónico de *Sangre y Sueño*, que está en elaboración.
 - El escaneo de un ejemplar de la edición de 1981, para el facsímil.

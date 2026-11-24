@@ -22,3 +22,7 @@ Project terms, one line each. Spanish words in parentheses are what the Foundati
 - **Canonical text** (texto canónico): the edited text of the commemorative edition, in preparation.
 - **Content integrity**: cross-entry rules (references exist, unique URLs, reserved routes) checked in CI.
 - **Fixture content**: the small content set in `tests/fixtures/content/` used by E2E tests.
+- **Review** (qué falta revisar): an optional field on texts, recordings, artworks and videos saying what still has to be checked. Listed among the pending tasks until removed.
+- **Notes** (notas): permanent archival notes about an item. Never a to-do.
+- **Pending tasks** (pendientes): what the Foundation still has to do, computed from the content and shown at `/admin/pendientes/`.
+- **Import manifest**: a versioned list in `scripts/import/data/` with every source file and the decisions about it, read by an import script.
