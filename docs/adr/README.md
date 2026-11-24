@@ -59,3 +59,4 @@ Each design decision is recorded in a short file with context, decision, consequ
 | [0049](0049-persistent-player-implementation.md) | Persistent player: client-side navigation, one custom element, data-attribute buttons | Accepted |
 | [0050](0050-trailing-slash-ignore.md) | URLs end in a slash by convention, not by the `trailingSlash` setting | Accepted |
 | [0051](0051-raster-layer-animations.md) | Drawing animations from raster layers cut from the scan | Accepted |
+| [0052](0052-service-worker-after-the-build.md) | Service worker generated with Workbox after the build and the search index | Accepted |

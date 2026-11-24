@@ -5,6 +5,8 @@
 export const es = {
   site: {
     name: 'Archivo Marcelo de Urioste',
+    /** Under the icon of the installed app, where space is short. */
+    shortName: 'Marcelo de Urioste',
     tagline: 'El regocijo de vivir — poesía, música y memoria',
     skipToContent: 'Saltar al contenido',
     mainNavigation: 'Principal',
@@ -86,6 +88,8 @@ export const es = {
           ? 'Agregada a la cola.'
           : `${String(count)} grabaciones agregadas a la cola.`,
     loadError: (title: string) => `No se pudo cargar «${title}».`,
+    offline: (title: string) =>
+      `«${title}» necesita conexión a internet: las grabaciones no se guardan para escuchar sin conexión.`,
     playWork: 'Escuchar toda la obra',
     playWorkSummary: (count: number, duration: string) =>
       `${String(count)} ${count === 1 ? 'grabación' : 'grabaciones'}, ${duration}`,

@@ -135,7 +135,11 @@ class PlayerElement extends HTMLElement {
     this.#audio.pause();
     const track = this.#queue.current();
     if (track !== undefined) {
-      this.#showStatus(es.player.loadError(track.title), { error: true });
+      // Audio is not kept offline (RF-54): say so rather than a vague failure.
+      const message = navigator.onLine
+        ? es.player.loadError(track.title)
+        : es.player.offline(track.title);
+      this.#showStatus(message, { error: true });
     }
     this.#renderState();
   }

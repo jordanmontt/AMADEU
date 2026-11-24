@@ -18,7 +18,7 @@ npm run dev                                       # http://localhost:4321
 | Command | What it does |
 |---|---|
 | `npm run dev` | Development server |
-| `npm run build` | Production build into `dist/` |
+| `npm run build` | Production build into `dist/`: Astro, then the Pagefind index, then the service worker |
 | `npm run check` | Type-check, including `.astro` files (`astro check`) |
 | `npm run lint` | ESLint (typescript-eslint strict, Astro, accessibility rules) |
 | `npm run format` / `format:check` | Prettier |
@@ -89,3 +89,5 @@ Animations are handcrafted ([ADR 0051](docs/adr/0051-raster-layer-animations.md)
 - **After changing `src/content.config.ts`, restart `astro dev`.** The dev server keeps a content cache; a stale one shows errors such as `LocalImageUsedWrongly` that a clean build does not have.
 - **`trailingSlash` is `'ignore'`, not `'always'`,** because `astro dev` answers 404 to `/audio/<file>.mp3` under `'always'` although the build serves it ([ADR 0050](docs/adr/0050-trailing-slash-ignore.md)). Links still end in `/`; build them with `src/lib/routes.ts`.
 - **Firefox skips axe's `target-size` rule on the player's open queue:** Playwright's Firefox crashes while that rule runs there (logged upstream). Chromium and WebKit still check it.
+- **The service worker exists only in a build** (`npm run build`, or `npm run build:e2e` for the tests). `astro dev` never registers it. To try offline reading, run `npm run build && npm run preview`, open the site once, then go offline in the browser's developer tools ([ADR 0052](docs/adr/0052-service-worker-after-the-build.md)).
+- **App icons and favicon** are generated from the logo scan outside the repository: `npx tsx scripts/pwa/icons.ts "<path to the logo>"`.

@@ -168,7 +168,7 @@ sequenceDiagram
   E->>G: commit content change on main
   G->>A: trigger CI
   A->>A: astro check, lint, unit + content integrity + component tests
-  A->>A: astro build (publication filter applied), Pagefind index
+  A->>A: astro build (publication filter applied), Pagefind index, service worker
   A->>A: E2E tests (Chromium, Firefox, WebKit) on the fixture build
   alt every step passed
     A->>P: deploy dist/
@@ -176,6 +176,8 @@ sequenceDiagram
     A-->>E: nothing published, previous site stays online
   end
 ```
+
+The service worker is generated last, so its precache includes the search index ([ADR 0052](adr/0052-service-worker-after-the-build.md)).
 
 ### 5.2 Publication filter
 

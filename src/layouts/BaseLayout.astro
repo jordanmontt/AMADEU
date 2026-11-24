@@ -1,14 +1,16 @@
 ---
 /**
- * Page shell: language, metadata, skip link (WCAG 2.4.1), header, footer and the persistent
- * audio player. Navigation between pages is client-side (Astro's ClientRouter), which keeps
- * the player sounding across pages (RF-47, ADR 0049).
+ * Page shell: language, metadata, app manifest, skip link (WCAG 2.4.1), header, footer, the
+ * persistent audio player and the service worker for offline reading (ADR 0052). Navigation
+ * between pages is client-side (Astro's ClientRouter), which keeps the player sounding
+ * across pages (RF-47, ADR 0049).
  */
 import { ClientRouter } from 'astro:transitions';
 import AudioPlayer from '../components/player/AudioPlayer.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import { es } from '../i18n/es';
+import { APP_BACKGROUND } from '../lib/pwa/manifest';
 import '../styles/base.css';
 
 interface Props {
@@ -30,7 +32,10 @@ const fullTitle = title === undefined ? es.site.name : `${title} · ${es.site.na
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content={APP_BACKGROUND} />
     <title>{fullTitle}</title>
     <ClientRouter />
   </head>
@@ -44,6 +49,13 @@ const fullTitle = title === undefined ? es.site.name : `${title} · ${es.site.na
     </main>
     <SiteFooter />
     <AudioPlayer />
+    <script>
+      // Offline reading after the first visit (RF-54, ADR 0052). The service worker exists only
+      // in a build (`npm run build`), not under `astro dev`.
+      if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+        void navigator.serviceWorker.register('/sw.js');
+      }
+    </script>
   </body>
 </html>
 
