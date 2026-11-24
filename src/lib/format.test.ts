@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatArchiveDate, formatDuration, stanzas } from './format';
+import { formatArchiveDate, formatDuration, formatTotalDuration, stanzas } from './format';
 
 describe('formatArchiveDate', () => {
   it('shows years, months, days and intervals the Spanish way', () => {
@@ -7,6 +7,18 @@ describe('formatArchiveDate', () => {
     expect(formatArchiveDate('1993-05')).toBe('05/1993');
     expect(formatArchiveDate('1981-06-12')).toBe('12/06/1981');
     expect(formatArchiveDate('1993/1995')).toBe('1993–1995');
+  });
+});
+
+describe('formatTotalDuration', () => {
+  it('rounds a long total to minutes, with hours from one hour', () => {
+    expect(formatTotalDuration(2040)).toBe('34 min');
+    expect(formatTotalDuration(7860)).toBe('2 h 11 min');
+    expect(formatTotalDuration(3610)).toBe('1 h');
+  });
+
+  it('never shows zero minutes for a short total', () => {
+    expect(formatTotalDuration(4)).toBe('1 min');
   });
 });
 

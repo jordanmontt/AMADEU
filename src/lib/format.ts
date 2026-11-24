@@ -19,6 +19,17 @@ export function formatDuration(totalSeconds: number): string {
   return hours > 0 ? `${hours}:${String(minutes).padStart(2, '0')}:${rest}` : `${minutes}:${rest}`;
 }
 
+/** A long total in words, rounded to minutes: `34 min`, `2 h 11 min`, `1 h`. */
+export function formatTotalDuration(totalSeconds: number): string {
+  const minutes = Math.max(Math.round(totalSeconds / 60), 1);
+  const hours = Math.floor(minutes / 60);
+  const rest = minutes % 60;
+  if (hours === 0) {
+    return `${String(rest)} min`;
+  }
+  return rest === 0 ? `${String(hours)} h` : `${String(hours)} h ${String(rest)} min`;
+}
+
 /** Splits a text body into stanzas, each a list of verses (see `verseBody` in the import). */
 export function stanzas(body: string): string[][] {
   return body

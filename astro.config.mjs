@@ -9,5 +9,7 @@ export default defineConfig({
   cacheDir: process.env.CONTENT_DIR
     ? './node_modules/.astro-content-fixtures'
     : './node_modules/.astro',
-  trailingSlash: 'always',
+  // Pages are built as folders and every link ends in "/". 'always' would be stricter, but
+  // `astro dev` then refuses `/audio/<file>.mp3`, which the build serves fine (ADR 0050).
+  trailingSlash: 'ignore',
 });

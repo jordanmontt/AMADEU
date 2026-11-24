@@ -144,6 +144,36 @@ describe('Catalog', () => {
     });
   });
 
+  describe('playlist of a work (RF-14)', () => {
+    it('plays the primary recording of each text that has one, in editorial order', () => {
+      const catalog = Catalog.published(
+        collections({
+          works: [sangreYSueno],
+          texts: [
+            aText('song-2', { work: 'sys', section: 'songs', order: 2 }),
+            aText('song-1', { work: 'sys', section: 'songs', order: 1, primaryRecording: 'lp' }),
+            aText('silent', { work: 'sys', section: 'songs', order: 3 }),
+            aText('tale', { work: 'sys', section: 'tales', order: 1 }),
+          ],
+          recordings: [
+            aRecording('home', { texts: ['song-1'], date: '1994' }),
+            aRecording('lp', { texts: ['song-1'], date: '1984' }),
+            aRecording('song-2-home', { texts: ['song-2'] }),
+            aRecording('tale-reading', { texts: ['tale'] }),
+          ],
+        }),
+      );
+
+      const playlist = catalog.playlistOf(sangreYSueno);
+
+      expect(playlist.map((item) => [item.text.id, item.recording.id])).toEqual([
+        ['tale', 'tale-reading'],
+        ['song-1', 'lp'],
+        ['song-2', 'song-2-home'],
+      ]);
+    });
+  });
+
   describe('artworks', () => {
     const song = aText('alcalde', {
       work: 'sys',

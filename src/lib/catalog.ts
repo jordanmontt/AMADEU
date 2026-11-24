@@ -28,6 +28,12 @@ export type RecordingVersions =
     };
 
 /** Recordings that share a collection (an LP, the home recordings, recitals…). */
+/** A text and the recording that plays it in a work's playlist. */
+export interface PlaylistItem {
+  readonly text: TextEntry;
+  readonly recording: RecordingEntry;
+}
+
 export interface RecordingGroup {
   /** The collection's name, or `undefined` for recordings that belong to none. */
   readonly collection: string | undefined;
@@ -130,6 +136,17 @@ export class Catalog {
       (text) =>
         this.recordingVersions(text).kind === 'available' && this.illustrationsOf(text).length > 0,
     );
+  }
+
+  /**
+   * The primary recording of every text of a work that has one, in editorial order: what
+   * "listen to the whole work" plays (RF-14).
+   */
+  playlistOf(work: WorkEntry): PlaylistItem[] {
+    return this.textsOf(work).flatMap((text) => {
+      const versions = this.recordingVersions(text);
+      return versions.kind === 'available' ? [{ text, recording: versions.primary }] : [];
+    });
   }
 
   /** The work a published text belongs to; publishing guarantees it is published too. */

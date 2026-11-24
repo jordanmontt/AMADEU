@@ -26,7 +26,7 @@ const total = groups.reduce((sum, group) => sum + group.tasks.length, 0);
     <ul>
       {group.tasks.map((task) => (
         <li>
-          <a href={adminEditPath(task.collection, task.id)}>
+          <a href={adminEditPath(task.collection, task.id)} data-astro-reload>
             {strings.collections[task.collection]}: {task.title}
           </a>
           {task.detail !== undefined && <p>{task.detail}</p>}

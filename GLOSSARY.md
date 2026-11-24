@@ -26,3 +26,6 @@ Project terms, one line each. Spanish words in parentheses are what the Foundati
 - **Notes** (notas): permanent archival notes about an item. Never a to-do.
 - **Pending tasks** (pendientes): what the Foundation still has to do, computed from the content and shown at `/admin/pendientes/`.
 - **Import manifest**: a versioned list in `scripts/import/data/` with every source file and the decisions about it, read by an import script.
+- **Track** (pista): what the player knows about a recording: id, title, collection, audio URL, duration and the page of its lyrics.
+- **Queue** (cola de reproducción): the ordered tracks the player plays; "Escuchar toda la obra" fills it with a work's primary recordings.
+- **Playlist of a work**: the primary recording of each of its texts, in editorial order (`Catalog.playlistOf`).

@@ -68,6 +68,7 @@ See [ADR 0040](docs/adr/0040-testing-strategy.md).
 - **Commits:** [Conventional Commits](https://www.conventionalcommits.org/) (`feat:`, `fix:`, `docs:`, `test:`, `refactor:`, `chore:`).
 - **Branches:** one branch and pull request per milestone; `main` is always deployable and protected by CI.
 - **Decisions:** a new design decision gets an ADR in `docs/adr/`; a changed decision gets a new ADR that supersedes the old one. Never delete an ADR.
+- **Browser scripts:** navigation is client-side (`<ClientRouter />`), so a page is often shown without a full load. Code that sets up a page listens to `astro:page-load`, never `DOMContentLoaded`; prefer custom elements and document-level listeners, which need no setup per page ([ADR 0049](docs/adr/0049-persistent-player-implementation.md)). Links that leave the Astro site (the admin) carry `data-astro-reload`.
 - **Dependencies:** TypeScript stays on the 6.0 line until `@astrojs/check` and `typescript-eslint` support a newer one ([ADR 0042](docs/adr/0042-code-quality-tooling.md)).
 
 ## Known tooling notes
@@ -77,3 +78,5 @@ See [ADR 0040](docs/adr/0040-testing-strategy.md).
 - **`src/jsx.d.ts`** narrows Astro's JSX element type so type-aware lint rules work in `.astro` files (documented by `eslint-plugin-astro`).
 - **`src/astro-modules.d.ts`** declares `.astro` modules for plain TypeScript tooling (`tsc`, typescript-eslint), which Astro 7 no longer types outside `astro check`. Component tests therefore do not type-check component props; `astro check` still checks every real usage. Remove the file once Astro ships an equivalent declaration.
 - **After changing `src/content.config.ts`, restart `astro dev`.** The dev server keeps a content cache; a stale one shows errors such as `LocalImageUsedWrongly` that a clean build does not have.
+- **`trailingSlash` is `'ignore'`, not `'always'`,** because `astro dev` answers 404 to `/audio/<file>.mp3` under `'always'` although the build serves it ([ADR 0050](docs/adr/0050-trailing-slash-ignore.md)). Links still end in `/`; build them with `src/lib/routes.ts`.
+- **Firefox skips axe's `target-size` rule on the player's open queue:** Playwright's Firefox crashes while that rule runs there (logged upstream). Chromium and WebKit still check it.
