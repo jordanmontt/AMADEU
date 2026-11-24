@@ -141,6 +141,12 @@ class PlayerElement extends HTMLElement {
   #onError(): void {
     this.#audio.pause();
     const track = this.#queue.current();
+    // The browser's reason (MediaError code 1 aborted, 2 network, 3 decode, 4 unsupported)
+    // goes to the console for whoever investigates; the visitor gets a plain message.
+    const { error } = this.#audio;
+    console.error(
+      `Audio error ${String(error?.code)} on ${this.#audio.currentSrc} at ${this.#audio.currentTime.toFixed(1)} s: ${error?.message ?? ''}`,
+    );
     if (track !== undefined) {
       this.#showStatus(es.player.loadError(track.title), { error: true });
     }

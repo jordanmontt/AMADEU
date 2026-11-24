@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './support/test';
 
 test.describe('site sections', () => {
   test('the main navigation marks the current section', async ({ page }) => {
