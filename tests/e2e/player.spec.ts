@@ -3,8 +3,12 @@ import AxeBuilder from '@axe-core/playwright';
 
 /**
  * The persistent player (RF-47, RF-48). Most fixture recordings last 60 s, so a test can
- * check the player while it sounds without racing the end of the track, even on a slow CI
- * runner. "Alcalde de la canción" lasts 2 s, to see the player move on to the next track.
+ * check the player while it sounds without racing the end of the track. "Alcalde de la
+ * canción" lasts 2 s, to see the player move on to the next track.
+ *
+ * Every fixture recording is a quiet tone encoded at 44.1 kHz, 32 kbps: Playwright's Firefox
+ * on the Linux CI runner refused to load a digitally silent MP3 and one at 22.05 kHz, 8 kbps
+ * ("No se pudo cargar" in the player), while it played this format.
  */
 
 function player(page: Page): Locator {
