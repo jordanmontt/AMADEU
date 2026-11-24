@@ -1,6 +1,6 @@
 # 0009. Heavy media outside GitHub: R2, YouTube, Internet Archive
 
-- **Status:** Accepted
+- **Status:** Accepted; the R2 part is superseded by [0044](0044-media-in-the-repository.md) (YouTube and Internet Archive still apply)
 - **Date:** 2026-11-24
 - **Requirements:** RT-20 to RT-26
 

@@ -19,7 +19,7 @@ La documentación para la Fundación está en español y la documentación técn
 
 - Sitio estático con [Astro](https://astro.build) e instalable como PWA, alojado en Cloudflare Pages.
 - Sin base de datos: el contenido son archivos Markdown/YAML de este repositorio y se edita con [Sveltia CMS](https://github.com/sveltia/sveltia-cms) en `/admin`.
-- Audio e imágenes en Cloudflare R2, videos en YouTube y originales de preservación en Internet Archive.
+- Audio e imágenes en este mismo repositorio (sin servicios de pago ni tarjeta), videos en YouTube y originales de preservación en Internet Archive.
 - El código está en inglés y la interfaz y las URLs en español.
 
 ## Licencias

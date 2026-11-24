@@ -4,7 +4,7 @@ Start with [docs/architecture.md](docs/architecture.md) (how it fits together), 
 
 ## Setup
 
-Requirements: Node 24 LTS (see `.nvmrc`) and npm.
+Requirements: Node 24 LTS (see `.nvmrc`), npm, and ffmpeg (the build re-encodes audio over 25 MiB, [ADR 0045](docs/adr/0045-long-audio-recompressed-at-build.md)).
 
 ```bash
 npm ci
@@ -33,7 +33,8 @@ npm run dev                                       # http://localhost:4321
 |---|---|
 | `src/lib/` | Framework-free domain logic. Never import `astro:*` here. Every module has a `*.test.ts` next to it. |
 | `src/data/catalog.ts` | The only reader of `astro:content`. |
-| `src/content/` | Real content, edited by the Foundation through the admin. One folder per collection; file name = entry id. |
+| `src/content/` | Real content, edited by the Foundation through the admin. One folder per collection; file name = entry id. Images in `src/content/media/images/`. |
+| `public/audio/` | Audio files, uploaded from the admin ([ADR 0044](docs/adr/0044-media-in-the-repository.md)). |
 | `src/content.config.ts` | Astro collections; schemas come from `src/lib/content/schemas.ts`. |
 | `src/pages/` | Routes. Pages ask the `Catalog` and pass plain data to components. |
 | `src/components/` | Presentational components, tested with the Astro Container API. |

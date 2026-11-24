@@ -16,7 +16,7 @@ Each design decision is recorded in a short file with context, decision, consequ
 | [0006](0006-android-single-book-no-lock.md) | The Android app contains one book and is not locked | Accepted |
 | [0007](0007-spanish-only-i18n-ready.md) | Spanish-only UI in v1, ready for English | Accepted |
 | [0008](0008-no-database.md) | No database: the repository is the database | Accepted |
-| [0009](0009-heavy-media-outside-github.md) | Heavy media outside GitHub: R2, YouTube, Internet Archive | Accepted |
+| [0009](0009-heavy-media-outside-github.md) | Heavy media outside GitHub: R2, YouTube, Internet Archive | Partially superseded |
 | [0010](0010-editorial-visual-identity.md) | Editorial, archival visual identity | Accepted |
 | [0011](0011-persistent-audio-player.md) | Persistent audio player with a queue | Accepted |
 | [0012](0012-song-versions.md) | One primary version and other versions per song | Accepted |
@@ -26,7 +26,7 @@ Each design decision is recorded in a short file with context, decision, consequ
 | [0016](0016-videos-own-section.md) | Own video section with every available video | Accepted |
 | [0017](0017-per-item-rights.md) | Per-item rights status; only cleared items are published | Accepted |
 | [0018](0018-astro-pwa-capacitor.md) | Astro + PWA; Android from the same project via Capacitor | Accepted |
-| [0019](0019-cloudflare-pages-and-domain.md) | Cloudflare Pages and a Foundation-owned domain | Accepted |
+| [0019](0019-cloudflare-pages-and-domain.md) | Cloudflare Pages and a Foundation-owned domain | Partially superseded |
 | [0020](0020-foundation-owned-accounts.md) | Accounts owned by the Foundation (except the repository, for now) | Accepted |
 | [0021](0021-provisional-text-tomo-i.md) | Provisional text from Tomo I until the canonical text exists | Accepted |
 | [0022](0022-permanent-id-and-redirects.md) | Permanent ID, alternative titles, explicit order and redirects | Partially superseded |
@@ -35,9 +35,9 @@ Each design decision is recorded in a short file with context, decision, consequ
 | [0025](0025-goatcounter.md) | Analytics with GoatCounter | Accepted |
 | [0026](0026-accessibility-wcag-aa.md) | Accessibility: WCAG 2.2 AA | Accepted |
 | [0027](0027-documentation-language.md) | Documentation in Spanish, code in English | Superseded |
-| [0028](0028-sveltia-cms.md) | Sveltia CMS as the admin panel | Accepted |
-| [0029](0029-admin-username-password.md) | Admin login with username and password (Sveltia CMS Additions) | Accepted |
-| [0030](0030-image-optimization-on-upload.md) | Images optimized on upload; masters on Internet Archive | Accepted |
+| [0028](0028-sveltia-cms.md) | Sveltia CMS as the admin panel | Partially superseded |
+| [0029](0029-admin-username-password.md) | Admin login with username and password (Sveltia CMS Additions) | Partially superseded |
+| [0030](0030-image-optimization-on-upload.md) | Images optimized on upload; masters on Internet Archive | Superseded |
 | [0031](0031-direct-publishing.md) | Direct publishing without approval | Accepted |
 | [0032](0032-single-qr-code.md) | A single QR code for the whole book | Accepted |
 | [0033](0033-pwa-offline-texts.md) | PWA: texts offline, media online | Accepted |
@@ -51,3 +51,5 @@ Each design decision is recorded in a short file with context, decision, consequ
 | [0041](0041-e2e-browsers.md) | E2E tests in Chromium, Firefox and WebKit | Accepted |
 | [0042](0042-code-quality-tooling.md) | Code quality tooling and conventions | Accepted |
 | [0043](0043-architecture-documentation.md) | Architecture documented with arc42 and C4 (Mermaid) | Accepted |
+| [0044](0044-media-in-the-repository.md) | Images and audio live in this repository (no payment card) | Accepted |
+| [0045](0045-long-audio-recompressed-at-build.md) | Audio over 25 MiB is recompressed at build time (known limitation) | Accepted |

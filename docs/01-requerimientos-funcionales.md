@@ -94,6 +94,7 @@ Inicio
 
 - **RF-24.** Lista todas las grabaciones con filtros por obra, tipo (canción, recital, lectura, entrevista), año y procedencia.
 - **RF-25.** Las grabaciones largas (recitales de 30 a 46 minutos, entrevistas) se pueden escuchar completas.
+  - **Limitación conocida:** el hosting gratuito no acepta archivos de más de 25 MB. Las grabaciones que lo superan (unas 8, de más de ~30 minutos) se publican recomprimidas en **mono a 64 kbps**, de forma automática. El archivo original en calidad completa se conserva en el repositorio y en Internet Archive. Una grabación de más de ~52 minutos tendría que dividirse. Mejora futura: partir los recitales en una pista por canción ([ADR 0045](adr/0045-long-audio-recompressed-at-build.md)).
 
 ### 5.5 Galería
 
@@ -189,7 +190,7 @@ Inicio
 
 - **RF-65.** Lo usa una persona **sin conocimientos de informática**. La interfaz está en español y entra con **usuario y contraseña**, sin cuenta de GitHub.
 - **RF-66.** Permite **crear y editar** obras, secciones, textos, grabaciones, dibujos y otras imágenes, videos, la biografía y la cronología, **incluidas obras nuevas además de *Sangre y Sueño***.
-- **RF-67.** Permite **subir audio e imágenes** directamente desde el formulario. Las imágenes se optimizan solas al subirlas.
+- **RF-67.** Permite **subir audio e imágenes** directamente desde el formulario, sin ayuda del desarrollador. Las imágenes se optimizan solas al publicarse. Todo se guarda en el repositorio del proyecto, sin servicios de pago ni tarjeta ([ADR 0044](adr/0044-media-in-the-repository.md)).
 - **RF-68.** Permite **relacionar** piezas: este dibujo ilustra esta canción, esta grabación es una versión de esta canción, este panel pertenece a esta hoja.
 - **RF-69.** Permite **reordenar** secciones y textos.
 - **RF-70.** Lo que se guarda **se publica directamente**, en uno o dos minutos, sin paso de aprobación.

@@ -6,9 +6,6 @@ dist-e2e/
 # dependencies
 node_modules/
 
-# local media (synced to Cloudflare R2, never committed)
-media/
-
 # test output
 coverage/
 test-results/

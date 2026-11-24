@@ -1,6 +1,6 @@
 # 0019. Cloudflare Pages and a Foundation-owned domain
 
-- **Status:** Accepted
+- **Status:** Accepted; the R2 part is superseded by [0044](0044-media-in-the-repository.md)
 - **Date:** 2026-11-24
 - **Requirements:** RT-52, RT §11
 

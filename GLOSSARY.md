@@ -22,4 +22,3 @@ Project terms, one line each. Spanish words in parentheses are what the Foundati
 - **Canonical text** (texto canónico): the edited text of the commemorative edition, in preparation.
 - **Content integrity**: cross-entry rules (references exist, unique URLs, reserved routes) checked in CI.
 - **Fixture content**: the small content set in `tests/fixtures/content/` used by E2E tests.
-- **Media base URL**: `PUBLIC_MEDIA_BASE_URL`, the prefix of every audio and image path.

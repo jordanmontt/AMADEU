@@ -1,6 +1,6 @@
 # 0028. Sveltia CMS as the admin panel
 
-- **Status:** Accepted
+- **Status:** Accepted; media upload to R2 is superseded by [0044](0044-media-in-the-repository.md) (uploads go to the repository)
 - **Date:** 2026-11-24
 - **Requirements:** RT-30 to RT-36
 

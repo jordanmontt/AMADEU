@@ -1,6 +1,6 @@
 # 0030. Images optimized on upload; masters on Internet Archive
 
-- **Status:** Accepted
+- **Status:** Superseded by [0044](0044-media-in-the-repository.md)
 - **Date:** 2026-11-24
 - **Requirements:** RF-67, RT-23
 

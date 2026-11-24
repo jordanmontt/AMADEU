@@ -17,7 +17,7 @@ See [architecture.md](architecture.md) for C4 diagrams. In short:
 
 - Static Astro site + PWA on **Cloudflare Pages**.
 - Content as files in this repository, edited with **Sveltia CMS** at `/admin` (login through **Sveltia CMS Additions** on a Cloudflare Worker).
-- Audio and web images on **Cloudflare R2**; video on **YouTube**; preservation masters on **Internet Archive**.
+- Images and audio **in this repository**, uploaded from the admin; images optimized by Astro at build time ([ADR 0044](adr/0044-media-in-the-repository.md)). Video on **YouTube**; preservation masters on **Internet Archive**. No service needs a payment card.
 - **GitHub Actions** validate, test, build and deploy on every change.
 - **GoatCounter** for cookie-free analytics.
 
@@ -34,10 +34,11 @@ See [architecture.md](architecture.md) for C4 diagrams. In short:
 | Search | **Pagefind** | Static index built after `astro build` (RF-35). |
 | Image viewer | PhotoSwipe (MIT) or an equivalent light library | Zoom and pan (RF-27). |
 | Animations | SVG + CSS / Web Animations API | No heavy libraries (RF-50). |
-| Image processing | `sharp` (bundles libvips) | Import scripts and CI; no system install. |
+| Image processing | Astro assets (`astro:assets`, `sharp`) | Responsive WebP at build time; `sharp` also used by import scripts. |
+| Audio processing | ffmpeg | Build step that re-encodes audio over 25 MiB ([ADR 0045](adr/0045-long-audio-recompressed-at-build.md)); `ffprobe` in import scripts. |
 | CMS | **Sveltia CMS** + **Sveltia CMS Additions** | See §6. |
 | Hosting | **Cloudflare Pages** | Free plan. |
-| Media | **Cloudflare R2** | See §5. |
+| Media | Files in this repository | See §5. |
 | Video | **YouTube** (Foundation channel) | `youtube-nocookie.com`, loaded on click. |
 | Preservation | **Internet Archive** | Original-quality masters. |
 | Analytics | **GoatCounter** | Cookie-free, public dashboard (RF-62). |
@@ -66,8 +67,9 @@ See [architecture.md](architecture.md) for C4 diagrams. In short:
 src/content/
 ├── works/        work (YAML)        — Sangre y Sueño, "coming soon" works
 ├── texts/        text (Markdown)    — poems and songs; the body is the text
-├── recordings/   recording (YAML)   — audio in R2
-├── artworks/     image (YAML)       — drawings, watercolours, paintings, photos, documents; image in R2
+├── recordings/   recording (YAML)   — audio file in public/audio/
+├── artworks/     image (YAML)       — drawings, watercolours, paintings, photos, documents
+├── media/images/ image files        — uploaded from the admin, optimized by Astro
 ├── videos/       video (YAML)       — YouTube
 ├── people/       person (YAML)      — credits (musicians, engineers, editors)
 └── pages/        page (Markdown)    — biography, presentation, site credits
@@ -94,7 +96,7 @@ Every entry also has its `id` (the file name), which is not a field.
 - Kind: `kind` (`song` | `recital` | `reading` | `interview` | `lecture` | `instrumental`).
 - Date and provenance: `date`, `collection` (e.g. "LP Discolandia 1984", "Grabación casera 1993–95", "Recital Goethe-Institut 1981"), `venue`.
 - Credits: `performers[]`, `credits[]` (`{ person: ref people, role }`).
-- Audio: `durationSeconds`, `audio` (path relative to the media base URL, e.g. `audio/cordillera-real-lp-1984.mp3`), `originalUrl` (Internet Archive).
+- Audio: `durationSeconds`, `audio` (site path of a file in `public/audio/`, e.g. `/audio/cordillera-real-lp-1984.mp3`), `originalUrl` (Internet Archive).
 - Other: `trackNumber`, `notes`, `rights`, `rightsHolder`, `license`.
 
 **`artworks`**:
@@ -102,7 +104,7 @@ Every entry also has its `id` (the file name), which is not a field.
 - Description: `kind` (`drawing` | `watercolor` | `painting` | `photo` | `document` | `poster`), `technique`, `dimensions`, `date`, `place`, `series`.
 - Sheets and panels: `sheet` (ref artworks: the sheet a panel belongs to). A sheet's panels are derived.
 - Relations: `texts[]` (ref texts it illustrates).
-- Image: `image` (WebP path relative to the media base URL), `width`, `height`, `originalUrl` (Internet Archive), `sourceFile` (file name in the digitized archive).
+- Image: `image` (file in `src/content/media/images/`, validated and processed by Astro's `image()` schema helper, which also provides width and height), `originalUrl` (Internet Archive), `sourceFile` (file name in the digitized archive).
 - Other: `rating` (1–3, from the inventory), `animated` (boolean), `rights`, `rightsHolder`, `license`, `alt` (alternative text, **mandatory**).
 
 **`videos`**:
@@ -137,29 +139,24 @@ Every record page also emits schema.org JSON-LD (`CreativeWork`, `MusicRecording
 
 ## 5. Media
 
-- **RT-20. GitHub holds only code and text.** GitHub blocks files over 100 MB and recommends repositories under 1 GB; Cloudflare Pages rejects files over 25 MiB, and recitals reach ~45 MB ([ADR 0009](adr/0009-heavy-media-outside-github.md)).
-- **RT-21. Audio on R2.** MP3s are served as they are (128 kbps, 44.1 kHz), without re-encoding. The whole archive's audio is ~400 MB, well within the 10 GB free tier, and R2 has no egress fees.
-- **RT-22. Images on R2.** A web version as **~2400 px WebP** (longest side), plus thumbnails. TIFF masters (11–342 MB) are **not** published.
-- **RT-23. Optimization on upload** (RF-67). Sveltia should convert the image in the browser to ~2400 px WebP before sending it to R2. **To verify:** that this transformation works with R2 storage. If not, a GitHub Action converts new unoptimized images in R2 with `sharp`.
+- **RT-20. Images and audio live in this repository** ([ADR 0044](adr/0044-media-in-the-repository.md)). No payment card is registered anywhere, and the editor must upload media on their own; Sveltia uploads into the repository it edits. Expected size after the full import: ≈ 500 MB (GitHub recommends < 1 GB and blocks files > 100 MB). Monitor it with `git count-objects -vH`; the migration path is a separate content repository read through `CONTENT_DIR`.
+- **RT-21. Audio** is stored in `public/audio/` and published as static files. Files ≤ 25 MiB are served unchanged (128 kbps, 44.1 kHz). **Known limitation:** files > 25 MiB (Cloudflare Pages' per-file limit) are re-encoded at build time to mono 64 kbps; recordings longer than ≈ 52 min cannot be published unsplit ([ADR 0045](adr/0045-long-audio-recompressed-at-build.md)).
+- **RT-22. Images** are stored in `src/content/media/images/` at no more than ~2400 px on the longest side (the import scripts downscale TIFF scans; the admin limits upload size). Astro generates responsive WebP sizes and intrinsic dimensions at build time. TIFF masters (11–342 MB) are **not** stored in the repository.
+- **RT-23. Upload limits in the admin** (RF-67): images ≤ 10 MB, audio ≤ 95 MB (under GitHub's 100 MB limit), with Spanish messages explaining the limit.
 - **RT-24. Videos on YouTube** (Foundation channel), embedded via `youtube-nocookie.com` behind a facade (thumbnail + button) that loads the iframe only on click (RF-31). Duplicates are removed before upload ("America Precolombina" exists 8 times).
 - **RT-25. Preservation on Internet Archive.** Masters (TIFF, master audio, video) go to a Foundation collection; the record stores `originalUrl`. In v1 the Foundation (or the developer during the initial import) uploads them outside the CMS.
-- **RT-26. R2 layout.** Bucket `amadeu-media` with prefixes `audio/`, `images/`, `thumbs/`. File names are normalized (lowercase, no accents, no spaces).
-- **RT-27. Media base URL.** Content stores media paths relative to a base URL given by `PUBLIC_MEDIA_BASE_URL`:
-  - **Local development:** a git-ignored `media/` folder served locally.
-  - **Prototype:** the R2 `r2.dev` URL (rate-limited; testing only).
-  - **Production:** a custom subdomain such as `media.marcelodeurioste.org`.
-
-  Switching environments never touches content.
+- **RT-26. File names** are normalized (lowercase, no accents, no spaces), by the import scripts and by Sveltia's slug settings.
+- **RT-27. Media paths are site-relative** (`/audio/…`, images resolved by Astro), so the site, its media and the future Android app always ship together and no media base URL is needed.
 
 ## 6. Admin panel
 
 - **RT-30. Sveltia CMS** served as a static SPA at `/admin` (`public/admin/index.html` + `config.yml`) ([ADR 0028](adr/0028-sveltia-cms.md)).
-- **RT-31. Authentication with Sveltia CMS Additions** (free Cloudflare Worker): the editor logs in with a **username and password** created by the administrator; no GitHub account. The administrator configures the R2 credentials once; the editor never sees them ([ADR 0029](adr/0029-admin-username-password.md)).
-- **RT-32. Direct upload to R2** via `media_libraries.cloudflare_r2`, with an R2 token scoped to the bucket (object read/write only) and a CORS policy allowing `GET`, `PUT`, `DELETE`, `HEAD` from the site origin, exposing `ETag`.
+- **RT-31. Authentication with Sveltia CMS Additions** (free Cloudflare Worker): the editor logs in with a **username and password** created by the administrator; no GitHub account. ([ADR 0029](adr/0029-admin-username-password.md)).
+- **RT-32. Uploads into the repository** with Sveltia's default (internal) media library: per-field folders `src/content/media/images/` (images) and `public/audio/` (audio), with the upload limits of RT-23.
 - **RT-33. Spanish UI** (`es`). Every field label, hint and message is in Spanish.
 - **RT-34. Relations** use Sveltia `relation` fields that store `id`s, and `reference()` in the Astro schemas.
 - **RT-35. Direct publishing** (RF-70). No editorial workflow: every save is a commit on `main` that triggers the pipeline ([ADR 0031](adr/0031-direct-publishing.md)).
-- **RT-36. Astro compatibility.** Follow Sveltia's official Astro guide: collection folders match the `glob()` loader `base`; `omit_empty_optional_fields: true`; R2 URLs validated as strings, not with `image()`.
+- **RT-36. Astro compatibility.** Follow Sveltia's official Astro guide: collection folders match the `glob()` loader `base`; `omit_empty_optional_fields: true`; artwork images use Astro's `image()` helper.
 
 ## 7. Routes and URLs
 
@@ -251,15 +248,15 @@ Rules:
 
 ### 9.4 Environments
 
-- **RT-58.** **Local:** `npm run dev` with `media/` served locally. **Prototype:** `*.pages.dev` + `r2.dev`. **Production:** the Foundation's domain + `media.` subdomain on R2. Media URLs depend only on `PUBLIC_MEDIA_BASE_URL` (RT-27).
+- **RT-58.** **Local:** `npm run dev`. **Prototype:** `*.pages.dev`. **Production:** the Foundation's domain. Media always ship with the site (RT-27).
 
 ## 10. Initial content import (RF-59)
 
 TypeScript scripts in `scripts/import/`, run once locally (`tsx`). Each script's pure logic (parsing, matching, normalization) lives in `src/lib/` or `scripts/lib/` and is unit-tested; the scripts themselves only do I/O.
 
 1. **Texts.** Extract text from the Tomo I PDF (pp. 11–98 songbook; pp. 103–239 poetic tales) with Ghostscript `txtwrite`, segment by poem, and generate `texts/*.md` with `provisional: true`, `edition` and `altTitles`.
-2. **Recordings.** Read the MP3s, get durations with `ffprobe`, normalize names, copy to `media/audio/` (later synced to R2), and generate `recordings/*.yml`. Link to texts by fuzzy title matching, then review by hand.
-3. **Images.** Convert TIFFs to ~2400 px WebP and thumbnails with `sharp`, copy to `media/images/` and `media/thumbs/`, and generate `artworks/*.yml` with `sourceFile`. Inventory codes and text relations are completed by hand or by the Foundation.
+2. **Recordings.** Read the MP3s, get durations with `ffprobe`, normalize names, copy to `public/audio/`, and generate `recordings/*.yml`. Link to texts by fuzzy title matching, then review by hand.
+3. **Images.** Convert TIFFs to ~2400 px WebP with `sharp` into `src/content/media/images/`, and generate `artworks/*.yml` with `sourceFile`. Inventory codes and text relations are completed by hand or by the Foundation.
 4. **Videos.** Generate `videos/*.yml` from the inventory; `youtubeId` is filled in after uploading.
 
 Scripts read the digitized archive from a configurable path outside the repository (`ARCHIVE_DIR`) and **never** commit media.
@@ -269,32 +266,30 @@ Scripts read the digitized archive from a configurable path outside the reposito
 | Service | Owner |
 |---|---|
 | GitHub repository | Developer (for now) |
-| Cloudflare (domain, Pages, R2, Workers) | Foundation (Foundation email); developer invited as administrator |
+| Cloudflare (domain, Pages, Workers) | Foundation (Foundation email); developer invited as administrator |
 | YouTube | Foundation |
 | Internet Archive | Foundation |
 | GoatCounter | Foundation |
 
-Credentials and secrets (R2 tokens, Cloudflare API token, Additions Worker secrets) live in GitHub Actions secrets and Cloudflare settings, **never** in the repository.
+Credentials and secrets (Cloudflare API token, Additions Worker secrets) live in GitHub Actions secrets and Cloudflare settings, **never** in the repository.
 
 ## 12. Estimated costs
 
 | Item | Cost |
 |---|---|
 | `.org` domain at Cloudflare Registrar | ≈ 10–15 USD/year |
-| Cloudflare Pages, Workers, R2 (≤ 10 GB) | 0 (R2 requires a payment method on file) |
+| Cloudflare Pages, Workers | 0 (no payment card registered) |
 | GitHub, GitHub Actions (public repository) | 0 |
 | YouTube, Internet Archive, GoatCounter | 0 |
-| R2 beyond 10 GB | 0.015 USD/GB-month |
 
 ## 13. Android app (future)
 
 - **RT-60.** The **same Astro project**, built with a work filter (`BUILD_WORK=sangre-y-sueno`) that includes only that work and its related items, packaged with **Capacitor** as an Android app ([ADR 0018](adr/0018-astro-pwa-capacitor.md)).
-- **RT-61.** Texts, records and images ship **inside** the app for offline use. Audio is still served from R2; offline audio is evaluated then.
+- **RT-61.** Texts, records and images ship **inside** the app for offline use. Audio ships with the app too (≈ 400 MB); whether to bundle it or stream it from the website is decided then.
 - **RT-62.** To keep that door open, v1 avoids server-only APIs: no server functions in the public site; paths relative to a configurable base. `/id/<id>/` links are static redirect pages, so they also work inside the app.
 
 ## 14. Open technical checks
 
-- Sveltia image transformation works with R2 storage (RT-23).
-- Sveltia CMS Additions works with shared R2 credentials.
+- Repository size after the full import stays well under 1 GB (RT-20).
 - `transition:persist` keeps audio playing without gaps on iOS Safari (covered by the WebKit E2E run).
 - `marcelodeurioste.org` is available.

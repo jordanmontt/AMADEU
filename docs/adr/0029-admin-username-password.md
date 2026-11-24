@@ -1,6 +1,6 @@
 # 0029. Admin login with username and password (Sveltia CMS Additions)
 
-- **Status:** Accepted
+- **Status:** Accepted; the R2 credentials part is superseded by [0044](0044-media-in-the-repository.md)
 - **Date:** 2026-11-24
 - **Requirements:** RF-65, RT-31
 
