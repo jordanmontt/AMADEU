@@ -22,7 +22,7 @@ Los menús aparecen en el idioma de tu navegador. Si salen en otro idioma, en **
 
 ## Lo que se guarda se publica
 
-Cuando guardas, el cambio aparece en el sitio **en uno o dos minutos**. No hay que aprobarlo.
+Cuando guardas, el cambio aparece en el sitio **en unos minutos (entre 5 y 10)**. No hay que aprobarlo.
 
 Antes de publicar, el sistema revisa que todo esté bien: fechas bien escritas, enlaces que apunten a piezas que existen, campos obligatorios llenos. Si algo está mal, **no se publica nada** y el sitio sigue como estaba. El error queda registrado para quien administra el sitio. Si tu cambio no aparece después de unos minutos, avísale.
 
