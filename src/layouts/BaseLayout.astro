@@ -13,6 +13,7 @@ import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import { es } from '../i18n/es';
 import { APP_BACKGROUND } from '../lib/pwa/manifest';
+import { goatCounter } from '../lib/analytics';
 import { type JsonLd, jsonLdScript } from '../lib/seo';
 import '../styles/base.css';
 
@@ -33,6 +34,10 @@ const fullTitle = title === undefined ? es.site.name : `${title} · ${es.site.na
 // Absolute addresses need the site's address (SITE_URL); without it they are left out.
 const site = Astro.site;
 const canonical = site === undefined ? undefined : new URL(Astro.url.pathname, site).href;
+// Visits are counted only once the Foundation's GoatCounter code is configured (RF-62).
+const counter = noindex
+  ? undefined
+  : goatCounter(import.meta.env.PUBLIC_GOATCOUNTER_CODE as string | undefined);
 const shared =
   site === undefined || image === undefined
     ? undefined
@@ -64,6 +69,15 @@ const shared =
       <script is:inline type="application/ld+json" set:html={jsonLdScript(jsonLd)} />
     )}
     <ClientRouter />
+    {counter !== undefined && (
+      <script
+        is:inline
+        async
+        src="https://gc.zgo.at/count.js"
+        data-goatcounter={counter.endpoint}
+        data-goatcounter-settings='{"no_onload": true}'
+      />
+    )}
   </head>
   <body>
     <a class="skip-link" href="#content">
@@ -73,8 +87,11 @@ const shared =
     <main id="content" data-pagefind-body={noindex ? undefined : ''}>
       <slot />
     </main>
-    <SiteFooter />
+    <SiteFooter statistics={counter?.dashboard} />
     <AudioPlayer />
+    {counter !== undefined && <script>
+      import '../components/analytics/page-views';
+    </script>}
     <script>
       // Offline reading after the first visit (RF-54, ADR 0052). The service worker exists only
       // in a build (`npm run build`), not under `astro dev`.

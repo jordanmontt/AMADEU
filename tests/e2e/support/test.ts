@@ -1,7 +1,8 @@
 /**
- * The `test` every E2E spec uses: Playwright's, plus the browser console of each page. When
- * a test fails, the console messages are attached to the report and printed in the CI log,
- * so a failure on a runner we cannot reproduce locally explains itself.
+ * The `test` every E2E spec uses: Playwright's, plus the browser console of each page,
+ * attached to the report and printed in the CI log when a test fails, so a failure on a
+ * runner we cannot reproduce locally explains itself. (Outside hosts are unreachable in every
+ * test: see the proxy in playwright.config.ts.)
  */
 import { test as base } from '@playwright/test';
 

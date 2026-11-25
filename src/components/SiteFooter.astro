@@ -1,10 +1,25 @@
 ---
+/**
+ * The footer: rights, the Foundation, and the public visit statistics once they exist (RF-62).
+ */
 import { es } from '../i18n/es';
+
+interface Props {
+  /** The public dashboard of visit statistics, when visits are counted. */
+  statistics?: string | undefined;
+}
+
+const { statistics } = Astro.props;
 ---
 
 <footer class="site-footer">
   <p>{es.site.footer}</p>
   <p>{es.site.footerFoundation}</p>
+  {statistics !== undefined && (
+    <p>
+      <a href={statistics}>{es.site.statistics}</a>
+    </p>
+  )}
 </footer>
 
 <style>
