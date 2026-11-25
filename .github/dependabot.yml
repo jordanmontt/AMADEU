@@ -1,0 +1,21 @@
+# Weekly dependency updates, grouped so they arrive as one pull request each; CI checks every
+# one before it can be merged. Sveltia CMS is loaded from a pinned URL in public/admin/ and is
+# raised by hand after reading its release notes (ADR 0055).
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      dependencies:
+        patterns: ['*']
+    ignore:
+      # Pinned to the 6.0 line until @astrojs/check and typescript-eslint support a newer one
+      # (ADR 0042).
+      - dependency-name: typescript
+        update-types: ['version-update:semver-major', 'version-update:semver-minor']
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly

@@ -62,3 +62,4 @@ Each design decision is recorded in a short file with context, decision, consequ
 | [0052](0052-service-worker-after-the-build.md) | Service worker generated with Workbox after the build and the search index | Accepted |
 | [0053](0053-filters-in-the-browser.md) | Filters of Escuchar, Galería and Leer run in the browser, kept in the URL | Accepted |
 | [0054](0054-animations-on-watercolour.md) | Animations on watercolours: a handwriting layer, washes and windows; "Cordillera Real" on the home page | Accepted |
+| [0056](0056-deployment-pipeline-and-hosting-files.md) | Deployment from CI, Cloudflare files generated at build, settings from the environment | Accepted |
