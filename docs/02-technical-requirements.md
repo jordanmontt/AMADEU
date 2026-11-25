@@ -236,6 +236,8 @@ Rules:
 - **RT-51. Rights filter.** Entries whose `rights` ≠ `cleared` or whose work is `draft` are excluded from the build; `upcoming` works only show their card. Covered by unit tests.
 - **RT-52. Coverage.** ≥ 90 % line and branch coverage for `src/lib/`, enforced in CI. No coverage target for components and pages; they are covered by component and E2E tests.
 - **RT-53. Every pull request includes tests** for the behaviour it adds or changes. Test names describe behaviour, not implementation.
+- **RT-53a. Requirement traceability.** Each functional requirement is named by at least one test title, or listed with its reason as not checked yet; a test enforces it (`tests/requirements/coverage.test.ts`).
+- **RT-53b. Phones and keyboard.** The main journeys also run on phone screens (Android and iPhone emulation), and the site is used with the keyboard alone in Chromium, Firefox and WebKit.
 
 ### 9.2 Code quality ([ADR 0042](adr/0042-code-quality-tooling.md))
 

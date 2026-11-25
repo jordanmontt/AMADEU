@@ -52,6 +52,11 @@ See [ADR 0040](docs/adr/0040-testing-strategy.md).
 - Tests are isolated: no network, no files outside the repository, no shared state. Build test data with `tests/support/builders.ts`, which parses through the real schemas.
 - E2E tests run against `tests/fixtures/content/`, never the real content. If a test needs a new case, add it to the fixtures and update `tests/fixtures/content/README.md`.
 - New logic goes into `src/lib/` so it can be unit-tested; keep pages and components thin.
+- **Name the requirement a test checks** in its title: "shows the critical notes (RF-21)". `tests/requirements/coverage.test.ts` fails if a requirement of `docs/01-requerimientos-funcionales.md` is named by no test and is not in its "not checked yet" list (with the reason). When you implement a listed requirement, tag its tests and remove it from the list.
+- **Check what the visitor gets, not the code's own state:** that the audio position moves forward, not only that the player says it plays; that the hand moves on screen, not only that it has an animation.
+- **E2E tests import `test` from `tests/e2e/support/test.ts`.** It attaches the browser console to the report when a test fails, which explains failures that only happen in CI.
+- **Phones:** tests tagged `@phone` also run on a Pixel 7 and an iPhone 14 screen (`phone-chromium`, `phone-webkit`); `tests/e2e/phone.spec.ts` checks the layout and accessibility at that size. Tag the main journeys of new features.
+- **Keyboard:** `tests/e2e/keyboard.spec.ts` uses the site with the keyboard alone. Safari moves focus to links only with Option+Tab, which the tests use in WebKit.
 
 ## Adding a content collection or field
 
@@ -66,10 +71,10 @@ See [ADR 0040](docs/adr/0040-testing-strategy.md).
 
 Animations are handcrafted ([ADR 0051](docs/adr/0051-raster-layer-animations.md)); "Alcalde de la canción" (`src/lib/animations/alcalde-de-la-cancion.ts`) is the example to follow.
 
-1. Trace the parts on the stored scan (`src/content/media/images/<id>.webp`). `npx tsx scripts/animations/grid.ts` draws a labelled pixel grid over a crop of it, to read the coordinates. Each part needs an outline, a pivot, a motion (`strum`, `sway`, `drift`) and the length of a cycle. Add repairs where moving a part would uncover bare paper, and writing bands over handwritten lines.
+1. Trace the parts on the stored scan (`src/content/media/images/<id>.webp`). `npx tsx scripts/animations/grid.ts` draws a labelled pixel grid over a crop of it, to read the coordinates. Each part needs an outline, a pivot, a motion (`strum`, `sway`, `drift`) and the length of a cycle; a part that slides near a painted frame also needs a `window` and a `feather`. Choose the `fill` (`paper` for ink on white, `wash` for watercolours, with a `paperSample` for tinted paper) and the `trigger` (`playing` or `always`). Add repairs where moving a part would uncover bare paper, and writing bands over handwritten lines ([ADR 0054](docs/adr/0054-animations-on-watercolour.md)).
 2. Add the description to `src/lib/animations/registry.ts`.
 3. Cut the layers: `npx tsx scripts/animations/build.ts`. Commit the files in `src/assets/animations/<id>/`.
-4. Check the parts at both ends of their motion in the browser, zoomed in. Look for leftover lines and for paper uncovered by the motion.
+4. Check the parts at both ends of their motion, zoomed in: compose the layers at the far end of the motion with `sharp`, or in the browser after emptying its cache (it keeps processed images by URL under `astro dev`). Look for leftover lines, paper uncovered by the motion, and seams where a sliding part was cut.
 
 ## Conventions
 

@@ -4,7 +4,12 @@ import { getViteConfig } from 'astro/config';
 // getViteConfig lets component tests render .astro files with the Astro Container API.
 export default getViteConfig({
   test: {
-    include: ['src/**/*.test.ts', 'tests/content/**/*.test.ts', 'tests/scripts/**/*.test.ts'],
+    include: [
+      'src/**/*.test.ts',
+      'tests/content/**/*.test.ts',
+      'tests/scripts/**/*.test.ts',
+      'tests/requirements/**/*.test.ts',
+    ],
     coverage: {
       provider: 'v8',
       include: ['src/lib/**/*.ts'],

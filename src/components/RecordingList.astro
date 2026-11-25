@@ -9,7 +9,9 @@
  * its title in the player.
  */
 import { es } from '../i18n/es';
+import type { Credit } from '../lib/catalog';
 import type { RecordingEntry } from '../lib/content/collections';
+import type { FacetValues } from '../lib/filters';
 import { formatArchiveDate, formatDuration } from '../lib/format';
 import { recordingTrack } from '../lib/player/track';
 import PlayerButton from './player/PlayerButton.astro';
@@ -26,6 +28,10 @@ interface Props {
   label: string;
   /** Links to the texts each recording is a version of, by recording id. */
   texts?: ReadonlyMap<string, readonly TextLink[]>;
+  /** Who did what on each recording, by recording id (RF-17). */
+  credits?: ReadonlyMap<string, readonly Credit[]>;
+  /** Each recording's values for the Escuchar filters, by recording id (RF-24). */
+  filterValues?: ReadonlyMap<string, FacetValues>;
   /** The page of the lyrics of every recording in the list (on a text page). */
   textHref?: string;
   /**
@@ -40,12 +46,24 @@ const {
   primaryId,
   label,
   texts = new Map<string, readonly TextLink[]>(),
+  credits = new Map<string, readonly Credit[]>(),
+  filterValues,
   textHref,
   continuous = false,
 } = Astro.props;
 const tracks = recordings.map((recording) =>
   recordingTrack(recording, textHref ?? texts.get(recording.id)?.[0]?.href),
 );
+
+/** Performers and credits in one line: "Marcelo de Urioste, voz y guitarra. Dirección musical: Ana Pérez." */
+function people(recording: RecordingEntry): string | undefined {
+  const { performers } = recording.data;
+  const parts = [
+    performers.length > 0 ? performers.join(', ') : undefined,
+    ...(credits.get(recording.id) ?? []).map(({ role, name }) => es.recording.credit(role, name)),
+  ].filter((part) => part !== undefined);
+  return parts.length > 0 ? `${parts.join('. ')}.` : undefined;
+}
 
 function details(recording: RecordingEntry): string {
   const { collection, date } = recording.data;
@@ -60,7 +78,14 @@ function details(recording: RecordingEntry): string {
     const versionOf = texts.get(recording.id) ?? [];
     const { title } = recording.data;
     return (
-      <li class:list={{ primary: recording.id === primaryId }}>
+      <li
+        class:list={{ primary: recording.id === primaryId }}
+        data-filter-values={
+          filterValues?.has(recording.id) === true
+            ? JSON.stringify(filterValues.get(recording.id))
+            : undefined
+        }
+      >
         <PlayerButton
           action="play"
           tracks={continuous ? tracks : tracks.slice(index, index + 1)}
@@ -74,6 +99,7 @@ function details(recording: RecordingEntry): string {
             {recording.id === primaryId && `${es.recording.primary}. `}
             {details(recording)}
           </span>
+          {people(recording) !== undefined && <span>{people(recording)}</span>}
           {versionOf.length > 0 && (
             <span>
               {es.listen.versionOf}{' '}

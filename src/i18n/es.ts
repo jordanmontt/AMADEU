@@ -52,6 +52,9 @@ export const es = {
     provisionalNote:
       'Texto provisional, tomado de la edición indicada en la ficha. Será reemplazado por el texto de la edición conmemorativa.',
     dedicationLabel: 'Dedicatoria',
+    /** Other titles the text was published or recorded under (RF-35). */
+    altTitles: (titles: readonly { title: string; source: string }[]) =>
+      `También titulado ${titles.map(({ title, source }) => `«${title}» (${source})`).join(', ')}.`,
     notesHeading: 'Notas de la edición',
     criticalNotesHeading: 'Notas críticas',
     illustrationsHeading: 'Dibujos',
@@ -65,6 +68,9 @@ export const es = {
     enqueue: (title: string) => `Agregar «${title}» a la cola`,
     enqueueShort: 'A la cola',
     primary: 'Versión principal',
+    /** One credit of a recording: "Dirección musical: Ana Pérez". */
+    credit: (role: string, name: string) =>
+      `${role.charAt(0).toUpperCase()}${role.slice(1)}: ${name}`,
   },
   player: {
     label: 'Reproductor',
@@ -99,6 +105,8 @@ export const es = {
     intro:
       'Todas las grabaciones del archivo: canciones, recitales y lecturas de Marcelo de Urioste.',
     noCollection: 'Otras grabaciones',
+    filtersLabel: 'las grabaciones',
+    count: (count: number) => (count === 1 ? '1 grabación' : `${String(count)} grabaciones`),
     versionOf: 'Versión de',
   },
   gallery: {
@@ -107,11 +115,23 @@ export const es = {
     sheetHeading: 'Hoja completa',
     panelsHeading: 'Viñetas de esta hoja',
     illustratesHeading: 'Ilustra',
-    viewLarge: 'Ver la imagen en tamaño grande',
+    viewLarge: 'Ampliar la imagen',
+    /** The zoom viewer (RF-27). */
+    zoom: {
+      close: 'Cerrar',
+      zoom: 'Acercar o alejar',
+      previous: 'Anterior',
+      next: 'Siguiente',
+      error: 'No se pudo cargar la imagen.',
+    },
+    filtersLabel: 'la galería',
+    count: (count: number) => (count === 1 ? '1 imagen' : `${String(count)} imágenes`),
   },
   read: {
     title: 'Leer',
     intro: 'Todos los textos publicados, obra por obra.',
+    filtersLabel: 'los textos',
+    count: (count: number) => (count === 1 ? '1 texto' : `${String(count)} textos`),
   },
   videos: {
     title: 'Videos',
@@ -124,11 +144,25 @@ export const es = {
   marcelo: {
     title: 'Marcelo de Urioste',
     timelineHeading: 'Cronología',
+    photographsHeading: 'Fotografías',
   },
   search: {
     title: 'Buscar',
     intro: 'Busca en títulos, letras, poemas y fichas de todo el archivo.',
     noScript: 'El buscador necesita JavaScript.',
+  },
+  filters: {
+    label: (what: string) => `Filtrar ${what}`,
+    work: 'Obra',
+    kind: 'Tipo',
+    year: 'Año',
+    collection: 'Procedencia',
+    technique: 'Técnica',
+    series: 'Serie',
+    all: 'Todos',
+    option: (label: string, count: number) => `${label} (${String(count)})`,
+    clear: 'Quitar filtros',
+    none: 'Nada coincide con estos filtros.',
   },
   kinds: {
     poem: 'Poema',

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  aPerson,
   aRecording,
   aText,
   aVideo,
@@ -58,7 +59,7 @@ describe('Catalog', () => {
       }),
     );
 
-    it('orders sections by their explicit order, not alphabetically', () => {
+    it('orders sections by their explicit order, not alphabetically (RF-05)', () => {
       expect(catalog.sectionsOf(sangreYSueno).map((section) => section.id)).toEqual([
         'tales',
         'songs',
@@ -87,6 +88,20 @@ describe('Catalog', () => {
 
   describe('recording versions of a text', () => {
     const song = aText('cordillera-real', { work: 'sys', section: 'songs' });
+
+    it("includes Marcelo's readings of a poem among its versions (RF-23)", () => {
+      const poem = aText('romance', { work: 'sys', section: 'tales', kind: 'poem' });
+      const catalog = Catalog.published(
+        collections({
+          works: [sangreYSueno],
+          texts: [poem],
+          recordings: [aRecording('lectura', { kind: 'reading', texts: ['romance'] })],
+        }),
+      );
+      const versions = catalog.recordingVersions(poem);
+
+      expect(versions.kind === 'available' && versions.primary.id).toBe('lectura');
+    });
 
     it('reports that no recording is available (RF-18)', () => {
       const catalog = Catalog.published(collections({ works: [sangreYSueno], texts: [song] }));
@@ -141,6 +156,65 @@ describe('Catalog', () => {
 
       expect(versions.kind === 'available' && versions.primary.id).toBe('home');
       expect(versions.kind === 'available' && ids(versions.others)).toEqual(['undated']);
+    });
+  });
+
+  describe('credits of a recording (RF-17)', () => {
+    it("names each credited person with their role, in the recording's order", () => {
+      const recording = aRecording('lp', {
+        credits: [
+          { person: 'ana', role: 'dirección musical' },
+          { person: 'luis', role: 'grabación' },
+        ],
+      });
+      const catalog = Catalog.published(
+        collections({
+          recordings: [recording],
+          people: [aPerson('luis', { name: 'Luis Rojas' }), aPerson('ana', { name: 'Ana Pérez' })],
+        }),
+      );
+
+      expect(catalog.creditsOf(recording)).toEqual([
+        { role: 'dirección musical', name: 'Ana Pérez' },
+        { role: 'grabación', name: 'Luis Rojas' },
+      ]);
+    });
+
+    it('refuses to name a credited person who is missing', () => {
+      const recording = aRecording('lp', { credits: [{ person: 'nadie', role: 'voz' }] });
+      const catalog = Catalog.published(collections({ recordings: [recording] }));
+
+      expect(() => catalog.creditsOf(recording)).toThrow(/credits person "nadie"/);
+    });
+  });
+
+  describe('artwork', () => {
+    it('finds a published artwork by its id, and nothing for an unpublished one', () => {
+      const catalog = Catalog.published(
+        collections({
+          artworks: [anArtwork('cuadro-2'), anArtwork('oculto', { rights: 'pending' })],
+        }),
+      );
+
+      expect(catalog.artwork('cuadro-2')?.id).toBe('cuadro-2');
+      expect(catalog.artwork('oculto')).toBeUndefined();
+    });
+  });
+
+  describe('photographs (RF-34)', () => {
+    it('gives the published photos and posters for the biography, oldest first', () => {
+      const catalog = Catalog.published(
+        collections({
+          artworks: [
+            anArtwork('afiche', { kind: 'poster', date: '2018' }),
+            anArtwork('microfono', { kind: 'photo', date: '1985' }),
+            anArtwork('sin-autorizar', { kind: 'photo', rights: 'pending' }),
+            anArtwork('dibujo', { kind: 'drawing' }),
+          ],
+        }),
+      );
+
+      expect(ids(catalog.photographs())).toEqual(['microfono', 'afiche']);
     });
   });
 
@@ -282,7 +356,7 @@ describe('Catalog', () => {
       expect(() => catalog.sectionOf(lost)).toThrow(/missing/);
     });
 
-    it('lists the published texts of a recording and of an artwork in editorial order', () => {
+    it('lists the published texts of a recording and of an artwork in editorial order (RF-06)', () => {
       expect(take && ids(catalog.textsOfRecording(take))).toEqual(['tale', 'song-b']);
       expect(panel && ids(catalog.textsIllustratedBy(panel))).toEqual(['tale', 'song-b']);
     });

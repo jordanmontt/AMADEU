@@ -9,6 +9,9 @@ export const alcaldeDeLaCancion: DrawingAnimation = {
   artworkId: 'dibujo-93',
   width: 1490,
   height: 2400,
+  // Ink on white paper; the man strums only while a song plays.
+  fill: 'paper',
+  trigger: 'playing',
   parts: [
     {
       // The strumming hand on the guitar, from the cuff of the sleeve to the fingertips.

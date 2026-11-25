@@ -27,7 +27,7 @@ describe('publishedCollections', () => {
     expect(ids(published.works)).toEqual(['live', 'soon']);
   });
 
-  it('publishes only texts with cleared rights whose work is published', () => {
+  it('publishes only texts with cleared rights whose work is published (RF-57)', () => {
     const published = publishedCollections(
       collections({
         works: [aWork('live'), aWork('soon', { status: 'upcoming' })],
@@ -43,7 +43,7 @@ describe('publishedCollections', () => {
     expect(ids(published.texts)).toEqual(['cleared']);
   });
 
-  it('publishes only media with cleared rights', () => {
+  it('publishes only media with cleared rights (RF-02, RF-57)', () => {
     const published = publishedCollections(
       collections({
         recordings: [aRecording('r-ok'), aRecording('r-no', { rights: 'pending' })],

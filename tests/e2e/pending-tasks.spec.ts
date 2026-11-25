@@ -2,7 +2,9 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from './support/test';
 
 test.describe('pending tasks for the Foundation', () => {
-  test('lists tasks derived from the content, linked to the admin editor', async ({ page }) => {
+  test('lists tasks derived from the content, linked to the admin editor (RF-72)', async ({
+    page,
+  }) => {
     await page.goto('/admin/pendientes/');
 
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('Pendientes de la Fundación');

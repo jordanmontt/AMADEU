@@ -1,6 +1,6 @@
 # 0051. Drawing animations from raster layers cut from the scan
 
-- **Status:** Accepted; supersedes the vectorization part of [0004](0004-handcrafted-svg-animations.md)
+- **Status:** Accepted; supersedes the vectorization part of [0004](0004-handcrafted-svg-animations.md); refined by [0054](0054-animations-on-watercolour.md) (handwriting layer, washes, windows)
 - **Date:** 2026-11-24
 - **Requirements:** RF-50 to RF-52, RT-03, RT-41
 

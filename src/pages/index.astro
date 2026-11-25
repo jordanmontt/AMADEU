@@ -1,11 +1,13 @@
 ---
 import FramedArtwork from '../components/FramedArtwork.astro';
+import AnimatedDrawing from '../components/animations/AnimatedDrawing.astro';
 import WorkCard from '../components/WorkCard.astro';
 import PlayerButton from '../components/player/PlayerButton.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { artworkImage, catalog } from '../data/catalog';
 import { es } from '../i18n/es';
 import { formatArchiveDate, formatDuration } from '../lib/format';
+import { HOME_DRAWING, animationOf } from '../lib/animations/registry';
 import { recordingTrack } from '../lib/player/track';
 import { artworkPath, textPath, workPath } from '../lib/routes';
 import { Image } from 'astro:assets';
@@ -13,8 +15,15 @@ import { Image } from 'astro:assets';
 const archive = await catalog();
 const works = archive.works();
 const [featured] = archive.publishedWorks();
+/**
+ * The home page opens with "Cordillera Real", animated (RF-11): La Paz's snow-capped range,
+ * where the Illimani stands. Until its rights are cleared, the work's cover is shown still.
+ */
+const homeDrawing = archive.artwork(HOME_DRAWING);
+const homeAnimation = animationOf(HOME_DRAWING);
 const cover = featured === undefined ? undefined : archive.coverOf(featured);
-const coverImage = cover === undefined ? undefined : await artworkImage(cover);
+const art = homeDrawing ?? cover;
+const artImage = art === undefined ? undefined : await artworkImage(art);
 
 /** Songs that can be both heard and seen, each with its first drawing and main recording. */
 const showcase = (featured === undefined ? [] : archive.showcaseTexts(featured))
@@ -41,17 +50,7 @@ const drawings = archive
 
 <BaseLayout>
   <section class="hero" aria-labelledby="site-title">
-    {cover !== undefined && coverImage !== undefined && (
-      <Image
-        class="hero-image"
-        src={coverImage}
-        alt={cover.data.alt}
-        widths={[800, 1280, 1920, 2400]}
-        sizes="100vw"
-        loading="eager"
-      />
-    )}
-    <div class="card">
+    <div class="intro">
       <h1 id="site-title">{es.home.title}</h1>
       <p class="tagline">{es.home.subtitle}</p>
       <p>{es.home.lede}</p>
@@ -61,19 +60,38 @@ const drawings = archive
         </a>
       )}
     </div>
-    {cover !== undefined && (
-      <p class="credit">
-        <a href={artworkPath(cover)}>
-          {[
-            `«${cover.data.title}»`,
-            cover.data.technique?.toLowerCase(),
-            cover.data.place,
-            cover.data.date === undefined ? undefined : formatArchiveDate(cover.data.date),
-          ]
-            .filter((part) => part !== undefined)
-            .join(', ')}
-        </a>
-      </p>
+    {art !== undefined && artImage !== undefined && (
+      <figure class="art">
+        {homeDrawing !== undefined && homeAnimation !== undefined ? (
+          <AnimatedDrawing
+            artwork={homeDrawing}
+            animation={homeAnimation}
+            sizes="(min-width: 900px) 40vw, 100vw"
+            widths={[480, 800, 1200, 1600]}
+            loading="eager"
+          />
+        ) : (
+          <Image
+            src={artImage}
+            alt={art.data.alt}
+            widths={[480, 800, 1200, 1600]}
+            sizes="(min-width: 900px) 40vw, 100vw"
+            loading="eager"
+          />
+        )}
+        <figcaption>
+          <a href={artworkPath(art)}>
+            {[
+              `«${art.data.title}»`,
+              art.data.technique?.toLowerCase(),
+              art.data.place,
+              art.data.date === undefined ? undefined : formatArchiveDate(art.data.date),
+            ]
+              .filter((part) => part !== undefined)
+              .join(', ')}
+          </a>
+        </figcaption>
+      </figure>
     )}
   </section>
 
@@ -144,35 +162,27 @@ const drawings = archive
 
 <style>
   .hero {
-    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+    padding: clamp(2rem, 5vw, 4rem) var(--gutter) 0;
   }
-  .hero :global(.hero-image) {
-    display: block;
-    width: 100%;
-    height: min(78vh, 46rem);
-    object-fit: cover;
-    object-position: center 35%;
-  }
-  .card {
-    position: absolute;
-    left: var(--gutter);
-    bottom: var(--gutter);
-    max-width: 36rem;
-    background: var(--paper);
-    border: var(--frame-width) solid var(--frame);
-    padding: clamp(1.25rem, 3vw, 2.25rem);
+  .intro {
+    max-width: 34rem;
   }
   h1 {
-    font-size: var(--step-4);
-    margin: 0 0 0.75rem;
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    line-height: 1;
+    margin: 0 0 1rem;
   }
   .tagline {
     font-style: italic;
     font-size: var(--step-1);
-    margin: 0 0 0.75rem;
+    margin: 0 0 1rem;
   }
-  .card p {
-    margin: 0 0 1.25rem;
+  .intro p {
+    margin: 0 0 1.5rem;
   }
   .enter {
     display: inline-block;
@@ -186,15 +196,22 @@ const drawings = archive
     background: var(--ink);
     color: var(--paper);
   }
-  .credit {
-    position: absolute;
-    right: 1rem;
-    bottom: 0.75rem;
+  .art {
     margin: 0;
-    background: rgb(255 255 255 / 0.9);
+    /* A portrait painting: never taller than the window. */
+    width: min(100%, calc(82vh * 0.75));
+    justify-self: end;
+  }
+  .art :global(img),
+  .art :global(animated-drawing) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .art figcaption {
+    margin-top: 0.5rem;
     font-style: italic;
     font-size: var(--step--1);
-    padding: 0.3rem 0.6rem;
   }
   .works,
   .showcase,
@@ -283,16 +300,12 @@ const drawings = archive
     gap: 1.5rem;
   }
   @media (max-width: 760px) {
-    .card {
-      position: static;
-      border-width: 0 0 var(--frame-width);
+    .hero {
+      grid-template-columns: 1fr;
     }
-    .hero :global(.hero-image) {
-      height: 50vh;
-    }
-    .credit {
-      position: static;
-      padding: 0.5rem var(--gutter);
+    .art {
+      justify-self: stretch;
+      width: 100%;
     }
   }
 </style>

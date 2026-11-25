@@ -81,3 +81,8 @@ nav a {
   clip-path: inset(50%);
   white-space: nowrap;
 }
+
+/* `hidden` always hides, whatever display a component gives the element (filters, player). */
+[hidden] {
+  display: none !important;
+}

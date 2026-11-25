@@ -15,19 +15,35 @@ function player(page: Page): Locator {
   return page.getByRole('region', { name: 'Reproductor' });
 }
 
+/** Seconds played of the current track, as the position slider shows them. */
+async function position(page: Page): Promise<number> {
+  return Number(
+    await player(page).getByRole('slider', { name: 'Posición en la grabación' }).inputValue(),
+  );
+}
+
+/**
+ * The player shows `title` and really plays it: the position moves forward. Checking the
+ * player's own "playing" state alone would pass even if the browser could not play the file.
+ */
 async function expectSounding(page: Page, title: string): Promise<void> {
   await expect(player(page).locator('[data-title]')).toHaveText(title);
   await expect(page.locator('amadeu-player')).toHaveAttribute('data-playing');
+  const start = await position(page);
+  await expect.poll(() => position(page), { timeout: 10_000 }).toBeGreaterThan(start);
+  await expect(player(page).getByRole('status')).not.toHaveText(/No se pudo cargar/);
 }
 
 test.describe('persistent player', () => {
-  test('stays hidden until something is played', async ({ page }) => {
+  test('stays hidden until something is played (RF-47)', async ({ page }) => {
     await page.goto('/sangre-y-sueno/cordillera-real/');
 
     await expect(player(page)).toBeHidden();
   });
 
-  test('plays a song, links to its lyrics and keeps sounding across pages', async ({ page }) => {
+  test('plays a song, links to its lyrics and keeps sounding across pages (RF-47, RF-49) @phone', async ({
+    page,
+  }) => {
     await page.goto('/sangre-y-sueno/cordillera-real/');
     await page.evaluate(() => {
       (window as unknown as { notReloaded: boolean }).notReloaded = true;
@@ -41,6 +57,7 @@ test.describe('persistent player', () => {
       '/sangre-y-sueno/cordillera-real/',
     );
     await expect(page.getByRole('button', { name: 'Pausar «Cordillera Real»' })).toBeVisible();
+    const playedBefore = await position(page);
 
     await page
       .getByRole('navigation', { name: 'Principal' })
@@ -48,11 +65,13 @@ test.describe('persistent player', () => {
       .click();
 
     await expect(page).toHaveURL('/galeria/');
-    await expectSounding(page, 'Cordillera Real');
     expect(await page.evaluate(() => 'notReloaded' in window)).toBe(true);
+    // Same recording, carried on from where it was: not restarted by the new page.
+    expect(await position(page)).toBeGreaterThanOrEqual(playedBefore);
+    await expectSounding(page, 'Cordillera Real');
   });
 
-  test('a playing recording can be paused from its own button and from the player', async ({
+  test('a playing recording can be paused from its own button and from the player (RF-48)', async ({
     page,
   }) => {
     await page.goto('/escuchar/');
@@ -64,13 +83,17 @@ test.describe('persistent player', () => {
 
     await expect(page.locator('amadeu-player')).not.toHaveAttribute('data-playing');
     await expect(player(page).getByRole('button', { name: 'Reproducir' })).toBeVisible();
+    const pausedAt = await position(page);
+    await page.waitForTimeout(1500);
+    expect(await position(page)).toBe(pausedAt);
 
     await player(page).getByRole('button', { name: 'Reproducir' }).click();
 
     await expect(player(page).getByRole('button', { name: 'Pausar' })).toBeVisible();
+    await expectSounding(page, 'Cordillera Real');
   });
 
-  test('a collection plays on by itself, in order', async ({ page }) => {
+  test('a collection plays on by itself, in order (RF-48)', async ({ page }) => {
     await page.goto('/escuchar/');
     const home = page.getByRole('list', { name: 'Grabación casera' });
 
@@ -85,7 +108,9 @@ test.describe('persistent player', () => {
     await expect(player(page).getByRole('button', { name: 'Anterior' })).toBeEnabled();
   });
 
-  test('"listen to the whole work" queues the primary recording of each song', async ({ page }) => {
+  test('"listen to the whole work" queues the primary recording of each song (RF-14)', async ({
+    page,
+  }) => {
     await page.goto('/sangre-y-sueno/');
     await expect(page.getByText('2 grabaciones, 1 min')).toBeVisible();
 
@@ -99,7 +124,9 @@ test.describe('persistent player', () => {
     await expect(queue.getByRole('listitem').nth(1)).toContainText('Alcalde de la canción');
   });
 
-  test('recordings can be added to the queue, played from it and removed', async ({ page }) => {
+  test('recordings can be added to the queue, played from it and removed (RF-48)', async ({
+    page,
+  }) => {
     await page.goto('/escuchar/');
     const home = page.getByRole('list', { name: 'Grabación casera' });
     const status = player(page).getByRole('status');
@@ -140,10 +167,7 @@ test.describe('persistent player', () => {
     await expectSounding(page, 'Cordillera Real');
   });
 
-  test('the open player and its queue are accessible (WCAG 2.2 AA)', async ({
-    page,
-    browserName,
-  }) => {
+  test('the open player and its queue are accessible (RF-56)', async ({ page, browserName }) => {
     await page.goto('/escuchar/');
     await page
       .getByRole('list', { name: 'Grabación casera' })

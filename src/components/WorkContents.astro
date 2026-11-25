@@ -4,6 +4,7 @@
  */
 import { es } from '../i18n/es';
 import type { TextEntry, WorkEntry } from '../lib/content/collections';
+import type { FacetValues } from '../lib/filters';
 import type { Section } from '../lib/content/schemas';
 import { textPath } from '../lib/routes';
 
@@ -12,21 +13,31 @@ interface Props {
   sections: readonly { section: Section; texts: readonly TextEntry[] }[];
   /** Heading level of the section titles, so the outline stays correct where it is used. */
   headingLevel?: 2 | 3;
+  /** Each text's values for the Leer filters, by text id (RF-07). */
+  filterValues?: ReadonlyMap<string, FacetValues>;
 }
 
-const { work, sections, headingLevel = 2 } = Astro.props;
+const { work, sections, headingLevel = 2, filterValues } = Astro.props;
+const valuesOf = (text: TextEntry): string | undefined => {
+  const values = filterValues?.get(text.id);
+  return values === undefined ? undefined : JSON.stringify(values);
+};
 const Heading = headingLevel === 3 ? 'h3' : 'h2';
 ---
 
 {sections.map(({ section, texts }) => (
-  <section aria-labelledby={`section-${section.id}`} class="section">
+  <section
+    aria-labelledby={`section-${section.id}`}
+    class="section"
+    data-filter-group={filterValues === undefined ? undefined : ''}
+  >
     <Heading id={`section-${section.id}`} class="section-title">
       {section.title}
     </Heading>
     <p class="count">{es.work.textCount(texts.length)}</p>
     <ol>
       {texts.map((text) => (
-        <li>
+        <li data-filter-values={valuesOf(text)}>
           <a href={textPath(work, text)}>{text.data.title}</a>
         </li>
       ))}

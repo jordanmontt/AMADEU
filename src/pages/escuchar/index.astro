@@ -1,12 +1,16 @@
 ---
 import PageBand from '../../components/PageBand.astro';
 import RecordingList from '../../components/RecordingList.astro';
+import FilterBar from '../../components/filters/FilterBar.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { catalog } from '../../data/catalog';
 import { es } from '../../i18n/es';
+import { facetsOf } from '../../lib/filters';
 import { textPath } from '../../lib/routes';
+import { recordingFacets, recordingValues } from '../../lib/view-filters';
 
 const archive = await catalog();
+const labels = { ...es.filters, kinds: es.kinds };
 const groups = archive.recordingsByCollection();
 const texts = new Map(
   archive.recordings().map((recording) => [
@@ -17,17 +21,39 @@ const texts = new Map(
     })),
   ]),
 );
+const credits = new Map(
+  archive.recordings().map((recording) => [recording.id, archive.creditsOf(recording)]),
+);
+const filterValues = new Map(
+  archive
+    .recordings()
+    .map((recording) => [recording.id, recordingValues(archive, recording, labels)]),
+);
+const facets = facetsOf(recordingFacets(archive, labels), [...filterValues.values()]);
 ---
 
 <BaseLayout title={es.listen.title}>
   <PageBand title={es.listen.title} subtitle={es.listen.intro} tone="sky" />
+  <FilterBar
+    facets={facets}
+    view="listen"
+    what={es.listen.filtersLabel}
+    total={filterValues.size}
+  />
   <div class="groups">
     {groups.map((group, index) => {
       const heading = group.collection ?? es.listen.noCollection;
       return (
-        <section aria-labelledby={`collection-${index}`}>
+        <section aria-labelledby={`collection-${index}`} data-filter-group>
           <h2 id={`collection-${index}`}>{heading}</h2>
-          <RecordingList recordings={group.recordings} label={heading} texts={texts} continuous />
+          <RecordingList
+            recordings={group.recordings}
+            label={heading}
+            texts={texts}
+            credits={credits}
+            filterValues={filterValues}
+            continuous
+          />
         </section>
       );
     })}

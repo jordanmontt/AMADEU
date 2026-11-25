@@ -12,10 +12,16 @@ for (const animation of DRAWING_ANIMATIONS) {
   const scan = join('src/content/media/images', `${animation.artworkId}.webp`);
   const target = join('src/assets/animations', animation.artworkId);
   mkdirSync(target, { recursive: true });
-  const { background, parts } = await cutLayers(scan, animation);
+  const { background, parts, writing } = await cutLayers(scan, animation);
   writeFileSync(join(target, 'background.webp'), background);
   for (const [name, layer] of parts) {
     writeFileSync(join(target, `${name}.webp`), layer);
   }
-  console.log(`${animation.artworkId}: background and ${String(parts.size)} moving parts`);
+  if (writing !== undefined) {
+    writeFileSync(join(target, 'writing.webp'), writing);
+  }
+  console.log(
+    `${animation.artworkId}: background, ${String(parts.size)} moving parts` +
+      (writing === undefined ? '' : ' and the handwriting'),
+  );
 }

@@ -16,7 +16,7 @@ describe('audioPublishing', () => {
     });
   });
 
-  it('reduces larger files to mono 64 kbps (a 46-minute recital fits)', () => {
+  it('reduces larger files to mono 64 kbps (a 46-minute recital fits) (RF-25)', () => {
     expect(audioPublishing('goethe-1981.mp3', 44_600_000, 46 * MINUTE + 25)).toEqual({
       kind: 'reduced',
       bitrateKbps: 64,

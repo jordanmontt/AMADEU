@@ -22,7 +22,7 @@ describe.each([
     expect(invalid).toEqual([]);
   });
 
-  it('has no integrity problems', () => {
+  it('has no integrity problems (RF-71)', () => {
     expect(findIntegrityProblems(content)).toEqual([]);
   });
 });

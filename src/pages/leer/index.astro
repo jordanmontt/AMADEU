@@ -1,29 +1,42 @@
 ---
 import PageBand from '../../components/PageBand.astro';
+import FilterBar from '../../components/filters/FilterBar.astro';
 import WorkContents from '../../components/WorkContents.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { catalog } from '../../data/catalog';
 import { es } from '../../i18n/es';
+import { facetsOf } from '../../lib/filters';
 import { workPath } from '../../lib/routes';
+import { textFacets, textValues } from '../../lib/view-filters';
 
 const archive = await catalog();
+const labels = { ...es.filters, kinds: es.kinds };
 const works = archive.publishedWorks().map((work) => ({
   work,
   sections: archive
     .sectionsOf(work)
     .map((section) => ({ section, texts: archive.textsIn(work, section) })),
 }));
+const texts = works.flatMap(({ sections }) => sections.flatMap(({ texts }) => texts));
+const filterValues = new Map(texts.map((text) => [text.id, textValues(archive, text, labels)]));
+const facets = facetsOf(textFacets(archive, labels), [...filterValues.values()]);
 ---
 
 <BaseLayout title={es.read.title}>
   <PageBand title={es.read.title} subtitle={es.read.intro} tone="sky" />
+  <FilterBar facets={facets} view="read" what={es.read.filtersLabel} total={texts.length} />
   <div class="works">
     {works.map(({ work, sections }) => (
-      <section aria-labelledby={`work-${work.id}`}>
+      <section aria-labelledby={`work-${work.id}`} data-filter-group>
         <h2 id={`work-${work.id}`} class="work-title">
           <a href={workPath(work)}>{work.data.title}</a>
         </h2>
-        <WorkContents work={work} sections={sections} headingLevel={3} />
+        <WorkContents
+          work={work}
+          sections={sections}
+          headingLevel={3}
+          filterValues={filterValues}
+        />
       </section>
     ))}
   </div>

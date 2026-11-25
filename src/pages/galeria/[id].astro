@@ -44,9 +44,22 @@ const full = await artworkImage(artwork);
         widths={[800, 1200, 1600, 2400]}
         animate
       />
-      <p>
-        <a href={full.src}>{es.gallery.viewLarge}</a>
-      </p>
+      <image-zoom class="zoom">
+        <a
+          href={full.src}
+          data-pswp-width={full.width}
+          data-pswp-height={full.height}
+          aria-label={`${es.gallery.viewLarge}: ${artwork.data.title}`}
+        >
+          <svg viewBox="0 0 20 20" aria-hidden="true">
+            <path
+              d="M8.5 2a6.5 6.5 0 0 1 5.2 10.4l4 4-1.4 1.4-4-4A6.5 6.5 0 1 1 8.5 2zm0 2a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9zM7.5 6h2v1.5H11v2H9.5V11h-2V9.5H6v-2h1.5z"
+              fill="currentColor"
+            ></path>
+          </svg>
+          {es.gallery.viewLarge}
+        </a>
+      </image-zoom>
     </div>
     <aside>
       {texts.length > 0 && (
@@ -85,7 +98,33 @@ const full = await artworkImage(artwork);
   )}
 </BaseLayout>
 
+<script>
+  import '../../components/image-zoom';
+</script>
+
 <style>
+  .zoom {
+    display: block;
+    margin-top: 0.85rem;
+  }
+  .zoom a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 2px solid var(--ink);
+    color: var(--ink);
+    text-decoration: none;
+    padding: 0.45rem 0.85rem;
+    font-size: var(--step--1);
+  }
+  .zoom a:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .zoom svg {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
   .artwork {
     display: grid;
     grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.8fr);

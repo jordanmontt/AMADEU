@@ -11,7 +11,7 @@ const settings = {
 const song = { section: 'cancionero', kind: 'song' as const };
 
 describe('importedTexts', () => {
-  it('creates provisional, cleared entries with a slug id, spaced order and the source page', () => {
+  it('creates provisional, cleared entries with a slug id, spaced order and the source page (RF-58, RF-59)', () => {
     const [entry] = importedTexts(
       [{ title: 'Cordillera Real', page: 30, dedication: null, stanzas: [['uno']], notes: [] }],
       song,

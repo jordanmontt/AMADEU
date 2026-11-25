@@ -1,12 +1,21 @@
 ---
 import { Image } from 'astro:assets';
 import PageBand from '../../components/PageBand.astro';
+import FilterBar from '../../components/filters/FilterBar.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { artworkImage, catalog } from '../../data/catalog';
 import { es } from '../../i18n/es';
+import { facetsOf } from '../../lib/filters';
 import { artworkPath } from '../../lib/routes';
+import { artworkFacets, artworkValues } from '../../lib/view-filters';
 
-const artworks = (await catalog()).artworks();
+const archive = await catalog();
+const labels = { ...es.filters, kinds: es.kinds };
+const artworks = archive.artworks();
+const filterValues = new Map(
+  artworks.map((artwork) => [artwork.id, artworkValues(archive, artwork, labels)]),
+);
+const facets = facetsOf(artworkFacets(archive, labels), [...filterValues.values()]);
 const items = await Promise.all(
   artworks.map(async (artwork) => ({ artwork, image: await artworkImage(artwork) })),
 );
@@ -14,9 +23,15 @@ const items = await Promise.all(
 
 <BaseLayout title={es.gallery.title}>
   <PageBand title={es.gallery.title} subtitle={es.gallery.intro} tone="sky" />
+  <FilterBar
+    facets={facets}
+    view="gallery"
+    what={es.gallery.filtersLabel}
+    total={artworks.length}
+  />
   <ul class="gallery">
     {items.map(({ artwork, image }) => (
-      <li>
+      <li data-filter-values={JSON.stringify(filterValues.get(artwork.id))}>
         <a href={artworkPath(artwork)}>
           <Image
             src={image}
