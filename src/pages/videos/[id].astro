@@ -8,6 +8,7 @@ import { catalog } from '../../data/catalog';
 import { es } from '../../i18n/es';
 import type { VideoEntry } from '../../lib/content/collections';
 import { videoRecord } from '../../lib/record';
+import { pageUrl, videoJsonLd } from '../../lib/seo';
 
 export const getStaticPaths = (async () => {
   const archive = await catalog();
@@ -19,9 +20,10 @@ interface Props {
 }
 
 const { video } = Astro.props;
+const jsonLd = videoJsonLd(video, pageUrl(Astro.site, Astro.url.pathname));
 ---
 
-<BaseLayout title={video.data.title} description={video.data.description}>
+<BaseLayout title={video.data.title} description={video.data.description} jsonLd={jsonLd}>
   <PageBand title={video.data.title} subtitle={video.data.series} tone="sky">
     <a slot="crumb" href="/videos/">
       {es.videos.title}

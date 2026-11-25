@@ -5,12 +5,17 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { biography, catalog } from '../../data/catalog';
 import { es } from '../../i18n/es';
 import { formatArchiveDate } from '../../lib/format';
+import { pageUrl, personJsonLd } from '../../lib/seo';
 
 const { page, Content, events } = await biography();
 const photographs = (await catalog()).photographs();
+const jsonLd = personJsonLd(
+  pageUrl(Astro.site, Astro.url.pathname),
+  page.description ?? es.site.tagline,
+);
 ---
 
-<BaseLayout title={page.title} description={page.description}>
+<BaseLayout title={page.title} description={page.description} jsonLd={jsonLd}>
   <PageBand title={page.title} subtitle={page.description} tone="sky" />
   <div class="biography">
     <div class="prose">

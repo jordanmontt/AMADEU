@@ -9,6 +9,7 @@ import { es } from '../i18n/es';
 import { formatArchiveDate, formatDuration } from '../lib/format';
 import { HOME_DRAWING, animationOf } from '../lib/animations/registry';
 import { recordingTrack } from '../lib/player/track';
+import { pageUrl, siteJsonLd } from '../lib/seo';
 import { artworkPath, textPath, workPath } from '../lib/routes';
 import { Image } from 'astro:assets';
 
@@ -48,7 +49,7 @@ const drawings = archive
   .slice(0, 6);
 ---
 
-<BaseLayout>
+<BaseLayout image={artImage} jsonLd={siteJsonLd(es.site.name, pageUrl(Astro.site, '/'))}>
   <section class="hero" aria-labelledby="site-title">
     <div class="intro">
       <h1 id="site-title">{es.home.title}</h1>
