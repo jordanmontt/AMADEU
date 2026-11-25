@@ -1,6 +1,6 @@
 # 0004. Handcrafted SVG animations of drawings
 
-- **Status:** Accepted
+- **Status:** Accepted; the vectorization part (Potrace, SVG layers) is superseded by [0051](0051-raster-layer-animations.md)
 - **Date:** 2026-11-24
 - **Requirements:** RF-50 to RF-52
 

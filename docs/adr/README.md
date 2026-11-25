@@ -11,7 +11,7 @@ Each design decision is recorded in a short file with context, decision, consequ
 | [0001](0001-v1-scope-sangre-y-sueno.md) | v1 scope: only the Sangre y Sueño universe | Accepted |
 | [0002](0002-organize-by-work.md) | Organize by work, with cross-cutting media views | Accepted |
 | [0003](0003-transcribed-text-and-facsimile.md) | Transcribed text first, facsimile optional | Accepted |
-| [0004](0004-handcrafted-svg-animations.md) | Handcrafted SVG animations of drawings | Accepted |
+| [0004](0004-handcrafted-svg-animations.md) | Handcrafted SVG animations of drawings | Accepted; vectorization superseded by 0051 |
 | [0005](0005-prototype-as-funding-demo.md) | The prototype doubles as a funding demo | Accepted |
 | [0006](0006-android-single-book-no-lock.md) | The Android app contains one book and is not locked | Accepted |
 | [0007](0007-spanish-only-i18n-ready.md) | Spanish-only UI in v1, ready for English | Accepted |
@@ -58,3 +58,4 @@ Each design decision is recorded in a short file with context, decision, consequ
 | [0048](0048-watercolour-visual-identity.md) | Visual identity: "Acuarela" (watercolour) | Accepted |
 | [0049](0049-persistent-player-implementation.md) | Persistent player: client-side navigation, one custom element, data-attribute buttons | Accepted |
 | [0050](0050-trailing-slash-ignore.md) | URLs end in a slash by convention, not by the `trailingSlash` setting | Accepted |
+| [0051](0051-raster-layer-animations.md) | Drawing animations from raster layers cut from the scan | Accepted |

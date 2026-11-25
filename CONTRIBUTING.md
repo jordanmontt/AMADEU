@@ -62,6 +62,15 @@ See [ADR 0040](docs/adr/0040-testing-strategy.md).
 5. Add the field to the Sveltia CMS configuration with a Spanish label (milestone H6).
 6. Update section 4 of `docs/02-technical-requirements.md` and the ER diagram in `docs/architecture.md`.
 
+## Animating a drawing
+
+Animations are handcrafted ([ADR 0051](docs/adr/0051-raster-layer-animations.md)); "Alcalde de la canción" (`src/lib/animations/alcalde-de-la-cancion.ts`) is the example to follow.
+
+1. Trace the parts on the stored scan (`src/content/media/images/<id>.webp`). `npx tsx scripts/animations/grid.ts` draws a labelled pixel grid over a crop of it, to read the coordinates. Each part needs an outline, a pivot, a motion (`strum`, `sway`, `drift`) and the length of a cycle. Add repairs where moving a part would uncover bare paper, and writing bands over handwritten lines.
+2. Add the description to `src/lib/animations/registry.ts`.
+3. Cut the layers: `npx tsx scripts/animations/build.ts`. Commit the files in `src/assets/animations/<id>/`.
+4. Check the parts at both ends of their motion in the browser, zoomed in. Look for leftover lines and for paper uncovered by the motion.
+
 ## Conventions
 
 - **Language** ([ADR 0039](docs/adr/0039-language-split.md)): code, comments, tests, technical docs and commit messages in English; UI strings, admin labels and public URLs in Spanish.
