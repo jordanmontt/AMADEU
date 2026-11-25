@@ -19,7 +19,7 @@ jobs:
     name: Types, lint, unit, content and component tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
@@ -49,7 +49,7 @@ jobs:
           - browser: webkit
             projects: --project=webkit --project=phone-webkit
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
@@ -97,7 +97,7 @@ jobs:
             echo "::notice::Deployment is not configured yet: nothing published (see docs/deployment.md)."
           fi
       - if: steps.configured.outputs.ready == 'true'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - if: steps.configured.outputs.ready == 'true'
         uses: actions/setup-node@v4
         with:
