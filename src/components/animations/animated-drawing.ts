@@ -1,25 +1,30 @@
 /**
- * `<animated-drawing>`: brings a layered drawing to life (RF-50 to RF-52, ADR 0051).
+ * `<animated-drawing>`: brings a layered drawing to life (RF-50 to RF-52, ADR 0051, ADR 0054).
  *
- * It only sets two attributes; the movements are CSS (AnimatedDrawing.astro), so with
- * "reduce motion" nothing moves and the drawing stays as Marcelo drew it:
- * - `data-playing` while the player sounds: the hand strums, the feather sways;
- * - `data-writing` the first time the drawing is seen: the handwriting appears as if being
- *   written, then `data-written` once it is done.
+ * It only sets attributes; the movements are CSS (AnimatedDrawing.astro), so with "reduce
+ * motion" nothing moves and the drawing stays as Marcelo drew it:
+ * - `data-moving`: the parts move. With `data-trigger="playing"` only while the player
+ *   sounds (the hand strums with the music); with `"always"` from the start.
+ * - `data-writing` the first time the drawing is seen and loaded: the handwriting appears as
+ *   if being written, then `data-written` once it is done.
  */
 import { PLAYER_CHANGE_EVENT, type PlayerChange } from '../../lib/player/events';
 
 class AnimatedDrawing extends HTMLElement {
   readonly #onPlayerChange = (event: Event): void => {
-    this.toggleAttribute('data-playing', (event as CustomEvent<PlayerChange>).detail.playing);
+    this.toggleAttribute('data-moving', (event as CustomEvent<PlayerChange>).detail.playing);
   };
   #observer: IntersectionObserver | undefined;
 
   connectedCallback(): void {
-    // Shown while a song already plays (after navigating): the player says so on its element.
-    const player = document.querySelector('amadeu-player');
-    this.toggleAttribute('data-playing', player?.hasAttribute('data-playing') ?? false);
-    document.addEventListener(PLAYER_CHANGE_EVENT, this.#onPlayerChange);
+    if (this.dataset.trigger === 'always') {
+      this.setAttribute('data-moving', '');
+    } else {
+      // Shown while a song already plays (after navigating): the player says so on its element.
+      const player = document.querySelector('amadeu-player');
+      this.toggleAttribute('data-moving', player?.hasAttribute('data-playing') ?? false);
+      document.addEventListener(PLAYER_CHANGE_EVENT, this.#onPlayerChange);
+    }
     this.#watchForFirstView();
   }
 
@@ -51,8 +56,7 @@ class AnimatedDrawing extends HTMLElement {
 
   #write(): void {
     this.setAttribute('data-writing', '');
-    const covers = [...this.querySelectorAll('.ink-cover')];
-    const last = covers.at(-1);
+    const last = [...this.querySelectorAll('.ink-line')].at(-1);
     if (last === undefined) {
       this.setAttribute('data-written', '');
       return;

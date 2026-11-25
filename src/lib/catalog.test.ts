@@ -188,6 +188,19 @@ describe('Catalog', () => {
     });
   });
 
+  describe('artwork', () => {
+    it('finds a published artwork by its id, and nothing for an unpublished one', () => {
+      const catalog = Catalog.published(
+        collections({
+          artworks: [anArtwork('cuadro-2'), anArtwork('oculto', { rights: 'pending' })],
+        }),
+      );
+
+      expect(catalog.artwork('cuadro-2')?.id).toBe('cuadro-2');
+      expect(catalog.artwork('oculto')).toBeUndefined();
+    });
+  });
+
   describe('photographs (RF-34)', () => {
     it('gives the published photos and posters for the biography, oldest first', () => {
       const catalog = Catalog.published(

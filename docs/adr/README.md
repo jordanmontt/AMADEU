@@ -58,6 +58,7 @@ Each design decision is recorded in a short file with context, decision, consequ
 | [0048](0048-watercolour-visual-identity.md) | Visual identity: "Acuarela" (watercolour) | Accepted |
 | [0049](0049-persistent-player-implementation.md) | Persistent player: client-side navigation, one custom element, data-attribute buttons | Accepted |
 | [0050](0050-trailing-slash-ignore.md) | URLs end in a slash by convention, not by the `trailingSlash` setting | Accepted |
-| [0051](0051-raster-layer-animations.md) | Drawing animations from raster layers cut from the scan | Accepted |
+| [0051](0051-raster-layer-animations.md) | Drawing animations from raster layers cut from the scan | Accepted; refined by 0054 |
 | [0052](0052-service-worker-after-the-build.md) | Service worker generated with Workbox after the build and the search index | Accepted |
 | [0053](0053-filters-in-the-browser.md) | Filters of Escuchar, Galería and Leer run in the browser, kept in the URL | Accepted |
+| [0054](0054-animations-on-watercolour.md) | Animations on watercolours: a handwriting layer, washes and windows; "Cordillera Real" on the home page | Accepted |

@@ -158,6 +158,11 @@ export class Catalog {
     });
   }
 
+  /** A published artwork by its id, if it is published. */
+  artwork(id: string): ArtworkEntry | undefined {
+    return this.artworksById.get(id);
+  }
+
   /** The work a published text belongs to; publishing guarantees it is published too. */
   workOf(text: TextEntry): WorkEntry {
     const work = this.worksById.get(text.data.work);

@@ -12,7 +12,11 @@ import { DRAWING_ANIMATIONS } from '../../src/lib/animations/registry';
 describe.each(DRAWING_ANIMATIONS.map((animation) => [animation.artworkId, animation] as const))(
   'animation of %s',
   (artworkId, animation) => {
-    const layers = ['background', ...animation.parts.map((part) => part.name)];
+    const layers = [
+      'background',
+      ...animation.parts.map((part) => part.name),
+      ...(animation.writing.length > 0 ? ['writing'] : []),
+    ];
 
     it('animates an artwork of the archive, whose scan has the traced size', async () => {
       const scan = join('src/content/media/images', `${artworkId}.webp`);

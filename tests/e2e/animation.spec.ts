@@ -24,6 +24,27 @@ function handTransform(page: Page): Promise<string> {
     .evaluate((element) => getComputedStyle(element).transform);
 }
 
+/**
+ * Whether every handwritten line shows all of its handwriting: its clip is the "written" one.
+ * Both are read back through the browser, which writes clip values in its own format.
+ */
+function allWritten(page: Page): Promise<boolean> {
+  return drawing(page)
+    .first()
+    .locator('.ink-line')
+    .evaluateAll((lines) =>
+      lines.every((line) => {
+        // A fresh element per line: the browser may keep a reused one's first value.
+        const probe = document.createElement('div');
+        probe.style.clipPath = getComputedStyle(line).getPropertyValue('--written').trim();
+        document.body.append(probe);
+        const same = getComputedStyle(line).clipPath === getComputedStyle(probe).clipPath;
+        probe.remove();
+        return same;
+      }),
+    );
+}
+
 async function playAlcalde(page: Page): Promise<void> {
   await page
     .getByRole('list', { name: 'Grabaciones' })
@@ -46,7 +67,7 @@ test.describe('animated drawing', () => {
 
     await playAlcalde(page);
 
-    await expect(drawing(page)).toHaveAttribute('data-playing');
+    await expect(drawing(page)).toHaveAttribute('data-moving');
     expect(await animationOf(page, 'hand')).toBe('strum');
     expect(await animationOf(page, 'feather')).toBe('sway');
     // The hand really moves: its position on screen changes while the song plays.
@@ -58,7 +79,7 @@ test.describe('animated drawing', () => {
       .getByRole('button', { name: 'Pausar' })
       .click();
 
-    await expect(drawing(page)).not.toHaveAttribute('data-playing');
+    await expect(drawing(page)).not.toHaveAttribute('data-moving');
     expect(await animationOf(page, 'hand')).toBe('none');
     expect(await handTransform(page)).toBe('none');
   });
@@ -79,14 +100,14 @@ test.describe('animated drawing', () => {
     await page.getByRole('link', { name: /Alcalde de la canción/ }).click();
 
     await expect(page).toHaveURL('/galeria/dibujo-93/');
-    await expect(drawing(page)).toHaveAttribute('data-playing');
+    await expect(drawing(page)).toHaveAttribute('data-moving');
   });
 
   test('writes its handwriting once, the first time it is seen (RF-50)', async ({ page }) => {
     await page.goto('/galeria/dibujo-93/');
 
     await expect(drawing(page)).toHaveAttribute('data-written', '', { timeout: 15_000 });
-    await expect(drawing(page).locator('.ink-cover').first()).toBeHidden();
+    expect(await allWritten(page)).toBe(true);
   });
 
   test('moves nothing and hides nothing with "reduce motion" (RF-52)', async ({ page }) => {
@@ -95,9 +116,9 @@ test.describe('animated drawing', () => {
 
     await playAlcalde(page);
 
-    await expect(drawing(page)).toHaveAttribute('data-playing');
+    await expect(drawing(page)).toHaveAttribute('data-moving');
     expect(await animationOf(page, 'hand')).toBe('none');
-    await expect(drawing(page).locator('.ink-cover').first()).toBeHidden();
+    expect(await allWritten(page)).toBe(true);
   });
 
   test('is a plain picture in the gallery grid (RF-50)', async ({ page }) => {
