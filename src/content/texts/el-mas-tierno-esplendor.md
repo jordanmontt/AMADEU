@@ -1,8 +1,8 @@
 ---
 title: El más tierno esplendor
 work: sangre-y-sueno
-section: cancionero
-order: 220
+section: cancionero-1981
+order: 360
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I
@@ -10,8 +10,8 @@ edition:
   publisher: Plural editores
   pages: "34"
 provisional: true
-rights: cleared
 primaryRecording: el-mas-tierno-esplendor-casera
+rights: cleared
 ---
 En una ciudad enclavada en la niebla
 hallé tu magnética voz.

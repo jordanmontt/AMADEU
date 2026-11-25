@@ -1,8 +1,8 @@
 ---
-title: Tu has nacido para ser mujer
+title: Tú has nacido para ser mujer
 work: sangre-y-sueno
-section: cancionero
-order: 660
+section: cancionero-1994
+order: 320
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I

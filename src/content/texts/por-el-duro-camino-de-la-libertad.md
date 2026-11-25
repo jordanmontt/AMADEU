@@ -1,8 +1,8 @@
 ---
 title: Por el duro camino de la libertad
 work: sangre-y-sueno
-section: cancionero
-order: 530
+section: cancionero-1981
+order: 290
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I

@@ -1,8 +1,8 @@
 ---
 title: Salva tu forma de ser
 work: sangre-y-sueno
-section: cancionero
-order: 560
+section: cancionero-1981
+order: 390
 kind: song
 dedication: Para Mercedes Urioste
 edition:

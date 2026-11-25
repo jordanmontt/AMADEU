@@ -1,8 +1,8 @@
 ---
 title: Sangre y sueño
 work: sangre-y-sueno
-section: cancionero
-order: 690
+section: cancionero-1981
+order: 210
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I

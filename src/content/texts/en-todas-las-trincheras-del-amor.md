@@ -1,8 +1,8 @@
 ---
 title: En todas las trincheras del amor
 work: sangre-y-sueno
-section: cancionero
-order: 270
+section: cancionero-1994
+order: 180
 kind: song
 dedication: A Marcelo Quiroga Santa Cruz
 edition:

@@ -1,8 +1,8 @@
 ---
 title: El árbol de la vida
 work: sangre-y-sueno
-section: cancionero
-order: 280
+section: cancionero-1994
+order: 190
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I

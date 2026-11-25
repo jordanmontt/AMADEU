@@ -1,8 +1,11 @@
 ---
 /**
- * A poem or song: stanzas separated by space, one verse per line (RF-16).
+ * A poem or song: stanzas separated by space, one verse per line (RF-16). A note call in a
+ * verse (`[^3]`) becomes a superscript link to that note of the edition (RF-21, ADR 0057).
  */
+import { es } from '../i18n/es';
 import { stanzas } from '../lib/format';
+import { verseParts } from '../lib/footnotes';
 
 interface Props {
   body: string;
@@ -17,7 +20,21 @@ const { body } = Astro.props;
       {stanza.map((verse, index) => (
         <>
           {index > 0 && <br />}
-          {verse}
+          {verseParts(verse).map((part) =>
+            'note' in part ? (
+              <sup class="call" data-pagefind-ignore>
+                <a
+                  href={`#nota-${String(part.note)}`}
+                  id={`llamada-${String(part.note)}`}
+                  aria-label={es.text.noteCall(part.note)}
+                >
+                  {part.note}
+                </a>
+              </sup>
+            ) : (
+              part.text
+            ),
+          )}
         </>
       ))}
     </p>
@@ -32,5 +49,20 @@ const { body } = Astro.props;
   }
   p {
     margin: 0 0 1.5em;
+  }
+  .call {
+    font-size: 0.6em;
+    line-height: 0;
+    margin-left: 0.1em;
+  }
+  .call a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    padding: 0 0.15em;
+  }
+  .call a:hover,
+  .call a:focus-visible {
+    color: var(--ink);
+    text-decoration: underline;
   }
 </style>

@@ -1,8 +1,8 @@
 ---
 title: América
 work: sangre-y-sueno
-section: cancionero
-order: 40
+section: cancionero-1994
+order: 30
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I

@@ -1,8 +1,8 @@
 ---
 title: El Principito
 work: sangre-y-sueno
-section: cancionero
-order: 260
+section: cancionero-1994
+order: 170
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I

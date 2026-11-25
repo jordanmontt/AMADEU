@@ -1,8 +1,8 @@
 ---
-title: Duo del violín y el mar
+title: Dúo del violín y el mar
 work: sangre-y-sueno
-section: cancionero
-order: 200
+section: cancionero-1994
+order: 130
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I

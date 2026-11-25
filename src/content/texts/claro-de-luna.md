@@ -1,8 +1,8 @@
 ---
 title: Claro de luna
 work: sangre-y-sueno
-section: cancionero
-order: 170
+section: cancionero-1994
+order: 110
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I

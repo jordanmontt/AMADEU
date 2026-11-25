@@ -1,8 +1,8 @@
 ---
-title: Amiga mia
+title: Amiga mía
 work: sangre-y-sueno
-section: cancionero
-order: 50
+section: cancionero-1994
+order: 40
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I

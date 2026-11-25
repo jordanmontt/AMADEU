@@ -1,8 +1,8 @@
 ---
 title: Tengo miedo del encuentro con mi propio corazón
 work: sangre-y-sueno
-section: cancionero
-order: 610
+section: cancionero-1981
+order: 270
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I

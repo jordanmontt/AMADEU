@@ -1,8 +1,8 @@
 ---
 title: Hacia un país de agua fresca
 work: sangre-y-sueno
-section: cancionero
-order: 320
+section: cancionero-1994
+order: 200
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I

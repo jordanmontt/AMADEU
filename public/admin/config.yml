@@ -158,7 +158,13 @@ collections:
           - { label: Poema, value: poem }
           - { label: Canción, value: song }
       - { name: dedication, label: Dedicatoria, widget: string, required: false }
-      - { name: notes, label: Notas de la edición, widget: text, required: false }
+      - {
+          name: notes,
+          label: Notas de la edición,
+          widget: text,
+          required: false,
+          hint: 'Una nota por párrafo, empezando por su número: [^1]: texto de la nota. En el verso, la llamada es [^1].',
+        }
       - {
           name: criticalNotes,
           label: Notas críticas,

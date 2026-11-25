@@ -1,8 +1,8 @@
 ---
 title: Una simple declaración de amor
 work: sangre-y-sueno
-section: cancionero
-order: 680
+section: cancionero-1994
+order: 340
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I

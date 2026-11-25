@@ -1,8 +1,8 @@
 ---
 title: Balada de la doncella, el ruiseñor y la fuente
 work: sangre-y-sueno
-section: cancionero
-order: 110
+section: cancionero-1994
+order: 60
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I

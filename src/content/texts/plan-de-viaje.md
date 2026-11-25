@@ -1,8 +1,8 @@
 ---
 title: Plan de viaje
 work: sangre-y-sueno
-section: cancionero
-order: 510
+section: cancionero-1994
+order: 260
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I

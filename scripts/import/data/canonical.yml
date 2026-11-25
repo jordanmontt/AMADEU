@@ -1,0 +1,183 @@
+# The canonical edition of Sangre y Sueño (ADR 0057): its sections, its order and its texts.
+# Source: "Texto canonico - Sangre y Sueño 2027.pdf", in the project's Requerimientos folder.
+#
+# Each entry is a text of the edition, in book order:
+# - printed: the title as the PDF prints it (the import checks it, so the mapping cannot drift);
+# - id: the archive's permanent id; a new file is created when none exists;
+# - title: the title to use when the printed one has an obvious misprint;
+# - altTitles: the titles of the same text in other editions, read from the editor's notes;
+# - review: a doubt for the Foundation, shown in the pending tasks;
+# - skip: why the text cannot be imported yet (the PDF has no verses for it).
+#
+# A text set as prose (paragraphs instead of verses) keeps its current verses from Tomo I and
+# stays provisional; only its title, section and order change.
+pdf: ../Requerimientos/Texto canonico - Sangre y Sueño 2027.pdf
+work: sangre-y-sueno
+edition:
+  name: Sangre y sueño, edición conmemorativa, a cargo de Oscar Jordán Arandia
+  year: '2027'
+# Texts of these sections not placed below make the import fail.
+replaces: [cancionero]
+sections:
+  - id: cancionero-1981
+    title: Sangre y sueño 1981
+    slug: sangre-y-sueno-1981
+    description: Libro de canciones, edición 1981
+    firstPage: 4
+    lastPage: 48
+    texts:
+      - printed: Poética
+        id: poetica
+        altTitles: [{ title: Arte poética, source: Fuego desvelado }]
+      - printed: Paloma de luz
+        id: el-canto-que-va-brotando-desde-el-arbol-del-amor
+        altTitles:
+          - title: El canto que va brotando desde el árbol del amor
+            source: Ediciones de 1994 y 2013
+      - printed: Hija mía
+        id: sangre-de-mi-propia-sangre
+        altTitles: [{ title: Sangre de mi propia sangre, source: Ediciones de 1994 y 2013 }]
+      - printed: Alcalde de la Canción
+        id: alcalde-de-la-cancion
+      - printed: Luna Andina
+        id: la-enamorada-del-sol
+        altTitles: [{ title: La enamorada del sol, source: Ediciones de 1994 y 2013 }]
+      - printed: Ayer nomas
+        id: ayer-nomas
+        title: Ayer nomás
+      - printed: Niñez
+        id: aquel-antiguo-deseo-de-llorar
+        altTitles: [{ title: Aquel antiguo deseo de llorar, source: Ediciones de 1994 y 2013 }]
+      - printed: Nuestra Señora de La Paz
+        id: nuestra-senora-de-la-paz
+      - printed: Encuentros
+        id: encuentros
+        altTitles: [{ title: Manos del alba, source: Ediciones posteriores }]
+        review: >-
+          «Encuentros» está en el texto canónico, pero no en su tabla de contenido ni en la
+          numeración de las canciones de 1981. Confirmar que forma parte del libro y si es un poema
+          o una canción.
+      - printed: Navigari neccesse est, vivire non neccesse
+        id: navigari-neccesse-est-vivire-non-neccesse
+      - printed: Mis hermanos
+        id: mis-hermanos
+      - printed: Una Canción perdida
+        id: una-cancion-perdida
+        title: Una canción perdida
+        altTitles: [{ title: Tristeza a orillas del crepúsculo, source: Ediciones posteriores }]
+      - printed: La clara melodía del amor
+        id: la-clara-melodia-del-amor
+      - printed: Cordillera de Real
+        id: cordillera-de-los-andes
+        title: Cordillera Real
+        altTitles: [{ title: Cordillera de los Andes, source: Ediciones de 1994 y 2013 }]
+        review: >-
+          El texto canónico titula «Cordillera de Real» y su tabla de contenido «CORDILLERA DE
+          REAL»; aquí se usa «Cordillera Real», como la grabación. Confirmar el título.
+      - printed: Los decretos del amor
+        id: los-decretos-del-amor
+      - printed: Árbol de fuego
+        id: arbol-que-nace-de-ti
+        altTitles: [{ title: Árbol que nace de ti, source: Ediciones de 1994 y 2013 }]
+      - printed: Persistiré
+        id: persistire
+      - printed: Quiero decir que faltas
+        id: quiero-decir-que-faltas
+      - printed: Vacilando entre intuición y claridad
+        skip: el texto canónico tiene solo el título
+      - printed: No pudo ser
+        id: no-pudo-ser
+      - printed: Sangre y sueño
+        id: sangre-y-sueno-cancion
+      - printed: Distancias
+        skip: el texto canónico tiene solo el título
+      - printed: Titicaca
+        id: titicaca
+      - printed: Canción serena para esposos hechizados
+        id: cancion-serena-para-esposos-hechizados
+      - printed: Son tigres de papel
+        id: son-tigres-de-papel
+      - printed: Naturaleza muerta con juglar
+        id: naturaleza-muerta-con-juglar
+      - printed: Tengo miedo del encuentro con mi propio corazón
+        id: tengo-miedo-del-encuentro-con-mi-propio-corazon
+      - printed: Juglar amador
+        id: juglar-amador
+      - printed: Por el duro camino de la libertad
+        id: por-el-duro-camino-de-la-libertad
+      - printed: El recinto sagrado de tu soledad
+        id: el-recinto-sagrado-de-tu-soledad
+      - printed: El albañil
+        id: el-albanil
+      - printed: Mujer
+        id: mujer
+      - printed: La Casa de la Libertad
+        id: la-casa-de-la-libertad
+      - printed: Balada del amor imposible
+        id: balada-del-amor-imposible
+      - printed: Patria
+        skip: el texto canónico está en prosa y no hay otra versión en verso
+      - printed: El más tierno esplendor
+        id: el-mas-tierno-esplendor
+      - printed: El cacique de la soledad
+        id: el-cacique-de-la-soledad
+      - printed: Porque hoy me agredió la terrible visión
+        id: porque-hoy-me-agredio-la-terrible-vision
+      - printed: Salva tu forma de ser
+        id: salva-tu-forma-de-ser
+      - printed: Prisionero del amor
+        id: prisionero-del-amor
+      - printed: En nombre del amor
+        id: en-nombre-del-amor
+  - id: cancionero-1994
+    title: Sangre y sueño 1994
+    slug: sangre-y-sueno-1994
+    description: Poemas de las ediciones 1994 y 2013
+    firstPage: 50
+    lastPage: 82
+    texts:
+      - { printed: Altiplano, id: altiplano }
+      - { printed: Amasar el viejo pan con nueva harina, id: amasar-el-viejo-pan-con-nueva-harina }
+      - { printed: América, id: america }
+      - { printed: Amiga mia, id: amiga-mia, title: Amiga mía }
+      - { printed: Árbol de fuego y de sangre, id: arbol-de-fuego-y-de-sangre }
+      - printed: Balada de la doncella, el ruiseñor y la fuente
+        id: balada-de-la-doncella-el-ruisenor-y-la-fuente
+      - { printed: 'Barcos lejanos, sagradas siembras', id: barcos-lejanos-sagradas-siembras }
+      - { printed: Caballeros andantes, id: caballeros-andantes }
+      - { printed: Capitana de la miel, id: capitana-de-la-miel }
+      - { printed: Carta a Rafael, id: carta-a-rafael }
+      - { printed: Claro de luna, id: claro-de-luna }
+      - { printed: Diosa terrestre, id: diosa-terrestre }
+      - {
+          printed: Duo del violín y el mar,
+          id: duo-del-violin-y-el-mar,
+          title: Dúo del violín y el mar,
+        }
+      - { printed: El reino verdadero, id: el-reino-verdadero }
+      - { printed: En la melodía de un viejo cantor, id: en-la-melodia-de-un-viejo-cantor }
+      - { printed: En blancos nichos de cal, id: en-blancos-nichos-de-cal }
+      - { printed: El Principito, id: el-principito }
+      - { printed: En todas las trincheras del amor, id: en-todas-las-trincheras-del-amor }
+      - { printed: El árbol de la vida, id: el-arbol-de-la-vida }
+      - { printed: Hacia un país de agua fresca, id: hacia-un-pais-de-agua-fresca }
+      - { printed: Hasta la muerte, id: hasta-la-muerte }
+      - {
+          printed: La almohada guardaba su olor a jazmín,
+          id: la-almohada-guardaba-su-olor-a-jazmin,
+        }
+      - { printed: La emperatriz del amor, id: la-emperatriz-del-amor }
+      - { printed: Madre, id: madre }
+      - { printed: Para verte, id: para-verte }
+      - { printed: Plan de viaje, id: plan-de-viaje }
+      - { printed: Sombra de Hitler, id: sombra-de-hitler }
+      - printed: Soy una lágrima oscura que va rodando hacia el mar
+        id: soy-una-lagrima-oscura-que-va-rodando-hacia-el-mar
+      - { printed: Teoría de tu nombre, id: teoria-de-tu-nombre }
+      - { printed: Todo y siempre, id: todo-y-siempre }
+      - { printed: Tristeza a orillas del mar, id: tristeza-a-orillas-del-mar }
+      - printed: Tu has nacido para ser mujer
+        id: tu-has-nacido-para-ser-mujer
+        title: Tú has nacido para ser mujer
+      - { printed: Ya que la vida es así, id: ya-que-la-vida-es-asi }
+      - { printed: Una simple declaración de amor, id: una-simple-declaracion-de-amor }

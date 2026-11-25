@@ -1,8 +1,8 @@
 ---
 title: En la melodía de un viejo cantor
 work: sangre-y-sueno
-section: cancionero
-order: 240
+section: cancionero-1994
+order: 150
 kind: song
 dedication: Para Aquiles Nazoa
 edition:

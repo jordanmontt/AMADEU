@@ -33,7 +33,8 @@ Antes de publicar, el sistema revisa que todo esté bien: fechas bien escritas, 
 3. Elige la **obra** y la **sección**.
 4. En **Orden en la sección** usa números con huecos (10, 20, 30…). Así puedes meter un texto entre dos sin renumerar los demás.
 5. En **Texto** escribe un verso por línea y deja una línea en blanco entre estrofas.
-6. En **Derechos** elige **Autorizado** solo si la Fundación tiene la autorización. Mientras diga «Pendiente», el texto no se publica.
+6. Si el texto tiene **notas de la edición**, márcalas como en el libro: en el verso escribe `[^1]` justo después de la palabra, y en **Notas de la edición** escribe la nota empezando por `[^1]: `. Deja una línea en blanco entre nota y nota. En el sitio, el número aparece pequeño junto a la palabra y lleva a la nota.
+7. En **Derechos** elige **Autorizado** solo si la Fundación tiene la autorización. Mientras diga «Pendiente», el texto no se publica.
 
 ## Agregar una grabación
 

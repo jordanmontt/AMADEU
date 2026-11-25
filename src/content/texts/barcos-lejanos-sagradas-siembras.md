@@ -1,8 +1,8 @@
 ---
 title: Barcos lejanos, sagradas siembras
 work: sangre-y-sueno
-section: cancionero
-order: 120
+section: cancionero-1994
+order: 70
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I

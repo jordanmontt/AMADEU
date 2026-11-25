@@ -1,8 +1,8 @@
 ---
 title: Porque hoy me agredió la terrible visión
 work: sangre-y-sueno
-section: cancionero
-order: 520
+section: cancionero-1981
+order: 380
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I
@@ -10,8 +10,8 @@ edition:
   publisher: Plural editores
   pages: "73"
 provisional: true
-rights: cleared
 primaryRecording: porque-hoy-me-agredio-la-terrible-vision-casera
+rights: cleared
 ---
 Yo forjé un estilo otoñal de iniciar
 el ritual del amor total.

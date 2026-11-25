@@ -1,8 +1,8 @@
 ---
 title: Árbol de fuego y de sangre
 work: sangre-y-sueno
-section: cancionero
-order: 80
+section: cancionero-1994
+order: 50
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I
@@ -10,8 +10,8 @@ edition:
   publisher: Plural editores
   pages: "19"
 provisional: true
-rights: cleared
 primaryRecording: arbol-de-fuego-y-de-sangre-casera
+rights: cleared
 ---
 Conozco un molle que crece
 sobre una lápida grande.

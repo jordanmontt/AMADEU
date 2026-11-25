@@ -1,8 +1,8 @@
 ---
 title: El reino verdadero
 work: sangre-y-sueno
-section: cancionero
-order: 230
+section: cancionero-1994
+order: 140
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I
@@ -10,8 +10,8 @@ edition:
   publisher: Plural editores
   pages: "35"
 provisional: true
-rights: cleared
 primaryRecording: el-reino-verdadero-casera
+rights: cleared
 ---
 Veinte siglos de templos y de manos temblorosas
 elevan hasta el cielo plegarias silenciosas.

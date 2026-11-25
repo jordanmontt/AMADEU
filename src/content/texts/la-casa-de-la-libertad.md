@@ -1,8 +1,8 @@
 ---
 title: La Casa de la Libertad
 work: sangre-y-sueno
-section: cancionero
-order: 360
+section: cancionero-1981
+order: 330
 kind: song
 dedication: Para Claudia Urioste
 edition:

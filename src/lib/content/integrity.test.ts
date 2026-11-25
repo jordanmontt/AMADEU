@@ -74,6 +74,21 @@ describe('findIntegrityProblems', () => {
     ]);
   });
 
+  it('reports a verse that calls a note the text does not have (RF-21)', () => {
+    const content = collections({
+      works: [aWork('work')],
+      texts: [
+        aText('song', { notes: '[^1]: Una nota.' }, 'Verso uno[^1]\nVerso dos[^2]'),
+        aText('plain', {}, 'Verso[^1]'),
+      ],
+    });
+
+    expect(messages(content)).toEqual([
+      'texts/song: calls note 2, which its notes do not define',
+      'texts/plain: calls note 1, which its notes do not define',
+    ]);
+  });
+
   it('reports a primary recording that is not a version of the text', () => {
     const content = collections({
       works: [aWork('work')],

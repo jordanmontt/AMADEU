@@ -1,28 +1,38 @@
 ---
 title: Persistiré
 work: sangre-y-sueno
-section: cancionero
-order: 490
+section: cancionero-1981
+order: 170
 kind: song
+notes: |-
+  [^1]: “abra tu magia y te haga enloquecer.”
+
+  [^2]: “sabe luchar, sufrir, resplandecer.”
+
+  [^3]: “Aunque una muerte indescriptible / rompa mi cuerpo, amor, persistiré.”
 edition:
-  name: El Regocijo de Vivir, Tomo I
-  year: "2012"
-  publisher: Plural editores
-  pages: "68"
-provisional: true
+  name: Sangre y sueño, edición conmemorativa, a cargo de Oscar Jordán Arandia
+  year: "2027"
+  pages: "24"
+provisional: false
 rights: cleared
 ---
-Serás tal vez inaccesible.
+Serás tal vez inaccesible
 Yo soy más terco y voy a establecer
-que mi destino ineludible
-abra tu magia y te haga enloquecer
+que mi Destino ineludible
+entre a tu magia y te haga enloquecer[^1]
 
-Serás talvez inconmovible,
-pero mis cánticos te harán arder.
+Serás talvez inconmovible
+pero mis cánticos te harán arder
 Porque mi anhelo inextinguible
-sabe luchar, sufrir, resplandecer
+sabe callar, sufrir, resplandecer[^2]
 
-Bien sé que eres indestructible, mi amor.
-Bien sé lo que en tu vientre puede acontecer.
-Aunque una muerte indescriptible
-rompa mi cuerpo, amor, persistiré.
+Bien sé que eres indestructible
+mi amor
+Bien sé lo que en tu vientre
+puede acontecer
+
+Y aunque una muerte indescriptible
+rompa mi cuerpo, amor
+
+persistiré[^3]
