@@ -11,7 +11,8 @@ this folder via `CONTENT_DIR`). It covers:
   its source edition, critical notes, a facsimile page, and two versions, the primary one
   with performers and credits;
 - upcoming and draft works;
-- a drawing sheet with one panel cut from it (`hoja-prueba`, `panel-prueba`);
+- a drawing sheet (2400 px wide, to zoom into) with one panel cut from it (`hoja-prueba`,
+  `panel-prueba`), a document and a photograph of Marcelo (`foto-prueba`);
 - the animated drawing "Alcalde de la canción" (`dibujo-93`) and its song;
 - audio: quiet tones of 60 s (`silencio.mp3`, `cordillera-casera.mp3`) to check the player
   while it sounds, and of 2 s (`alcalde.mp3`) to see it move on to the next track;

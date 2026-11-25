@@ -144,6 +144,7 @@ export const es = {
   marcelo: {
     title: 'Marcelo de Urioste',
     timelineHeading: 'Cronología',
+    photographsHeading: 'Fotografías',
   },
   search: {
     title: 'Buscar',

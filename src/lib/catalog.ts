@@ -255,6 +255,16 @@ export class Catalog {
     });
   }
 
+  /**
+   * Photographs of Marcelo for his biography (RF-34): published photos and posters, oldest
+   * first. A photo appears once its rights are cleared.
+   */
+  photographs(): ArtworkEntry[] {
+    return this.artworks().filter(
+      (artwork) => artwork.data.kind === 'photo' || artwork.data.kind === 'poster',
+    );
+  }
+
   /** Artworks that illustrate a text (their `texts` field points to it). */
   illustrationsOf(text: TextEntry): ArtworkEntry[] {
     return this.content.artworks

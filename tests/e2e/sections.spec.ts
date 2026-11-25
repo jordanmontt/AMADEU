@@ -77,6 +77,15 @@ test.describe('site sections', () => {
     expect(youtube).toEqual([]);
   });
 
+  test('the biography shows the published photographs of Marcelo (RF-34)', async ({ page }) => {
+    await page.goto('/marcelo/');
+    const photographs = page.getByRole('region', { name: 'Fotografías' });
+
+    await expect(
+      photographs.getByRole('img', { name: /Fotografía de prueba de Marcelo de Urioste/ }),
+    ).toBeVisible();
+  });
+
   test('the biography shows its timeline oldest first (RF-32, RF-33)', async ({ page }) => {
     await page.goto('/marcelo/');
 

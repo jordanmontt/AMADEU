@@ -188,6 +188,23 @@ describe('Catalog', () => {
     });
   });
 
+  describe('photographs (RF-34)', () => {
+    it('gives the published photos and posters for the biography, oldest first', () => {
+      const catalog = Catalog.published(
+        collections({
+          artworks: [
+            anArtwork('afiche', { kind: 'poster', date: '2018' }),
+            anArtwork('microfono', { kind: 'photo', date: '1985' }),
+            anArtwork('sin-autorizar', { kind: 'photo', rights: 'pending' }),
+            anArtwork('dibujo', { kind: 'drawing' }),
+          ],
+        }),
+      );
+
+      expect(ids(catalog.photographs())).toEqual(['microfono', 'afiche']);
+    });
+  });
+
   describe('playlist of a work (RF-14)', () => {
     it('plays the primary recording of each text that has one, in editorial order', () => {
       const catalog = Catalog.published(

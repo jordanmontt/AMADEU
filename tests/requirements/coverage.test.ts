@@ -11,7 +11,6 @@ import { describe, expect, it } from 'vitest';
 /** Requirements no test checks yet, and why. Remove an entry when a test names it. */
 const NOT_CHECKED_YET: Readonly<Record<string, string>> = {
   'RF-11': 'H5b: animated drawing and La Paz on the home page (needs design decisions)',
-  'RF-34': 'H5b: photographs of Marcelo in the biography (needs the photos and their rights)',
   'RF-45': 'design tone: reviewed by eye; visual tests postponed until after v1',
   'RF-46': 'design tone: reviewed by eye; visual tests postponed until after v1',
   'RF-55': 'Spanish only, every string in src/i18n/es.ts: enforced by code review',

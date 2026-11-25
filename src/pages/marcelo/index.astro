@@ -1,11 +1,13 @@
 ---
+import FramedArtwork from '../../components/FramedArtwork.astro';
 import PageBand from '../../components/PageBand.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { biography } from '../../data/catalog';
+import { biography, catalog } from '../../data/catalog';
 import { es } from '../../i18n/es';
 import { formatArchiveDate } from '../../lib/format';
 
 const { page, Content, events } = await biography();
+const photographs = (await catalog()).photographs();
 ---
 
 <BaseLayout title={page.title} description={page.description}>
@@ -14,6 +16,16 @@ const { page, Content, events } = await biography();
     <div class="prose">
       <Content />
     </div>
+    {photographs.length > 0 && (
+      <section aria-labelledby="photographs-heading" class="photographs">
+        <h2 id="photographs-heading">{es.marcelo.photographsHeading}</h2>
+        <div class="grid">
+          {photographs.map((photo) => (
+            <FramedArtwork artwork={photo} sizes="(min-width: 760px) 30vw, 90vw" />
+          ))}
+        </div>
+      </section>
+    )}
     <section aria-labelledby="timeline-heading" class="timeline">
       <h2 id="timeline-heading">{es.marcelo.timelineHeading}</h2>
       <ol>
@@ -29,6 +41,15 @@ const { page, Content, events } = await biography();
 </BaseLayout>
 
 <style>
+  .photographs h2 {
+    font-size: var(--step-2);
+    margin: 0 0 1rem;
+  }
+  .photographs .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    gap: 1.5rem;
+  }
   .biography {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
