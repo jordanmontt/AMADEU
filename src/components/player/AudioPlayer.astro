@@ -1,0 +1,344 @@
+---
+/**
+ * The fixed mini-player at the bottom of every page (RF-47, RF-48). Hidden until something
+ * is played or queued. Its behaviour lives in `player-element.ts`; this file is its markup
+ * and look. `transition:persist` keeps it, and the sound, across client-side navigation.
+ *
+ * It is the last element of the page and `position: sticky`, so it stays at the bottom of
+ * the window but never covers the footer.
+ */
+import { es } from '../../i18n/es';
+---
+
+<amadeu-player transition:persist="audio-player" hidden>
+  <section class="player" aria-label={es.player.label}>
+    <input
+      class="seek"
+      type="range"
+      min="0"
+      max="0"
+      step="1"
+      value="0"
+      aria-label={es.player.position}
+      data-seek
+    />
+    <div class="bar">
+      <div class="controls">
+        <button type="button" class="control" aria-label={es.player.previous} data-previous>
+          <svg viewBox="0 0 20 20" aria-hidden="true">
+            <path d="M4 3h2v14H4zM17 3v14L7 10z" fill="currentColor"></path>
+          </svg>
+        </button>
+        <button type="button" class="control toggle" aria-label={es.player.play} data-toggle>
+          <svg class="play" viewBox="0 0 18 20" aria-hidden="true">
+            <path d="M3 1.5l13 8.5-13 8.5z" fill="currentColor"></path>
+          </svg>
+          <svg class="pause" viewBox="0 0 18 20" aria-hidden="true">
+            <path d="M3 2h4v16H3zM11 2h4v16h-4z" fill="currentColor"></path>
+          </svg>
+        </button>
+        <button type="button" class="control" aria-label={es.player.next} data-next>
+          <svg viewBox="0 0 20 20" aria-hidden="true">
+            <path d="M14 3h2v14h-2zM3 3v14l10-7z" fill="currentColor"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="now">
+        <span class="title" data-title></span>
+        <span class="collection" data-collection></span>
+      </div>
+      <p class="time" aria-hidden="true">
+        <span data-elapsed>0:00</span> / <span data-total>0:00</span>
+      </p>
+      <button
+        type="button"
+        class="queue-toggle"
+        aria-expanded="false"
+        aria-controls="player-queue"
+        data-queue-toggle
+      >
+        <svg viewBox="0 0 20 20" aria-hidden="true">
+          <path d="M2 4h12v2H2zM2 9h12v2H2zM2 14h8v2H2zM15 12v6l4-3z" fill="currentColor"></path>
+        </svg>
+        <span>
+          <span class="queue-word">{es.player.queue} </span>
+          <span data-queue-count>0</span>
+        </span>
+        <span class="visually-hidden" data-queue-unit></span>
+      </button>
+    </div>
+    <p class="status" role="status" data-status></p>
+    <div id="player-queue" class="queue" hidden data-queue>
+      <h2>{es.player.queueHeading}</h2>
+      <ol data-queue-list></ol>
+    </div>
+  </section>
+</amadeu-player>
+
+<script>
+  import './player-element';
+</script>
+
+<style>
+  amadeu-player {
+    display: block;
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
+  }
+  amadeu-player[hidden] {
+    display: none;
+  }
+  .player {
+    display: flex;
+    flex-direction: column;
+    background: var(--paper);
+    box-shadow: 0 -0.5rem 1.5rem rgb(31 36 64 / 0.08);
+  }
+  /* The progress bar doubles as the player's top edge: a green band that fills as it plays. */
+  .seek {
+    --progress: 0%;
+    display: block;
+    width: 100%;
+    height: 1.25rem;
+    margin: -0.6rem 0 0;
+    background: transparent;
+    appearance: none;
+    cursor: pointer;
+  }
+  .seek::-webkit-slider-runnable-track {
+    height: 0.4rem;
+    background: linear-gradient(to right, var(--frame) var(--progress), var(--frame-soft) 0);
+  }
+  .seek::-moz-range-track {
+    height: 0.4rem;
+    background: linear-gradient(to right, var(--frame) var(--progress), var(--frame-soft) 0);
+  }
+  .seek::-webkit-slider-thumb {
+    appearance: none;
+    width: 1rem;
+    height: 1rem;
+    margin-top: -0.3rem;
+    border-radius: 50%;
+    background: var(--ink);
+    border: 2px solid var(--paper);
+  }
+  .seek::-moz-range-thumb {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    background: var(--ink);
+    border: 2px solid var(--paper);
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem 1.25rem;
+    padding: 0.35rem var(--gutter) 0.6rem;
+  }
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  .control {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .control svg {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+  .control:hover:not(:disabled) {
+    color: var(--flag);
+  }
+  .control:disabled {
+    color: var(--rule);
+    cursor: default;
+  }
+  .toggle {
+    width: 3rem;
+    height: 3rem;
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .toggle:hover:not(:disabled) {
+    background: var(--flag);
+    color: var(--paper);
+  }
+  .toggle .play {
+    margin-left: 0.2rem;
+  }
+  .toggle .pause,
+  .toggle[data-playing] .play {
+    display: none;
+  }
+  .toggle[data-playing] .pause {
+    display: block;
+  }
+  .now {
+    flex: 1;
+    min-width: 0;
+    display: grid;
+  }
+  .title {
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .title :global(a) {
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .title :global(a:hover) {
+    text-decoration: underline;
+    text-decoration-color: var(--ochre);
+    text-decoration-thickness: 0.15em;
+  }
+  .collection {
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .time {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .queue-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    color: var(--ink);
+    padding: 0.35rem 0.7rem;
+    font: inherit;
+    font-size: var(--step--1);
+    cursor: pointer;
+  }
+  .queue-toggle svg {
+    width: 1rem;
+    height: 1rem;
+  }
+  .queue-toggle[aria-expanded='true'],
+  .queue-toggle:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .status {
+    margin: 0;
+    padding: 0 var(--gutter);
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+  }
+  .status:not(:empty) {
+    padding-bottom: 0.5rem;
+  }
+  .status[data-error] {
+    color: var(--flag);
+  }
+  .queue {
+    order: -1;
+    max-height: min(50vh, 26rem);
+    overflow-y: auto;
+    padding: 1rem var(--gutter) 0.5rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .queue[hidden] {
+    display: none;
+  }
+  .queue h2 {
+    font-size: 1.3rem;
+    margin: 0 0 0.75rem;
+  }
+  .queue ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.25rem;
+    max-width: 48rem;
+  }
+  .queue :global(li) {
+    display: flex;
+    align-items: stretch;
+    gap: 0.25rem;
+  }
+  .queue :global(li[aria-current]) {
+    background: var(--sky-pale);
+    box-shadow: inset 4px 0 0 var(--frame);
+  }
+  .queue :global(.jump) {
+    flex: 1;
+    display: grid;
+    text-align: left;
+    border: 0;
+    background: transparent;
+    color: var(--ink);
+    padding: 0.45rem 0.75rem;
+    font: inherit;
+    cursor: pointer;
+  }
+  .queue :global(.jump:hover .row-title) {
+    text-decoration: underline;
+  }
+  .queue :global(.row-title) {
+    font-weight: 600;
+  }
+  .queue :global(.row-details) {
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+  }
+  .queue :global(.remove) {
+    width: 2.5rem;
+    border: 0;
+    background: transparent;
+    color: var(--ink-soft);
+    font-size: 1.4rem;
+    cursor: pointer;
+  }
+  .queue :global(.remove:hover) {
+    color: var(--flag);
+  }
+  @media (max-width: 640px) {
+    .bar {
+      gap: 0.5rem;
+    }
+    .time {
+      display: none;
+    }
+    .control:not(.toggle) {
+      width: 2.25rem;
+    }
+    .title {
+      font-size: 1.05rem;
+    }
+    /* Only the count shows; the word stays in the button's name (WCAG 2.5.3). */
+    .queue-word {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+    .queue-toggle {
+      padding: 0.35rem 0.55rem;
+    }
+  }
+</style>

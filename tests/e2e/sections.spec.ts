@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './support/test';
 
 test.describe('site sections', () => {
   test('the main navigation marks the current section', async ({ page }) => {
@@ -9,12 +9,13 @@ test.describe('site sections', () => {
     await expect(nav.getByRole('link', { name: 'Galería' })).not.toHaveAttribute('aria-current');
   });
 
-  test('a song page plays its recording and shows its drawing and record', async ({ page }) => {
+  test('a song page lists its recordings and shows its drawing and record', async ({ page }) => {
     await page.goto('/sangre-y-sueno/cordillera-real/');
 
     const recordings = page.getByRole('list', { name: 'Grabaciones' });
-    await expect(recordings.getByText('Versión principal')).toBeVisible();
-    await expect(recordings.locator('audio')).toHaveAttribute('src', '/audio/silencio.mp3');
+    await expect(recordings.getByRole('listitem').first()).toContainText('Versión principal');
+    await expect(recordings.getByRole('listitem').first()).toContainText('LP Discolandia 1984');
+    await expect(recordings.getByRole('listitem')).toHaveCount(2);
     await expect(page.getByRole('img', { name: /toca la guitarra/ })).toBeVisible();
     await expect(page.getByText('Enlace para citar')).toBeVisible();
     await expect(page.getByText(/\/id\/t-cordillera\/$/)).toBeVisible();
@@ -72,8 +73,21 @@ test.describe('site sections', () => {
     await expect(page.locator('.timeline li .date')).toHaveText(['1952', '1984']);
   });
 
-  test('the search finds texts by their words', async ({ page }) => {
+  test('the search box also starts when the search page is opened directly', async ({ page }) => {
     await page.goto('/buscar/');
+    await page.getByRole('textbox', { name: 'Buscar' }).fill('Romance');
+
+    await expect(page.getByRole('link', { name: 'Romance de prueba' })).toBeVisible();
+  });
+
+  test('the search finds texts by their words', async ({ page }) => {
+    await page.goto('/');
+    // Reached by client-side navigation, as visitors do: the search box must still start.
+    await page
+      .getByRole('navigation', { name: 'Principal' })
+      .getByRole('link', { name: 'Buscar' })
+      .click();
+    await expect(page).toHaveURL('/buscar/');
     await page.getByRole('textbox', { name: 'Buscar' }).fill('verso de prueba');
 
     await expect(page.getByRole('link', { name: 'Cordillera Real' })).toBeVisible();

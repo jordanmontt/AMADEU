@@ -1,11 +1,12 @@
 ---
 import FramedArtwork from '../components/FramedArtwork.astro';
 import WorkCard from '../components/WorkCard.astro';
+import PlayerButton from '../components/player/PlayerButton.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { artworkImage, catalog } from '../data/catalog';
 import { es } from '../i18n/es';
-import { formatArchiveDate } from '../lib/format';
-import { formatDuration } from '../lib/format';
+import { formatArchiveDate, formatDuration } from '../lib/format';
+import { recordingTrack } from '../lib/player/track';
 import { artworkPath, textPath, workPath } from '../lib/routes';
 import { Image } from 'astro:assets';
 
@@ -22,7 +23,14 @@ const showcase = (featured === undefined ? [] : archive.showcaseTexts(featured))
     const versions = archive.recordingVersions(text);
     const [drawing] = archive.illustrationsOf(text);
     return versions.kind === 'available' && drawing !== undefined
-      ? [{ text, recording: versions.primary, drawing, href: textPath(archive.workOf(text), text) }]
+      ? [
+          {
+            text,
+            recording: versions.primary,
+            drawing,
+            href: textPath(archive.workOf(text), text),
+          },
+        ]
       : [];
   });
 const drawings = archive
@@ -78,13 +86,22 @@ const drawings = archive
       <ul>
         {showcase.map(({ text, recording, drawing, href }) => (
           <li>
-            <FramedArtwork
-              artwork={drawing}
-              sizes="(min-width: 900px) 22vw, (min-width: 560px) 45vw, 90vw"
-              caption={false}
-              link={false}
-              widths={[320, 480, 720]}
-            />
+            <div class="picture">
+              <FramedArtwork
+                artwork={drawing}
+                sizes="(min-width: 900px) 22vw, (min-width: 560px) 45vw, 90vw"
+                caption={false}
+                link={false}
+                widths={[320, 480, 720]}
+              />
+              <PlayerButton
+                action="play"
+                tracks={[recordingTrack(recording, href)]}
+                label={es.recording.play(text.data.title)}
+                pauseLabel={es.recording.pause(text.data.title)}
+                class="showcase-play"
+              />
+            </div>
             <h3>
               <a href={href}>{text.data.title}</a>
             </h3>
@@ -227,6 +244,18 @@ const drawings = archive
   }
   .showcase li {
     position: relative;
+  }
+  .picture {
+    position: relative;
+  }
+  .picture :global(.showcase-play) {
+    position: absolute;
+    z-index: 1;
+    left: 0.75rem;
+    bottom: 0.75rem;
+    width: 3.25rem;
+    height: 3.25rem;
+    box-shadow: 0 0 0 3px var(--paper);
   }
   .showcase li:hover :global(img) {
     border-color: var(--ochre);

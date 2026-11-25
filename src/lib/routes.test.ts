@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { aText, aVideo, aWork, anArtwork } from '../../tests/support/builders';
+import { aRecording, aText, aVideo, aWork, anArtwork } from '../../tests/support/builders';
 import {
   adminEditPath,
   artworkPath,
+  audioPath,
   currentSection,
   permalinkPath,
   sectionPath,
@@ -33,6 +34,12 @@ describe('routes', () => {
   it('places gallery images and videos at their permanent id', () => {
     expect(artworkPath(anArtwork('alcalde-de-la-cancion'))).toBe('/galeria/alcalde-de-la-cancion/');
     expect(videoPath(aVideo('america-precolombina'))).toBe('/videos/america-precolombina/');
+  });
+
+  it('serves the audio of a recording under /audio/ by its file name', () => {
+    expect(audioPath(aRecording('r-0001', { audio: 'cordillera-real-lp.mp3' }))).toBe(
+      '/audio/cordillera-real-lp.mp3',
+    );
   });
 
   it('builds the permanent link of an id', () => {

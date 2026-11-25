@@ -1,14 +1,18 @@
 ---
 /**
- * Recordings of a text or a collection, each playable (RF-17). The primary version is
- * highlighted. Until the persistent player arrives (H3), each row uses the native player.
+ * Recordings of a text or a collection (RF-17), each with a button that plays it in the
+ * persistent player and one that adds it to the queue (RF-48). The primary version is
+ * highlighted.
  *
  * Audio-only content needs a transcript, not captions (WCAG 1.2.1): the lyrics. On a text
- * page they are next to the player; elsewhere each recording links to its text.
+ * page they are next to the list; elsewhere each recording links to its text, and so does
+ * its title in the player.
  */
 import { es } from '../i18n/es';
 import type { RecordingEntry } from '../lib/content/collections';
 import { formatArchiveDate, formatDuration } from '../lib/format';
+import { recordingTrack } from '../lib/player/track';
+import PlayerButton from './player/PlayerButton.astro';
 
 export interface TextLink {
   readonly title: string;
@@ -22,6 +26,13 @@ interface Props {
   label: string;
   /** Links to the texts each recording is a version of, by recording id. */
   texts?: ReadonlyMap<string, readonly TextLink[]>;
+  /** The page of the lyrics of every recording in the list (on a text page). */
+  textHref?: string;
+  /**
+   * Whether playing one recording goes on with the following ones, like an album. Versions
+   * of one song are not continuous; a collection is.
+   */
+  continuous?: boolean;
 }
 
 const {
@@ -29,7 +40,12 @@ const {
   primaryId,
   label,
   texts = new Map<string, readonly TextLink[]>(),
+  textHref,
+  continuous = false,
 } = Astro.props;
+const tracks = recordings.map((recording) =>
+  recordingTrack(recording, textHref ?? texts.get(recording.id)?.[0]?.href),
+);
 
 function details(recording: RecordingEntry): string {
   const { collection, date } = recording.data;
@@ -40,12 +56,20 @@ function details(recording: RecordingEntry): string {
 ---
 
 <ul class="recordings" aria-label={label}>
-  {recordings.map((recording) => {
+  {recordings.map((recording, index) => {
     const versionOf = texts.get(recording.id) ?? [];
+    const { title } = recording.data;
     return (
       <li class:list={{ primary: recording.id === primaryId }}>
+        <PlayerButton
+          action="play"
+          tracks={continuous ? tracks : tracks.slice(index, index + 1)}
+          start={continuous ? index : 0}
+          label={es.recording.play(title)}
+          pauseLabel={es.recording.pause(title)}
+        />
         <div class="about">
-          <strong>{recording.data.title}</strong>
+          <strong>{title}</strong>
           <span>
             {recording.id === primaryId && `${es.recording.primary}. `}
             {details(recording)}
@@ -53,9 +77,9 @@ function details(recording: RecordingEntry): string {
           {versionOf.length > 0 && (
             <span>
               {es.listen.versionOf}{' '}
-              {versionOf.map((text, index) => (
+              {versionOf.map((text, linkIndex) => (
                 <>
-                  {index > 0 && ', '}
+                  {linkIndex > 0 && ', '}
                   <a href={text.href}>{text.title}</a>
                 </>
               ))}
@@ -63,12 +87,13 @@ function details(recording: RecordingEntry): string {
           )}
         </div>
         <span class="duration">{formatDuration(recording.data.durationSeconds)}</span>
-        {/* eslint-disable-next-line astro/jsx-a11y/media-has-caption -- audio only: its transcript is the lyrics, shown or linked next to it (WCAG 1.2.1) */}
-        <audio
-          controls
-          preload="none"
-          src={`/audio/${recording.data.audio}`}
-          aria-label={es.recording.listen(recording.data.title)}
+        <PlayerButton
+          action="enqueue"
+          tracks={tracks.slice(index, index + 1)}
+          label={es.recording.enqueue(title)}
+          text={es.recording.enqueueShort}
+          variant="quiet"
+          class="enqueue"
         />
       </li>
     );
@@ -85,7 +110,8 @@ function details(recording: RecordingEntry): string {
   }
   li {
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: auto 1fr auto auto;
+    align-items: center;
     gap: 0.4rem 1rem;
     padding: 0.75rem 0.9rem;
     border: 2px solid var(--ink);
@@ -108,9 +134,13 @@ function details(recording: RecordingEntry): string {
   .duration {
     font-variant-numeric: tabular-nums;
   }
-  audio {
-    grid-column: 1 / -1;
-    width: 100%;
-    height: 2.25rem;
+  @media (max-width: 520px) {
+    li {
+      grid-template-columns: auto 1fr auto;
+    }
+    li :global(.enqueue) {
+      grid-column: 2 / -1;
+      justify-self: start;
+    }
   }
 </style>

@@ -54,6 +54,7 @@ const subtitle = es.kinds[text.data.kind];
             recordings={[versions.primary, ...versions.others]}
             primaryId={versions.primary.id}
             label={es.text.recordingsHeading}
+            textHref={Astro.url.pathname}
           />
         ) : (
           <p class="unavailable">{es.text.recordingUnavailable}</p>

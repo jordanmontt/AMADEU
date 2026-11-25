@@ -10,6 +10,7 @@
 import type {
   ArtworkEntry,
   CollectionName,
+  RecordingEntry,
   TextEntry,
   VideoEntry,
   WorkEntry,
@@ -66,6 +67,11 @@ export function artworkPath(artwork: ArtworkEntry): string {
 
 export function videoPath(video: VideoEntry): string {
   return `/videos/${video.id}/`;
+}
+
+/** Where the audio of a published recording is served (RT-21). */
+export function audioPath(recording: RecordingEntry): string {
+  return `/audio/${recording.data.audio}`;
 }
 
 export function permalinkPath(entryId: string): string {

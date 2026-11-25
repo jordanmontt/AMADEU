@@ -58,8 +58,37 @@ export const es = {
     page: (pages: string) => `p. ${pages}`,
   },
   recording: {
-    listen: (title: string) => `Escuchar «${title}»`,
+    play: (title: string) => `Escuchar «${title}»`,
+    pause: (title: string) => `Pausar «${title}»`,
+    enqueue: (title: string) => `Agregar «${title}» a la cola`,
+    enqueueShort: 'A la cola',
     primary: 'Versión principal',
+  },
+  player: {
+    label: 'Reproductor',
+    play: 'Reproducir',
+    pause: 'Pausar',
+    previous: 'Anterior',
+    next: 'Siguiente',
+    position: 'Posición en la grabación',
+    positionText: (elapsed: string, total: string) => `${elapsed} de ${total}`,
+    queue: 'Cola',
+    queueHeading: 'Cola de reproducción',
+    /** Read after the count on the queue button: "Cola 2 grabaciones". */
+    queueUnit: (count: number) => (count === 1 ? 'grabación' : 'grabaciones'),
+    remove: (title: string) => `Quitar «${title}» de la cola`,
+    nowPlaying: 'Sonando',
+    lyrics: 'Ver la letra',
+    added: (count: number) =>
+      count === 0
+        ? 'Ya estaba en la cola.'
+        : count === 1
+          ? 'Agregada a la cola.'
+          : `${String(count)} grabaciones agregadas a la cola.`,
+    loadError: (title: string) => `No se pudo cargar «${title}».`,
+    playWork: 'Escuchar toda la obra',
+    playWorkSummary: (count: number, duration: string) =>
+      `${String(count)} ${count === 1 ? 'grabación' : 'grabaciones'}, ${duration}`,
   },
   listen: {
     title: 'Escuchar',

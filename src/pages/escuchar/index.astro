@@ -27,7 +27,7 @@ const texts = new Map(
       return (
         <section aria-labelledby={`collection-${index}`}>
           <h2 id={`collection-${index}`}>{heading}</h2>
-          <RecordingList recordings={group.recordings} label={heading} texts={texts} />
+          <RecordingList recordings={group.recordings} label={heading} texts={texts} continuous />
         </section>
       );
     })}

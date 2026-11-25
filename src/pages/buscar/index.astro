@@ -17,14 +17,48 @@ import { es } from '../../i18n/es';
     </noscript>
   </div>
   <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
-  <script is:inline src="/pagefind/pagefind-ui.js"></script>
-  <script is:inline>
-    window.addEventListener('DOMContentLoaded', () => {
-      // eslint-disable-next-line no-undef
+</BaseLayout>
+
+<script>
+  /*
+   * Starts Pagefind's search box each time this page is shown. Navigation is client-side
+   * (ClientRouter), which runs a page's inline scripts without waiting for its external ones,
+   * so Pagefind's script is loaded here, once, and the box is created when it is ready.
+   * Pagefind's files only exist in a build (`npm run build`), not under `astro dev`.
+   */
+  interface PagefindUIOptions {
+    element: string;
+    showSubResults: boolean;
+    showImages: boolean;
+  }
+  type PagefindUIConstructor = new (options: PagefindUIOptions) => unknown;
+
+  let pagefindUI: Promise<PagefindUIConstructor> | undefined;
+
+  function loadPagefindUI(): Promise<PagefindUIConstructor> {
+    pagefindUI ??= new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = '/pagefind/pagefind-ui.js';
+      script.addEventListener('load', () => {
+        resolve((window as unknown as { PagefindUI: PagefindUIConstructor }).PagefindUI);
+      });
+      script.addEventListener('error', () => {
+        reject(new Error('Could not load /pagefind/pagefind-ui.js'));
+      });
+      document.head.append(script);
+    });
+    return pagefindUI;
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    if (document.querySelector('#search') === null) {
+      return;
+    }
+    void loadPagefindUI().then((PagefindUI) => {
       new PagefindUI({ element: '#search', showSubResults: true, showImages: false });
     });
-  </script>
-</BaseLayout>
+  });
+</script>
 
 <style>
   .search {

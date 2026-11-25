@@ -1,0 +1,134 @@
+---
+/**
+ * A button that hands tracks to the persistent player (RF-48). It works by data attributes
+ * only: the player script listens to clicks on `[data-player-action]` anywhere in the page,
+ * so the button needs no script of its own and keeps working after client-side navigation.
+ *
+ * - `play` replaces the queue with `tracks` and plays from `start`. A button that plays a
+ *   single recording (`toggles`) turns into a pause button while that recording sounds.
+ * - `enqueue` adds `tracks` at the end of the queue.
+ */
+import type { Track } from '../../lib/player/track';
+
+interface Props {
+  action: 'play' | 'enqueue';
+  tracks: readonly Track[];
+  start?: number;
+  /**
+   * Accessible name while not playing. With a visible `text`, it must contain that text
+   * (WCAG 2.5.3, label in name), e.g. text "A la cola", label "Agregar «X» a la cola".
+   */
+  label: string;
+  /** Accessible name while this button's recording is playing; makes the button a toggle. */
+  pauseLabel?: string;
+  /** Visible text; without it the button shows only its icon. */
+  text?: string;
+  variant?: 'round' | 'quiet' | 'prominent';
+  class?: string;
+}
+
+const {
+  action,
+  tracks,
+  start = 0,
+  label,
+  pauseLabel,
+  text,
+  variant = 'round',
+  class: className,
+} = Astro.props;
+const toggles = pauseLabel === undefined ? undefined : tracks[start]?.id;
+---
+
+<button
+  type="button"
+  class:list={['player-button', variant, className]}
+  data-player-action={action}
+  data-player-tracks={JSON.stringify(tracks)}
+  data-player-start={start}
+  data-player-track={toggles}
+  data-label-play={label}
+  data-label-pause={pauseLabel}
+  aria-label={label}
+>
+  {action === 'play' ? (
+    <>
+      <svg class="icon play" viewBox="0 0 18 20" aria-hidden="true">
+        <path d="M3 1.5l13 8.5-13 8.5z" fill="currentColor" />
+      </svg>
+      <svg class="icon pause" viewBox="0 0 18 20" aria-hidden="true">
+        <path d="M3 2h4v16H3zM11 2h4v16h-4z" fill="currentColor" />
+      </svg>
+    </>
+  ) : (
+    <svg class="icon" viewBox="0 0 20 20" aria-hidden="true">
+      <path d="M9 3h2v6h6v2h-6v6H9v-6H3V9h6z" fill="currentColor" />
+    </svg>
+  )}
+  {text !== undefined && <span>{text}</span>}
+</button>
+
+<style>
+  .player-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: 0;
+    cursor: pointer;
+    font: inherit;
+    color: var(--paper);
+    background: var(--ink);
+    flex: none;
+  }
+  .player-button:hover {
+    background: var(--flag);
+  }
+  .icon {
+    width: 1rem;
+    height: 1rem;
+  }
+  .pause,
+  [data-playing] .play {
+    display: none;
+  }
+  [data-playing] .pause {
+    display: block;
+  }
+  .round {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+  }
+  .round .play {
+    margin-left: 0.15rem;
+  }
+  .round[data-playing] {
+    background: var(--frame);
+  }
+  .quiet {
+    background: transparent;
+    color: var(--ink);
+    border: 2px solid var(--ink);
+    padding: 0.3rem 0.65rem;
+    font-size: var(--step--1);
+  }
+  .quiet:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .quiet .icon {
+    width: 0.8rem;
+    height: 0.8rem;
+  }
+  .prominent {
+    background: var(--ochre);
+    color: var(--ink);
+    font-weight: 600;
+    padding: 0.75rem 1.2rem;
+  }
+  .prominent:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+</style>

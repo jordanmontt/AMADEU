@@ -1,5 +1,5 @@
 import AxeBuilder from '@axe-core/playwright';
-import { expect, test } from '@playwright/test';
+import { expect, test } from './support/test';
 
 /** WCAG 2.2 AA (RF-56, RT-42): no automatically detectable violations on key pages. */
 const PAGES = [

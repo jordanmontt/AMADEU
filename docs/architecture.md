@@ -87,6 +87,8 @@ flowchart TB
   integrity[src/lib/content/integrity.ts: cross-entry rules]
   tasks[src/lib/content/pending-tasks.ts: Foundation's pending tasks]
   audio[src/data/audio.ts + src/pages/audio: publish audio, re-encode > 25 MiB]
+  player[src/components/player: persistent player, browser only]
+  queue[src/lib/player: tracks and play queue]
   pages[src/pages/*: routes]
   components[src/components/*]
   i18n[src/i18n/es.ts: UI strings]
@@ -106,6 +108,8 @@ flowchart TB
   loader --> tasks
   pages --> tasks
   pages --> audio
+  components --> player
+  player --> queue
 ```
 
 Rules that keep the code testable and replaceable:
@@ -116,7 +120,8 @@ Rules that keep the code testable and replaceable:
 - **Components receive plain data as props** and render it; they are tested with the Astro Container API.
 - **UI text comes from `src/i18n/es.ts`**, never hard-coded.
 - **Styles** are plain CSS: design tokens and base typography in `src/styles/` ([ADR 0048](adr/0048-watercolour-visual-identity.md)), everything else scoped in each component.
-- **Shared page parts** are components: `SiteHeader`, `SiteFooter`, `PageBand` (the colour band that opens a page), `FramedArtwork` (an artwork in the green frame, optimized by Astro), `Verses`, `RecordingList`, `RecordFields` (the archival record), `WorkCard`, `WorkContents`, `VideoFacade` (YouTube loaded on click), `PendingTaskList`.
+- **Shared page parts** are components: `SiteHeader`, `SiteFooter`, `PageBand` (the colour band that opens a page), `FramedArtwork` (an artwork in the green frame, optimized by Astro), `Verses`, `RecordingList`, `RecordFields` (the archival record), `WorkCard`, `WorkContents`, `VideoFacade` (YouTube loaded on click), `PendingTaskList`, and the player's `AudioPlayer` and `PlayerButton`.
+- **Browser scripts** are plain TypeScript, without a framework: custom elements (`video-facade`, `amadeu-player`) and document-level listeners. Their logic that can be tested without a browser lives in `src/lib/` (for example `src/lib/player/queue.ts`); the rest is covered by E2E tests.
 - **Domain helpers for pages** live in `src/lib/`: `record.ts` (record fields mapped to Dublin Core), `format.ts` (dates, durations, stanzas), `youtube.ts`.
 
 ### 4.1 Content model
@@ -182,7 +187,27 @@ Relations to filtered-out entries stay in the data; the `Catalog` simply does no
 
 `src/pages/audio/[file].ts` is a static endpoint with one path per **published** recording. At build time it reads the file from `media/audio/` and, through `audioPublishing()`, either copies it or re-encodes it to mono 64 kbps with ffmpeg when it exceeds Cloudflare Pages' 25 MiB limit ([ADR 0045](adr/0045-long-audio-recompressed-at-build.md)).
 
-### 5.5 Permanent links
+### 5.5 Persistent player
+
+```mermaid
+sequenceDiagram
+  participant Page as Page button (data-player-action)
+  participant Doc as document click listener
+  participant Player as amadeu-player (persisted)
+  participant Queue as PlayQueue
+  participant Audio as Audio (detached)
+  Page->>Doc: click
+  Doc->>Player: play(tracks, start) / enqueue(tracks)
+  Player->>Queue: replace / append
+  Player->>Audio: src = current track, play()
+  Audio-->>Player: play, pause, timeupdate, ended
+  Player-->>Doc: amadeu:player-change (track, playing)
+  Doc-->>Page: buttons show play or pause
+```
+
+Navigation is client-side (`<ClientRouter />`); `transition:persist` keeps the same `<amadeu-player>` element across pages, and its `Audio` object is never in the document, so nothing interrupts it ([ADR 0049](adr/0049-persistent-player-implementation.md)).
+
+### 5.6 Permanent links
 
 `/id/<id>/` pages are generated from `Catalog.permalinks()` as static redirect pages (`Astro.redirect` in static output produces a `meta refresh` page). This works on any static host and inside the future Android app. On Cloudflare, a `_redirects` file can be added later for an instant HTTP redirect.
 
@@ -202,13 +227,15 @@ Media always ship with the site; there is no separate media host and no payment 
 - **Testing** ([ADR 0040](adr/0040-testing-strategy.md)): unit (`src/lib/**/*.test.ts`), content integrity (`tests/content/`), component (`src/components/**/*.test.ts`), E2E with axe (`tests/e2e/`). Test data comes from builders (`tests/support/builders.ts`) that parse through the real schemas.
 - **Accessibility:** baseline rules in `src/styles/base.css` (target size, focus), lint rules (`jsx-a11y`), automated axe checks per page.
 - **i18n:** `src/i18n/es.ts`; Astro i18n routing when English is added.
+- **Client-side navigation:** pages are swapped without reloading (`<ClientRouter />`). Scripts that set up a page listen to `astro:page-load`, not `DOMContentLoaded`.
 - **Configuration:** environment variable `CONTENT_DIR` (see `.env.example`).
 
 ## 8. Risks and technical debt
 
 | Item | Mitigation |
 |---|---|
-| iOS Safari may interrupt persistent audio | WebKit E2E run; fallback design in H3 |
+| iOS Safari may interrupt persistent audio | Player E2E tests run in WebKit; check on a real iPhone before launch |
+| A full page reload empties the player's queue | Acceptable for v1; restore it from `sessionStorage` if needed ([ADR 0049](adr/0049-persistent-player-implementation.md)) |
 | Repository grows with media (≈ 500 MB expected) | Monitor size; migrate content to its own repository via `CONTENT_DIR` if needed ([ADR 0044](adr/0044-media-in-the-repository.md)) |
 | Long audio published at reduced quality (mono 64 kbps) | Known limitation; full quality kept in the repository and on Internet Archive ([ADR 0045](adr/0045-long-audio-recompressed-at-build.md)) |
 | GoatCounter is maintained by one person | Migrate to Cloudflare Web Analytics if needed |

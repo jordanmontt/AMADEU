@@ -1,7 +1,11 @@
 ---
 /**
- * Page shell: language, metadata, skip link (WCAG 2.4.1), header, footer.
+ * Page shell: language, metadata, skip link (WCAG 2.4.1), header, footer and the persistent
+ * audio player. Navigation between pages is client-side (Astro's ClientRouter), which keeps
+ * the player sounding across pages (RF-47, ADR 0049).
  */
+import { ClientRouter } from 'astro:transitions';
+import AudioPlayer from '../components/player/AudioPlayer.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import { es } from '../i18n/es';
@@ -28,6 +32,7 @@ const fullTitle = title === undefined ? es.site.name : `${title} · ${es.site.na
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{fullTitle}</title>
+    <ClientRouter />
   </head>
   <body>
     <a class="skip-link" href="#content">
@@ -38,6 +43,7 @@ const fullTitle = title === undefined ? es.site.name : `${title} · ${es.site.na
       <slot />
     </main>
     <SiteFooter />
+    <AudioPlayer />
   </body>
 </html>
 

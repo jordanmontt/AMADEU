@@ -29,7 +29,7 @@ See [architecture.md](architecture.md) for C4 diagrams. In short:
 | Language | **TypeScript 6.0.x**, strict | Pinned to the 6.0 line: required by `@astrojs/check` and `typescript-eslint` ([ADR 0042](adr/0042-code-quality-tooling.md)). |
 | Runtime | **Node 24 LTS** | Pinned in `.nvmrc` and `engines`. |
 | Interactivity | TypeScript, no UI framework (Web Components / plain modules) | The player and animations do not need React. Re-evaluate (e.g. Preact) only if a component justifies it. |
-| Persistent navigation | Astro View Transitions (`<ClientRouter />`) + `transition:persist` | Keeps the player alive across pages (RF-47). |
+| Persistent navigation | Astro View Transitions (`<ClientRouter />`) + `transition:persist` | Keeps the player alive across pages (RF-47, [ADR 0049](adr/0049-persistent-player-implementation.md)). |
 | PWA | `@vite-pwa/astro` (Workbox) | Manifest, install, offline cache (RF-53, RF-54). |
 | Search | **Pagefind** | Static index built after `astro build` (`npm run build` runs both); default UI themed with the design tokens (RF-35). |
 | Image viewer | PhotoSwipe (MIT) or an equivalent light library | Zoom and pan (RF-27). |
