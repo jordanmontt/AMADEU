@@ -1,4 +1,5 @@
-import { expect, test, type Page } from '@playwright/test';
+import { type Page } from '@playwright/test';
+import { expect, test } from './support/test';
 
 /**
  * Installable site, readable offline after the first visit (RF-53, RF-54, ADR 0052). The
@@ -15,7 +16,7 @@ async function firstVisit(page: Page): Promise<void> {
 }
 
 test.describe('offline and installable', () => {
-  test('describes the app and serves its icons', async ({ request }) => {
+  test('describes the app and serves its icons (RF-53)', async ({ request }) => {
     const response = await request.get('/manifest.webmanifest');
     const manifest = (await response.json()) as { name: string; icons: { src: string }[] };
 
@@ -26,7 +27,10 @@ test.describe('offline and installable', () => {
     }
   });
 
-  test('opens pages never visited, without a connection', async ({ page, context }) => {
+  test('opens pages never visited, without a connection (RF-36, RF-54) @phone', async ({
+    page,
+    context,
+  }) => {
     await firstVisit(page);
     await context.setOffline(true);
 
@@ -41,7 +45,7 @@ test.describe('offline and installable', () => {
     await expect(page.getByRole('link', { name: /Dibujo de prueba/ })).toBeVisible();
   });
 
-  test('searches without a connection', async ({ page, context }) => {
+  test('searches without a connection (RF-54)', async ({ page, context }) => {
     await firstVisit(page);
     await context.setOffline(true);
 
@@ -51,7 +55,7 @@ test.describe('offline and installable', () => {
     await expect(page.getByRole('link', { name: 'Romance de prueba' })).toBeVisible();
   });
 
-  test('says that a recording needs a connection', async ({ page, context }) => {
+  test('says that a recording needs a connection (RF-54)', async ({ page, context }) => {
     await firstVisit(page);
     await page.goto('/sangre-y-sueno/cordillera-real/');
     await context.setOffline(true);

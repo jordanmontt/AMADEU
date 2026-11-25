@@ -17,6 +17,9 @@ const texts = new Map(
     })),
   ]),
 );
+const credits = new Map(
+  archive.recordings().map((recording) => [recording.id, archive.creditsOf(recording)]),
+);
 ---
 
 <BaseLayout title={es.listen.title}>
@@ -27,7 +30,13 @@ const texts = new Map(
       return (
         <section aria-labelledby={`collection-${index}`}>
           <h2 id={`collection-${index}`}>{heading}</h2>
-          <RecordingList recordings={group.recordings} label={heading} texts={texts} continuous />
+          <RecordingList
+            recordings={group.recordings}
+            label={heading}
+            texts={texts}
+            credits={credits}
+            continuous
+          />
         </section>
       );
     })}

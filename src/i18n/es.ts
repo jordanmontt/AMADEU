@@ -52,6 +52,9 @@ export const es = {
     provisionalNote:
       'Texto provisional, tomado de la edición indicada en la ficha. Será reemplazado por el texto de la edición conmemorativa.',
     dedicationLabel: 'Dedicatoria',
+    /** Other titles the text was published or recorded under (RF-35). */
+    altTitles: (titles: readonly { title: string; source: string }[]) =>
+      `También titulado ${titles.map(({ title, source }) => `«${title}» (${source})`).join(', ')}.`,
     notesHeading: 'Notas de la edición',
     criticalNotesHeading: 'Notas críticas',
     illustrationsHeading: 'Dibujos',
@@ -65,6 +68,9 @@ export const es = {
     enqueue: (title: string) => `Agregar «${title}» a la cola`,
     enqueueShort: 'A la cola',
     primary: 'Versión principal',
+    /** One credit of a recording: "Dirección musical: Ana Pérez". */
+    credit: (role: string, name: string) =>
+      `${role.charAt(0).toUpperCase()}${role.slice(1)}: ${name}`,
   },
   player: {
     label: 'Reproductor',

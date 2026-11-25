@@ -91,7 +91,7 @@ describe('archival records', () => {
     ).toEqual(['series', 'date', 'duration', 'license', 'permalink']);
   });
 
-  it('maps every field to a Dublin Core element', () => {
+  it('maps every field to a Dublin Core element (RF-40, RF-41)', () => {
     expect(Object.values(DUBLIN_CORE).every((element) => /^dc(terms)?:\w+$/.test(element))).toBe(
       true,
     );

@@ -40,7 +40,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        browser: [chromium, firefox, webkit]
+        include:
+          # Each browser job also runs its phone project (Firefox has none in Playwright).
+          - browser: chromium
+            projects: --project=chromium --project=phone-chromium
+          - browser: firefox
+            projects: --project=firefox
+          - browser: webkit
+            projects: --project=webkit --project=phone-webkit
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -59,7 +66,7 @@ jobs:
           pulseaudio --start --exit-idle-time=-1
           pactl load-module module-null-sink sink_name=virtual
           pactl set-default-sink virtual
-      - run: npm run test:e2e -- --project=${{ matrix.browser }}
+      - run: npm run test:e2e -- ${{ matrix.projects }}
       - if: failure()
         uses: actions/upload-artifact@v4
         with:

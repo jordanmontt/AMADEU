@@ -1,4 +1,5 @@
-import { expect, test, type Locator, type Page } from '@playwright/test';
+import { type Locator, type Page } from '@playwright/test';
+import { expect, test } from './support/test';
 
 /**
  * "Alcalde de la canción" comes to life (RF-50 to RF-52): the hand strums while a song
@@ -16,6 +17,13 @@ function animationOf(page: Page, part: string): Promise<string> {
     .evaluate((element) => getComputedStyle(element).animationName);
 }
 
+/** The hand's current position on screen, as the browser computes it. */
+function handTransform(page: Page): Promise<string> {
+  return drawing(page)
+    .locator('[data-part="hand"]')
+    .evaluate((element) => getComputedStyle(element).transform);
+}
+
 async function playAlcalde(page: Page): Promise<void> {
   await page
     .getByRole('list', { name: 'Grabaciones' })
@@ -24,7 +32,7 @@ async function playAlcalde(page: Page): Promise<void> {
 }
 
 test.describe('animated drawing', () => {
-  test('is shown on its song page with its description, still while nothing sounds', async ({
+  test('is shown on its song page with its description, still while nothing sounds (RF-51)', async ({
     page,
   }) => {
     await page.goto('/sangre-y-sueno/alcalde-de-la-cancion/');
@@ -33,7 +41,7 @@ test.describe('animated drawing', () => {
     expect(await animationOf(page, 'hand')).toBe('none');
   });
 
-  test('strums while a song plays, and stops when it pauses', async ({ page }) => {
+  test('strums while a song plays, and stops when it pauses (RF-51) @phone', async ({ page }) => {
     await page.goto('/sangre-y-sueno/alcalde-de-la-cancion/');
 
     await playAlcalde(page);
@@ -41,6 +49,9 @@ test.describe('animated drawing', () => {
     await expect(drawing(page)).toHaveAttribute('data-playing');
     expect(await animationOf(page, 'hand')).toBe('strum');
     expect(await animationOf(page, 'feather')).toBe('sway');
+    // The hand really moves: its position on screen changes while the song plays.
+    const first = await handTransform(page);
+    await expect.poll(() => handTransform(page)).not.toBe(first);
 
     await page
       .getByRole('region', { name: 'Reproductor' })
@@ -49,9 +60,10 @@ test.describe('animated drawing', () => {
 
     await expect(drawing(page)).not.toHaveAttribute('data-playing');
     expect(await animationOf(page, 'hand')).toBe('none');
+    expect(await handTransform(page)).toBe('none');
   });
 
-  test('strums at once when reached while a song is already playing', async ({ page }) => {
+  test('strums at once when reached while a song is already playing (RF-51)', async ({ page }) => {
     await page.goto('/escuchar/');
     await page
       .getByRole('list', { name: 'LP Discolandia 1984' })
@@ -68,7 +80,7 @@ test.describe('animated drawing', () => {
     await expect(drawing(page)).toHaveAttribute('data-playing');
   });
 
-  test('writes its handwriting once, the first time it is seen', async ({ page }) => {
+  test('writes its handwriting once, the first time it is seen (RF-50)', async ({ page }) => {
     await page.goto('/galeria/dibujo-93/');
 
     await expect(drawing(page)).toHaveAttribute('data-written', '', { timeout: 15_000 });
@@ -86,7 +98,7 @@ test.describe('animated drawing', () => {
     await expect(drawing(page).locator('.ink-cover').first()).toBeHidden();
   });
 
-  test('is a plain picture in the gallery grid', async ({ page }) => {
+  test('is a plain picture in the gallery grid (RF-50)', async ({ page }) => {
     await page.goto('/galeria/');
 
     await expect(

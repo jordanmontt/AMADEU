@@ -15,7 +15,7 @@ import {
 describe('routes', () => {
   const work = aWork('sys', { slug: 'sangre-y-sueno' });
 
-  it('places a work at the root, using its explicit slug', () => {
+  it('places a work at the root, using its explicit slug (RF-61)', () => {
     expect(workPath(work)).toBe('/sangre-y-sueno/');
   });
 

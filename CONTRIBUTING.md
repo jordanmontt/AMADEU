@@ -52,6 +52,11 @@ See [ADR 0040](docs/adr/0040-testing-strategy.md).
 - Tests are isolated: no network, no files outside the repository, no shared state. Build test data with `tests/support/builders.ts`, which parses through the real schemas.
 - E2E tests run against `tests/fixtures/content/`, never the real content. If a test needs a new case, add it to the fixtures and update `tests/fixtures/content/README.md`.
 - New logic goes into `src/lib/` so it can be unit-tested; keep pages and components thin.
+- **Name the requirement a test checks** in its title: "shows the critical notes (RF-21)". `tests/requirements/coverage.test.ts` fails if a requirement of `docs/01-requerimientos-funcionales.md` is named by no test and is not in its "not checked yet" list (with the reason). When you implement a listed requirement, tag its tests and remove it from the list.
+- **Check what the visitor gets, not the code's own state:** that the audio position moves forward, not only that the player says it plays; that the hand moves on screen, not only that it has an animation.
+- **E2E tests import `test` from `tests/e2e/support/test.ts`.** It attaches the browser console to the report when a test fails, which explains failures that only happen in CI.
+- **Phones:** tests tagged `@phone` also run on a Pixel 7 and an iPhone 14 screen (`phone-chromium`, `phone-webkit`); `tests/e2e/phone.spec.ts` checks the layout and accessibility at that size. Tag the main journeys of new features.
+- **Keyboard:** `tests/e2e/keyboard.spec.ts` uses the site with the keyboard alone. Safari moves focus to links only with Option+Tab, which the tests use in WebKit.
 
 ## Adding a content collection or field
 

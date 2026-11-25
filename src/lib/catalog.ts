@@ -9,6 +9,7 @@ import type {
   ArtworkEntry,
   Collections,
   Entry,
+  PersonEntry,
   RecordingEntry,
   TextEntry,
   VideoEntry,
@@ -28,6 +29,12 @@ export type RecordingVersions =
     };
 
 /** Recordings that share a collection (an LP, the home recordings, recitals…). */
+/** A person's part in a recording, ready to show: "dirección musical: Ana Pérez". */
+export interface Credit {
+  readonly role: string;
+  readonly name: string;
+}
+
 /** A text and the recording that plays it in a work's playlist. */
 export interface PlaylistItem {
   readonly text: TextEntry;
@@ -80,6 +87,7 @@ export class Catalog {
   private readonly artworksById: Map<string, ArtworkEntry>;
   private readonly recordingsById: Map<string, RecordingEntry>;
   private readonly textsById: Map<string, TextEntry>;
+  private readonly peopleById: Map<string, PersonEntry>;
 
   /** Builds a catalog from already-published content. Prefer `Catalog.published()`. */
   constructor(content: Collections) {
@@ -88,6 +96,7 @@ export class Catalog {
     this.artworksById = indexById(content.artworks);
     this.recordingsById = indexById(content.recordings);
     this.textsById = indexById(content.texts);
+    this.peopleById = indexById(content.people);
   }
 
   /** The catalog of everything that may be published from `all`. */
@@ -230,6 +239,20 @@ export class Catalog {
       return { kind: 'unavailable' };
     }
     return { kind: 'available', primary, others: linked.filter((each) => each !== primary) };
+  }
+
+  /**
+   * Who did what on a recording (RF-17), with each person's name. Integrity checks guarantee
+   * that every credited person exists.
+   */
+  creditsOf(recording: RecordingEntry): Credit[] {
+    return recording.data.credits.map(({ person, role }) => {
+      const entry = this.peopleById.get(person);
+      if (entry === undefined) {
+        throw new Error(`Recording "${recording.id}" credits person "${person}", who is missing`);
+      }
+      return { role, name: entry.data.name };
+    });
   }
 
   /** Artworks that illustrate a text (their `texts` field points to it). */

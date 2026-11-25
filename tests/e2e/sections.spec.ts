@@ -34,7 +34,17 @@ test.describe('site sections', () => {
     await expect(page.getByRole('heading', { name: 'LP Discolandia 1984' })).toBeVisible();
   });
 
-  test('the gallery links each artwork to its record, which links back to its song', async ({
+  test('the listen page credits the performers and people of each recording (RF-17)', async ({
+    page,
+  }) => {
+    await page.goto('/escuchar/');
+
+    await expect(page.getByRole('list', { name: 'LP Discolandia 1984' })).toContainText(
+      'Dirección musical: Persona de prueba.',
+    );
+  });
+
+  test('the gallery links each artwork to its record, which links back to its song (RF-19, RF-29)', async ({
     page,
   }) => {
     await page.goto('/galeria/');
@@ -53,7 +63,7 @@ test.describe('site sections', () => {
     await expect(page.getByRole('link', { name: 'Texto pendiente' })).toHaveCount(0);
   });
 
-  test('a published video not yet on YouTube says so, and loads nothing from YouTube', async ({
+  test('a published video not yet on YouTube says so, and loads nothing from YouTube (RF-02, RF-08, RF-30)', async ({
     page,
   }) => {
     const youtube: string[] = [];
@@ -67,7 +77,7 @@ test.describe('site sections', () => {
     expect(youtube).toEqual([]);
   });
 
-  test('the biography shows its timeline oldest first', async ({ page }) => {
+  test('the biography shows its timeline oldest first (RF-32, RF-33)', async ({ page }) => {
     await page.goto('/marcelo/');
 
     await expect(page.locator('.timeline li .date')).toHaveText(['1952', '1984']);
@@ -80,7 +90,14 @@ test.describe('site sections', () => {
     await expect(page.getByRole('link', { name: 'Romance de prueba' })).toBeVisible();
   });
 
-  test('the search finds texts by their words', async ({ page }) => {
+  test('the search finds a text by its other title (RF-35)', async ({ page }) => {
+    await page.goto('/buscar/');
+    await page.getByRole('textbox', { name: 'Buscar' }).fill('Cordillera de los Andes');
+
+    await expect(page.getByRole('link', { name: 'Cordillera Real' })).toBeVisible();
+  });
+
+  test('the search finds texts by their words (RF-35)', async ({ page }) => {
     await page.goto('/');
     // Reached by client-side navigation, as visitors do: the search box must still start.
     await page
@@ -93,7 +110,9 @@ test.describe('site sections', () => {
     await expect(page.getByRole('link', { name: 'Cordillera Real' })).toBeVisible();
   });
 
-  test('a YouTube video loads its privacy-enhanced player only after a click', async ({ page }) => {
+  test('a YouTube video loads its privacy-enhanced player only after a click (RF-31)', async ({
+    page,
+  }) => {
     const external: string[] = [];
     const isExternal = (url: URL): boolean => /youtube|ytimg|google/.test(url.hostname);
     await page.route(isExternal, async (route) => {

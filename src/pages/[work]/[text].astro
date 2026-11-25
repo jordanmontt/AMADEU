@@ -31,6 +31,12 @@ const { work, text } = Astro.props;
 const archive = await catalog();
 const section = archive.sectionOf(text);
 const versions = archive.recordingVersions(text);
+const credits = new Map(
+  (versions.kind === 'available' ? [versions.primary, ...versions.others] : []).map((recording) => [
+    recording.id,
+    archive.creditsOf(recording),
+  ]),
+);
 const illustrations = archive.illustrationsOf(text);
 const facsimile = archive.facsimileOf(text);
 const record = textRecord(archive, text);
@@ -55,11 +61,15 @@ const subtitle = es.kinds[text.data.kind];
             primaryId={versions.primary.id}
             label={es.text.recordingsHeading}
             textHref={Astro.url.pathname}
+            credits={credits}
           />
         ) : (
           <p class="unavailable">{es.text.recordingUnavailable}</p>
         )}
       </section>
+      {text.data.altTitles.length > 0 && (
+        <p class="alt-titles">{es.text.altTitles(text.data.altTitles)}</p>
+      )}
       {text.data.dedication && (
         <p class="dedication">
           <span class="visually-hidden">{es.text.dedicationLabel}: </span>
@@ -130,6 +140,11 @@ const subtitle = es.kinds[text.data.kind];
     padding: 0.75rem 0.9rem;
     margin: 0;
     color: var(--ink-soft);
+  }
+  .alt-titles {
+    color: var(--ink-soft);
+    margin: 0 0 1.5rem;
+    max-width: var(--measure-verse);
   }
   .dedication {
     font-style: italic;

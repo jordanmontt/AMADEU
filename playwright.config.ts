@@ -15,10 +15,15 @@ export default defineConfig({
     baseURL: `http://localhost:${PORT}`,
     trace: 'on-first-retry',
   },
+  // Desktop browsers run every test except the phone checks. The phone projects run the
+  // phone checks and the main journeys, tagged @phone, on Android and iPhone screens.
+  // Firefox has no phone emulation in Playwright.
   projects: [
-    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
-    { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
-    { name: 'webkit', use: { ...devices['Desktop Safari'] } },
+    { name: 'chromium', use: { ...devices['Desktop Chrome'] }, testIgnore: /phone\.spec\.ts/ },
+    { name: 'firefox', use: { ...devices['Desktop Firefox'] }, testIgnore: /phone\.spec\.ts/ },
+    { name: 'webkit', use: { ...devices['Desktop Safari'] }, testIgnore: /phone\.spec\.ts/ },
+    { name: 'phone-chromium', use: { ...devices['Pixel 7'] }, grep: /@phone/ },
+    { name: 'phone-webkit', use: { ...devices['iPhone 14'] }, grep: /@phone/ },
   ],
   webServer: {
     command: `npm run build:e2e && npx astro preview --outDir dist-e2e --port ${PORT}`,
