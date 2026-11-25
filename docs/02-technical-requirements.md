@@ -30,7 +30,7 @@ See [architecture.md](architecture.md) for C4 diagrams. In short:
 | Runtime | **Node 24 LTS** | Pinned in `.nvmrc` and `engines`. |
 | Interactivity | TypeScript, no UI framework (Web Components / plain modules) | The player and animations do not need React. Re-evaluate (e.g. Preact) only if a component justifies it. |
 | Persistent navigation | Astro View Transitions (`<ClientRouter />`) + `transition:persist` | Keeps the player alive across pages (RF-47, [ADR 0049](adr/0049-persistent-player-implementation.md)). |
-| PWA | `@vite-pwa/astro` (Workbox) | Manifest, install, offline cache (RF-53, RF-54). |
+| PWA | **Workbox** (`workbox-build`), run after the build and Pagefind | Manifest, install, offline cache including the search index (RF-53, RF-54, [ADR 0052](adr/0052-service-worker-after-the-build.md)). |
 | Search | **Pagefind** | Static index built after `astro build` (`npm run build` runs both); default UI themed with the design tokens (RF-35). |
 | Image viewer | PhotoSwipe (MIT) or an equivalent light library | Zoom and pan (RF-27). |
 | Animations | Raster layers cut from the scan with `sharp`, moved with CSS | No heavy libraries, no new tools (RF-50, [ADR 0051](adr/0051-raster-layer-animations.md)). |
@@ -206,7 +206,7 @@ Works live at the root (`/<work-slug>/`, [ADR 0038](adr/0038-works-at-root-path.
 
 - **RT-40. PWA** (RF-53, RF-54):
   - manifest with name, icons derived from the logo, and identity colours;
-  - Workbox service worker that **precaches** the shell, text pages and the Pagefind index;
+  - Workbox service worker that **precaches** every page and the Pagefind index ([ADR 0052](adr/0052-service-worker-after-the-build.md));
   - images cached on visit (stale-while-revalidate);
   - audio and video **not** cached.
 - **RT-41. Performance budget:** < 100 KB of JavaScript on text pages; Lighthouse Performance ≥ 90 on mobile; images with `loading="lazy"`, explicit dimensions and `srcset`.

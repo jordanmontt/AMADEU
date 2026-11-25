@@ -10,7 +10,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && pagefind --site dist",
+    "build": "astro build && pagefind --site dist && tsx scripts/pwa/service-worker.ts dist",
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",
@@ -20,7 +20,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "build:e2e": "CONTENT_DIR=tests/fixtures/content astro build --outDir dist-e2e && pagefind --site dist-e2e",
+    "build:e2e": "CONTENT_DIR=tests/fixtures/content astro build --outDir dist-e2e && pagefind --site dist-e2e && tsx scripts/pwa/service-worker.ts dist-e2e",
     "test:e2e": "playwright test",
     "verify": "npm run check && npm run lint && npm run format:check && npm run test:coverage && npm run build"
   },
@@ -47,6 +47,7 @@
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.74.0",
     "vitest": "^5.1.1",
+    "workbox-build": "^7.4.1",
     "yaml": "^2.9.1"
   }
 }

@@ -33,3 +33,5 @@ Project terms, one line each. Spanish words in parentheses are what the Foundati
 - **Moving part** (parte que se mueve): a piece of an animated drawing (the hand, the feather, a cloud) with its outline, pivot and motion.
 - **Repair** (reparación): ink drawn on the background where a moving part uncovers the paper.
 - **Writing band** (línea manuscrita): a handwritten line of a drawing, revealed as if being written.
+- **Service worker**: the script the browser keeps to serve the site offline (`sw.js`, generated after the build).
+- **Precache** (guardado previo): the files the service worker downloads on the first visit, so they work offline before being opened.
