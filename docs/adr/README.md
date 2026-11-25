@@ -60,3 +60,4 @@ Each design decision is recorded in a short file with context, decision, consequ
 | [0050](0050-trailing-slash-ignore.md) | URLs end in a slash by convention, not by the `trailingSlash` setting | Accepted |
 | [0051](0051-raster-layer-animations.md) | Drawing animations from raster layers cut from the scan | Accepted |
 | [0052](0052-service-worker-after-the-build.md) | Service worker generated with Workbox after the build and the search index | Accepted |
+| [0053](0053-filters-in-the-browser.md) | Filters of Escuchar, Galería and Leer run in the browser, kept in the URL | Accepted |

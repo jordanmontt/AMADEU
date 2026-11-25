@@ -105,6 +105,8 @@ export const es = {
     intro:
       'Todas las grabaciones del archivo: canciones, recitales y lecturas de Marcelo de Urioste.',
     noCollection: 'Otras grabaciones',
+    filtersLabel: 'las grabaciones',
+    count: (count: number) => (count === 1 ? '1 grabación' : `${String(count)} grabaciones`),
     versionOf: 'Versión de',
   },
   gallery: {
@@ -113,11 +115,23 @@ export const es = {
     sheetHeading: 'Hoja completa',
     panelsHeading: 'Viñetas de esta hoja',
     illustratesHeading: 'Ilustra',
-    viewLarge: 'Ver la imagen en tamaño grande',
+    viewLarge: 'Ampliar la imagen',
+    /** The zoom viewer (RF-27). */
+    zoom: {
+      close: 'Cerrar',
+      zoom: 'Acercar o alejar',
+      previous: 'Anterior',
+      next: 'Siguiente',
+      error: 'No se pudo cargar la imagen.',
+    },
+    filtersLabel: 'la galería',
+    count: (count: number) => (count === 1 ? '1 imagen' : `${String(count)} imágenes`),
   },
   read: {
     title: 'Leer',
     intro: 'Todos los textos publicados, obra por obra.',
+    filtersLabel: 'los textos',
+    count: (count: number) => (count === 1 ? '1 texto' : `${String(count)} textos`),
   },
   videos: {
     title: 'Videos',
@@ -135,6 +149,19 @@ export const es = {
     title: 'Buscar',
     intro: 'Busca en títulos, letras, poemas y fichas de todo el archivo.',
     noScript: 'El buscador necesita JavaScript.',
+  },
+  filters: {
+    label: (what: string) => `Filtrar ${what}`,
+    work: 'Obra',
+    kind: 'Tipo',
+    year: 'Año',
+    collection: 'Procedencia',
+    technique: 'Técnica',
+    series: 'Serie',
+    all: 'Todos',
+    option: (label: string, count: number) => `${label} (${String(count)})`,
+    clear: 'Quitar filtros',
+    none: 'Nada coincide con estos filtros.',
   },
   kinds: {
     poem: 'Poema',

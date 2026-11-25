@@ -73,6 +73,8 @@ test.describe('animated drawing', () => {
       .getByRole('navigation', { name: 'Principal' })
       .getByRole('link', { name: 'Galería' })
       .click();
+    // Escuchar also links to "Alcalde de la canción" (its lyrics): wait for the gallery first.
+    await expect(page).toHaveURL('/galeria/');
 
     await page.getByRole('link', { name: /Alcalde de la canción/ }).click();
 

@@ -27,7 +27,8 @@
   "dependencies": {
     "@fontsource-variable/literata": "^5.3.0",
     "@fontsource/young-serif": "^5.3.0",
-    "astro": "^7.4.13"
+    "astro": "^7.4.13",
+    "photoswipe": "^5.4.4"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.12",

@@ -1,0 +1,111 @@
+---
+/**
+ * The filters of a cross-cutting view (RF-07, RF-24, RF-26): one choice per facet, the
+ * number of items shown, and a button to clear them. The items it filters are the elements
+ * of the page with `data-filter-values`; a `data-filter-group` (a section of the list) is
+ * hidden when none of its items is shown.
+ *
+ * Without JavaScript the bar stays hidden and the whole list is shown.
+ */
+import { es } from '../../i18n/es';
+import type { Facet } from '../../lib/filters';
+import type { FilterView } from './filter-bar';
+
+interface Props {
+  facets: readonly Facet[];
+  /** Which view: names the items in the count ("12 grabaciones"). */
+  view: FilterView;
+  /** What is filtered, for the form's name: "las grabaciones". */
+  what: string;
+  total: number;
+}
+
+const { facets, view, what, total } = Astro.props;
+const counts = { listen: es.listen.count, gallery: es.gallery.count, read: es.read.count };
+---
+
+{facets.length > 0 && (
+  <filter-bar data-facets={JSON.stringify(facets)} data-view={view} hidden>
+    <form class="filters" aria-label={es.filters.label(what)}>
+      {facets.map((facet) => (
+        <label>
+          <span>{facet.label}</span>
+          <select name={facet.key}>
+            <option value="">{es.filters.all}</option>
+            {facet.options.map((option) => (
+              <option value={option.value}>{es.filters.option(option.label, option.count)}</option>
+            ))}
+          </select>
+        </label>
+      ))}
+      <button type="reset" class="clear" hidden>
+        {es.filters.clear}
+      </button>
+      <p class="count" role="status" data-count>
+        {counts[view](total)}
+      </p>
+    </form>
+    <p class="none" data-none hidden>
+      {es.filters.none}
+    </p>
+  </filter-bar>
+)}
+
+<script>
+  import './filter-bar';
+</script>
+
+<style>
+  filter-bar {
+    display: block;
+    padding: 1.5rem var(--gutter) 0;
+  }
+  filter-bar[hidden] {
+    display: none;
+  }
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: 0.75rem 1.25rem;
+  }
+  label {
+    display: grid;
+    gap: 0.25rem;
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+  }
+  select {
+    font: inherit;
+    font-size: 1rem;
+    color: var(--ink);
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    padding: 0.4rem 0.6rem;
+    min-height: 2.5rem;
+    max-width: 16rem;
+  }
+  .clear {
+    font: inherit;
+    font-size: var(--step--1);
+    background: transparent;
+    border: 2px solid var(--ink);
+    color: var(--ink);
+    padding: 0.45rem 0.8rem;
+    min-height: 2.5rem;
+    cursor: pointer;
+  }
+  .clear:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .count {
+    margin: 0 0 0.45rem;
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+  }
+  .none {
+    margin: 1.5rem 0 0;
+    font-style: italic;
+  }
+</style>
