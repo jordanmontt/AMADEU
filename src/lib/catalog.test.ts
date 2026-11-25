@@ -218,4 +218,112 @@ describe('Catalog', () => {
       ]);
     });
   });
+
+  describe('relations used by the record pages', () => {
+    const catalog = Catalog.published(
+      collections({
+        works: [sangreYSueno],
+        texts: [
+          aText('song-b', { work: 'sys', section: 'songs', order: 2 }),
+          aText('tale', { work: 'sys', section: 'tales', order: 1 }),
+          aText('hidden', { work: 'sys', section: 'songs', rights: 'pending' }),
+        ],
+        recordings: [aRecording('take', { texts: ['song-b', 'hidden', 'tale'] })],
+        artworks: [
+          anArtwork('sheet'),
+          anArtwork('panel', { sheet: 'sheet', texts: ['song-b', 'tale'] }),
+          anArtwork('orphan-panel', { sheet: 'unpublished-sheet' }),
+        ],
+      }),
+    );
+    const [take] = catalog.recordings();
+    const panel = catalog.artworks().find((artwork) => artwork.id === 'panel');
+    const orphan = catalog.artworks().find((artwork) => artwork.id === 'orphan-panel');
+
+    it('finds the section of a text', () => {
+      const [tale] = catalog.textsOf(sangreYSueno);
+
+      expect(tale && catalog.sectionOf(tale).title).toBe('Relatos poéticos');
+    });
+
+    it('refuses to answer the section of a text whose section is missing', () => {
+      const lost = aText('lost', { work: 'sys', section: 'nowhere' });
+
+      expect(() => catalog.sectionOf(lost)).toThrow(/missing/);
+    });
+
+    it('lists the published texts of a recording and of an artwork in editorial order', () => {
+      expect(take && ids(catalog.textsOfRecording(take))).toEqual(['tale', 'song-b']);
+      expect(panel && ids(catalog.textsIllustratedBy(panel))).toEqual(['tale', 'song-b']);
+    });
+
+    it('finds the sheet of a panel only when the sheet is published', () => {
+      expect(panel && catalog.sheetOf(panel)?.id).toBe('sheet');
+      expect(orphan && catalog.sheetOf(orphan)).toBeUndefined();
+      expect(catalog.sheetOf(anArtwork('loose'))).toBeUndefined();
+    });
+  });
+
+  describe('covers', () => {
+    it('finds the published cover of a work, if any', () => {
+      const catalog = Catalog.published(
+        collections({
+          works: [
+            aWork('a', { cover: 'lunita' }),
+            aWork('b', { cover: 'pending', order: 2 }),
+            aWork('c', { order: 3 }),
+          ],
+          artworks: [anArtwork('lunita'), anArtwork('pending', { rights: 'pending' })],
+        }),
+      );
+      const [a, b, c] = catalog.works();
+
+      expect(a && catalog.coverOf(a)?.id).toBe('lunita');
+      expect(b && catalog.coverOf(b)).toBeUndefined();
+      expect(c && catalog.coverOf(c)).toBeUndefined();
+    });
+  });
+
+  describe('recordingsByCollection', () => {
+    it('groups recordings by collection, oldest collection first, loose recordings last', () => {
+      const catalog = Catalog.published(
+        collections({
+          recordings: [
+            aRecording('home-1', { collection: 'Casera', date: '1993/1995' }),
+            aRecording('loose', {}),
+            aRecording('goethe', { collection: 'Recitales', date: '1981' }),
+            aRecording('home-2', { collection: 'Casera', date: '1993/1995' }),
+          ],
+        }),
+      );
+
+      expect(
+        catalog.recordingsByCollection().map((group) => [group.collection, ids(group.recordings)]),
+      ).toEqual([
+        ['Recitales', ['goethe']],
+        ['Casera', ['home-1', 'home-2']],
+        [undefined, ['loose']],
+      ]);
+    });
+  });
+
+  describe('showcaseTexts', () => {
+    it('keeps the texts that have both a recording and an illustration, in editorial order', () => {
+      const catalog = Catalog.published(
+        collections({
+          works: [sangreYSueno],
+          texts: [
+            aText('both-late', { work: 'sys', section: 'songs', order: 2 }),
+            aText('both-early', { work: 'sys', section: 'songs', order: 1 }),
+            aText('audio-only', { work: 'sys', section: 'songs', order: 3 }),
+            aText('drawing-only', { work: 'sys', section: 'songs', order: 4 }),
+          ],
+          recordings: [aRecording('r', { texts: ['both-late', 'both-early', 'audio-only'] })],
+          artworks: [anArtwork('a', { texts: ['both-late', 'both-early', 'drawing-only'] })],
+        }),
+      );
+
+      expect(ids(catalog.showcaseTexts(sangreYSueno))).toEqual(['both-early', 'both-late']);
+    });
+  });
 });

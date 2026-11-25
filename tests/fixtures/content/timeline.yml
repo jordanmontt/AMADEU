@@ -1,0 +1,6 @@
+- id: segundo
+  date: '1984'
+  text: Segundo hecho de prueba.
+- id: primero
+  date: '1952'
+  text: Primer hecho de prueba.

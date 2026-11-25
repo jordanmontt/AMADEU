@@ -1,0 +1,86 @@
+---
+/**
+ * A video placeholder that loads the YouTube player only when clicked (RF-31). Nothing is
+ * requested from Google before that, not even a thumbnail.
+ */
+import { es } from '../i18n/es';
+import { youtubeEmbedUrl } from '../lib/youtube';
+
+interface Props {
+  title: string;
+  youtubeId: string;
+}
+
+const { title, youtubeId } = Astro.props;
+---
+
+<video-facade class="facade" data-src={youtubeEmbedUrl(youtubeId)} data-title={title}>
+  <button type="button" aria-label={es.videos.play(title)}>
+    <svg width="28" height="32" viewBox="0 0 18 20" aria-hidden="true">
+      <path d="M2 1l15 9-15 9z" fill="currentColor"></path>
+    </svg>
+  </button>
+  <span aria-hidden="true">{title}</span>
+</video-facade>
+
+<script>
+  class VideoFacade extends HTMLElement {
+    connectedCallback(): void {
+      this.querySelector('button')?.addEventListener(
+        'click',
+        () => {
+          this.play();
+        },
+        { once: true },
+      );
+    }
+
+    private play(): void {
+      const iframe = document.createElement('iframe');
+      iframe.src = this.dataset['src'] ?? '';
+      iframe.title = this.dataset['title'] ?? '';
+      iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      iframe.allowFullscreen = true;
+      this.replaceChildren(iframe);
+      iframe.focus();
+    }
+  }
+  customElements.define('video-facade', VideoFacade);
+</script>
+
+<style>
+  .facade {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 16 / 9;
+    background: var(--sky);
+    border: var(--frame-width) solid var(--frame);
+    position: relative;
+  }
+  .facade span {
+    position: absolute;
+    left: 1rem;
+    bottom: 0.75rem;
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+  }
+  button {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    border: 0;
+    background: var(--ink);
+    color: var(--paper);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+  }
+  button:hover {
+    background: var(--flag);
+  }
+  .facade :global(iframe) {
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+</style>

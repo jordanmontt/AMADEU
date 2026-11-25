@@ -2,6 +2,7 @@
 /**
  * Table of contents of a work: its sections in editorial order, each with its texts.
  */
+import { es } from '../i18n/es';
 import type { TextEntry, WorkEntry } from '../lib/content/collections';
 import type { Section } from '../lib/content/schemas';
 import { textPath } from '../lib/routes';
@@ -9,14 +10,20 @@ import { textPath } from '../lib/routes';
 interface Props {
   work: WorkEntry;
   sections: readonly { section: Section; texts: readonly TextEntry[] }[];
+  /** Heading level of the section titles, so the outline stays correct where it is used. */
+  headingLevel?: 2 | 3;
 }
 
-const { work, sections } = Astro.props;
+const { work, sections, headingLevel = 2 } = Astro.props;
+const Heading = headingLevel === 3 ? 'h3' : 'h2';
 ---
 
 {sections.map(({ section, texts }) => (
-  <section aria-labelledby={`section-${section.id}`}>
-    <h2 id={`section-${section.id}`}>{section.title}</h2>
+  <section aria-labelledby={`section-${section.id}`} class="section">
+    <Heading id={`section-${section.id}`} class="section-title">
+      {section.title}
+    </Heading>
+    <p class="count">{es.work.textCount(texts.length)}</p>
     <ol>
       {texts.map((text) => (
         <li>
@@ -26,3 +33,36 @@ const { work, sections } = Astro.props;
     </ol>
   </section>
 ))}
+
+<style>
+  .section {
+    margin-bottom: 3rem;
+  }
+  .section-title {
+    font-size: var(--step-2);
+    margin: 0;
+  }
+  .count {
+    color: var(--ink-soft);
+    margin: 0.25rem 0 1rem;
+  }
+  ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    columns: 2 16rem;
+    column-gap: 2.5rem;
+  }
+  li {
+    break-inside: avoid;
+    border-bottom: 1px solid var(--rule);
+  }
+  li a {
+    display: block;
+    padding: 0.45rem 0;
+    text-decoration: none;
+  }
+  li a:hover {
+    text-decoration: underline;
+  }
+</style>

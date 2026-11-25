@@ -22,9 +22,21 @@ describe('WorkContents', () => {
     });
 
     expect(html).toContain('aria-labelledby="section-cancionero"');
-    expect(html).toMatch(/<h2 id="section-cancionero">Libro de canciones<\/h2>/);
+    expect(html).toMatch(/<h2 id="section-cancionero"[^>]*>\s*Libro de canciones\s*<\/h2>/);
     expect(html.indexOf('/sangre-y-sueno/cordillera-real/')).toBeLessThan(
       html.indexOf('/sangre-y-sueno/luna-andina/'),
     );
+  });
+
+  it('uses the requested heading level for section titles', async () => {
+    const container = await AstroContainer.create();
+    const section = { id: 'relatos', title: 'Relatos', slug: 'relatos', order: 1 };
+
+    const html = await container.renderToString(WorkContents, {
+      props: { work: aWork('sys'), sections: [{ section, texts: [] }], headingLevel: 3 },
+    });
+
+    expect(html).toMatch(/<h3 id="section-relatos"/);
+    expect(html).toContain('0 textos');
   });
 });

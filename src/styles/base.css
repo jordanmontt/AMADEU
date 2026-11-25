@@ -1,7 +1,50 @@
 /*
- * Base styles shared by every page. The visual identity (milestone H2) builds on top of
- * these accessibility baselines; do not remove them without an equivalent rule.
+ * Base styles shared by every page: tokens, fonts, typography and accessibility baselines.
+ * Component styles live in each component. Do not remove the accessibility rules without
+ * an equivalent one.
  */
+@import '@fontsource/young-serif/latin-400.css';
+@import '@fontsource-variable/literata/opsz.css';
+@import '@fontsource-variable/literata/opsz-italic.css';
+@import './tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 var(--step-0) / 1.6 var(--font-text);
+  font-optical-sizing: auto;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+a {
+  color: inherit;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+
+a:hover {
+  color: var(--flag);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
 
 /* WCAG 2.5.8 Target Size (Minimum): interactive targets are at least 24×24 CSS px. */
 li > a,
@@ -14,6 +57,27 @@ nav a {
 
 /* WCAG 2.4.7 Focus Visible. */
 :focus-visible {
-  outline: 3px solid currentColor;
-  outline-offset: 2px;
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* RF-52: respect the system's "reduce motion" setting everywhere. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }

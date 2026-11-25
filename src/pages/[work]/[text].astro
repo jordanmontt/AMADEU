@@ -1,9 +1,15 @@
 ---
 import type { GetStaticPaths } from 'astro';
+import FramedArtwork from '../../components/FramedArtwork.astro';
+import PageBand from '../../components/PageBand.astro';
+import RecordFields from '../../components/RecordFields.astro';
+import RecordingList from '../../components/RecordingList.astro';
+import Verses from '../../components/Verses.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { catalog } from '../../data/catalog';
 import { es } from '../../i18n/es';
 import type { TextEntry, WorkEntry } from '../../lib/content/collections';
+import { textRecord } from '../../lib/record';
 import { textSlug, workPath } from '../../lib/routes';
 
 export const getStaticPaths = (async () => {
@@ -23,17 +29,140 @@ interface Props {
 
 const { work, text } = Astro.props;
 const archive = await catalog();
+const section = archive.sectionOf(text);
 const versions = archive.recordingVersions(text);
+const illustrations = archive.illustrationsOf(text);
+const facsimile = archive.facsimileOf(text);
+const record = textRecord(archive, text);
+const subtitle = es.kinds[text.data.kind];
 ---
 
 <BaseLayout title={text.data.title}>
-  <p>
-    <a href={workPath(work)}>
-      {es.text.backToWork}: {work.data.title}
-    </a>
-  </p>
-  <h1>{text.data.title}</h1>
-  {text.data.provisional && <p>{es.text.provisionalNote}</p>}
-  <pre class="verses">{text.body}</pre>
-  {versions.kind === 'unavailable' && <p>{es.text.recordingUnavailable}</p>}
+  <PageBand title={text.data.title} subtitle={subtitle}>
+    <Fragment slot="crumb">
+      <a href={workPath(work)}>{work.data.title}</a> / {section.title}
+    </Fragment>
+  </PageBand>
+  <article class="text">
+    <div class="main">
+      <section aria-labelledby="recordings-heading" class="listen">
+        <h2 id="recordings-heading" class="visually-hidden">
+          {es.text.recordingsHeading}
+        </h2>
+        {versions.kind === 'available' ? (
+          <RecordingList
+            recordings={[versions.primary, ...versions.others]}
+            primaryId={versions.primary.id}
+            label={es.text.recordingsHeading}
+          />
+        ) : (
+          <p class="unavailable">{es.text.recordingUnavailable}</p>
+        )}
+      </section>
+      {text.data.dedication && (
+        <p class="dedication">
+          <span class="visually-hidden">{es.text.dedicationLabel}: </span>
+          {text.data.dedication}
+        </p>
+      )}
+      <Verses body={text.body} />
+      {text.data.provisional && <p class="provisional">{es.text.provisionalNote}</p>}
+      {text.data.notes && (
+        <section aria-labelledby="notes-heading" class="notes">
+          <h2 id="notes-heading">{es.text.notesHeading}</h2>
+          <p>{text.data.notes}</p>
+        </section>
+      )}
+      {text.data.criticalNotes && (
+        <section aria-labelledby="critical-heading" class="notes">
+          <h2 id="critical-heading">{es.text.criticalNotesHeading}</h2>
+          <p>{text.data.criticalNotes}</p>
+        </section>
+      )}
+    </div>
+    <aside class="side">
+      {illustrations.length > 0 && (
+        <section aria-labelledby="drawings-heading">
+          <h2 id="drawings-heading" class="visually-hidden">
+            {es.text.illustrationsHeading}
+          </h2>
+          {illustrations.map((artwork, index) => (
+            <FramedArtwork
+              artwork={artwork}
+              sizes="(min-width: 760px) 40vw, 100vw"
+              loading={index === 0 ? 'eager' : 'lazy'}
+            />
+          ))}
+        </section>
+      )}
+      {facsimile.length > 0 && (
+        <section aria-labelledby="facsimile-heading">
+          <h2 id="facsimile-heading">{es.text.facsimileHeading}</h2>
+          {facsimile.map((page) => (
+            <FramedArtwork artwork={page} sizes="(min-width: 760px) 40vw, 100vw" />
+          ))}
+        </section>
+      )}
+      <section aria-labelledby="record-heading" class="record">
+        <h2 id="record-heading">{es.text.recordHeading}</h2>
+        <RecordFields fields={record} origin={Astro.url.origin} />
+      </section>
+    </aside>
+  </article>
 </BaseLayout>
+
+<style>
+  .text {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    padding: 2.5rem var(--gutter) 0;
+    align-items: start;
+  }
+  .listen {
+    margin-bottom: 2.5rem;
+    max-width: var(--measure-verse);
+  }
+  .unavailable {
+    border: 2px dashed var(--frame-soft);
+    padding: 0.75rem 0.9rem;
+    margin: 0;
+    color: var(--ink-soft);
+  }
+  .dedication {
+    font-style: italic;
+    margin: 0 0 1.5rem;
+  }
+  .provisional {
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+    max-width: var(--measure-verse);
+    border-top: 1px solid var(--rule);
+    padding-top: 0.75rem;
+  }
+  .notes h2,
+  .record h2 {
+    font-size: 1.4rem;
+    margin: 2rem 0 0.75rem;
+  }
+  .notes p {
+    max-width: var(--measure-verse);
+    white-space: pre-line;
+  }
+  .side {
+    display: grid;
+    gap: 2rem;
+  }
+  .side section {
+    display: grid;
+    gap: 2rem;
+  }
+  .record h2 {
+    margin-top: 0;
+  }
+  @media (max-width: 760px) {
+    .text {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

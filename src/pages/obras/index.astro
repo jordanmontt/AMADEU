@@ -1,0 +1,27 @@
+---
+import PageBand from '../../components/PageBand.astro';
+import WorkCard from '../../components/WorkCard.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { catalog } from '../../data/catalog';
+import { es } from '../../i18n/es';
+
+const works = (await catalog()).works();
+---
+
+<BaseLayout title={es.works.title}>
+  <PageBand title={es.works.title} subtitle={es.works.intro} tone="sky" />
+  <div class="grid">
+    {works.map((work) => (
+      <WorkCard work={work} />
+    ))}
+  </div>
+</BaseLayout>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: 1.5rem;
+    padding: 2.5rem var(--gutter) 0;
+  }
+</style>

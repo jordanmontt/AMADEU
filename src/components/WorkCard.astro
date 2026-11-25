@@ -1,0 +1,62 @@
+---
+/**
+ * A work on the home and works pages: framed when published, dashed when upcoming.
+ */
+import { es } from '../i18n/es';
+import type { WorkEntry } from '../lib/content/collections';
+import { formatArchiveDate } from '../lib/format';
+import { workPath } from '../lib/routes';
+
+interface Props {
+  work: WorkEntry;
+}
+
+const { work } = Astro.props;
+const published = work.data.status === 'published';
+const details = published
+  ? [
+      work.data.subtitle,
+      work.data.year === undefined ? undefined : formatArchiveDate(work.data.year),
+    ]
+      .filter((part) => part !== undefined)
+      .join('. ')
+  : es.home.upcoming;
+---
+
+<article class:list={['work', { published, upcoming: !published }]}>
+  <h3>{published ? <a href={workPath(work)}>{work.data.title}</a> : work.data.title}</h3>
+  <p>{details}</p>
+</article>
+
+<style>
+  .work {
+    border: var(--frame-width) solid var(--frame);
+    padding: 1.25rem;
+    min-height: 9rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .published {
+    background: var(--sky);
+  }
+  .upcoming {
+    border-style: dashed;
+    border-color: var(--frame-soft);
+  }
+  h3 {
+    font-size: 1.45rem;
+    margin: 0;
+  }
+  h3 a {
+    text-decoration: none;
+  }
+  .upcoming h3,
+  p {
+    color: var(--ink-soft);
+  }
+  p {
+    margin: 0.5rem 0 0;
+    font-size: 0.95rem;
+  }
+</style>

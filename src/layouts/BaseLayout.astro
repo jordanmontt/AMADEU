@@ -1,7 +1,9 @@
 ---
 /**
- * Page shell: language, metadata and the skip link (WCAG 2.4.1).
+ * Page shell: language, metadata, skip link (WCAG 2.4.1), header, footer.
  */
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteHeader from '../components/SiteHeader.astro';
 import { es } from '../i18n/es';
 import '../styles/base.css';
 
@@ -31,12 +33,11 @@ const fullTitle = title === undefined ? es.site.name : `${title} · ${es.site.na
     <a class="skip-link" href="#content">
       {es.site.skipToContent}
     </a>
-    <header>
-      <a href="/">{es.site.name}</a>
-    </header>
-    <main id="content">
+    <SiteHeader />
+    <main id="content" data-pagefind-body={noindex ? undefined : ''}>
       <slot />
     </main>
+    <SiteFooter />
   </body>
 </html>
 
@@ -44,6 +45,9 @@ const fullTitle = title === undefined ? es.site.name : `${title} · ${es.site.na
   .skip-link {
     position: absolute;
     left: -9999px;
+    z-index: 10;
+    background: var(--paper);
+    padding: 0.5rem 1rem;
   }
   .skip-link:focus {
     left: 1rem;

@@ -16,8 +16,8 @@ import type {
 } from './content/collections';
 import { slugify } from './slug';
 
-/** Top-level routes owned by the site; no work slug may use one of them (RT-15). */
-export const RESERVED_ROUTES: readonly string[] = [
+/** The sections in the main navigation, in display order. Labels live in `src/i18n/es.ts`. */
+export const SITE_SECTIONS = [
   'obras',
   'escuchar',
   'galeria',
@@ -25,9 +25,28 @@ export const RESERVED_ROUTES: readonly string[] = [
   'videos',
   'marcelo',
   'buscar',
-  'admin',
-  'id',
-];
+] as const;
+export type SiteSection = (typeof SITE_SECTIONS)[number];
+
+/** Top-level routes owned by the site; no work slug may use one of them (RT-15). */
+export const RESERVED_ROUTES: readonly string[] = [...SITE_SECTIONS, 'admin', 'id', 'audio'];
+
+export function sectionPath(section: SiteSection): string {
+  return `/${section}/`;
+}
+
+/**
+ * The navigation section a page belongs to. Work and text pages (`/<work>/…`) belong to
+ * "obras"; the home page and technical routes belong to none.
+ */
+export function currentSection(pathname: string): SiteSection | null {
+  const [first = ''] = pathname.split('/').filter((part) => part !== '');
+  if (first === '' || first === 'admin' || first === 'id' || first === 'audio') {
+    return null;
+  }
+  const section = SITE_SECTIONS.find((each) => each === first);
+  return section ?? 'obras';
+}
 
 export function workPath(work: WorkEntry): string {
   return `/${work.data.slug}/`;

@@ -1,35 +1,269 @@
 ---
+import FramedArtwork from '../components/FramedArtwork.astro';
+import WorkCard from '../components/WorkCard.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { catalog } from '../data/catalog';
+import { artworkImage, catalog } from '../data/catalog';
 import { es } from '../i18n/es';
-import { workPath } from '../lib/routes';
+import { formatArchiveDate } from '../lib/format';
+import { formatDuration } from '../lib/format';
+import { artworkPath, textPath, workPath } from '../lib/routes';
+import { Image } from 'astro:assets';
 
 const archive = await catalog();
-const published = archive.publishedWorks();
-const upcoming = archive.upcomingWorks();
+const works = archive.works();
+const [featured] = archive.publishedWorks();
+const cover = featured === undefined ? undefined : archive.coverOf(featured);
+const coverImage = cover === undefined ? undefined : await artworkImage(cover);
+
+/** Songs that can be both heard and seen, each with its first drawing and main recording. */
+const showcase = (featured === undefined ? [] : archive.showcaseTexts(featured))
+  .slice(0, 4)
+  .flatMap((text) => {
+    const versions = archive.recordingVersions(text);
+    const [drawing] = archive.illustrationsOf(text);
+    return versions.kind === 'available' && drawing !== undefined
+      ? [{ text, recording: versions.primary, drawing, href: textPath(archive.workOf(text), text) }]
+      : [];
+  });
+const drawings = archive
+  .artworks()
+  .filter((artwork) => artwork.data.kind === 'drawing' && artwork.data.sheet === undefined)
+  .slice(0, 6);
 ---
 
 <BaseLayout>
-  <h1>{es.site.name}</h1>
-  <p>{es.site.tagline}</p>
+  <section class="hero" aria-labelledby="site-title">
+    {cover !== undefined && coverImage !== undefined && (
+      <Image
+        class="hero-image"
+        src={coverImage}
+        alt={cover.data.alt}
+        widths={[800, 1280, 1920, 2400]}
+        sizes="100vw"
+        loading="eager"
+      />
+    )}
+    <div class="card">
+      <h1 id="site-title">{es.home.title}</h1>
+      <p class="tagline">{es.home.subtitle}</p>
+      <p>{es.home.lede}</p>
+      {featured !== undefined && (
+        <a class="enter" href={workPath(featured)}>
+          {es.home.enterWork} <em>{featured.data.title}</em>
+        </a>
+      )}
+    </div>
+    {cover !== undefined && (
+      <p class="credit">
+        <a href={artworkPath(cover)}>
+          {[
+            `«${cover.data.title}»`,
+            cover.data.technique?.toLowerCase(),
+            cover.data.place,
+            cover.data.date === undefined ? undefined : formatArchiveDate(cover.data.date),
+          ]
+            .filter((part) => part !== undefined)
+            .join(', ')}
+        </a>
+      </p>
+    )}
+  </section>
 
-  <h2>{es.home.worksHeading}</h2>
-  <ul>
-    {published.map((work) => (
-      <li>
-        <a href={workPath(work)}>{work.data.title}</a>
-      </li>
-    ))}
-  </ul>
-
-  {upcoming.length > 0 && (
-    <>
-      <h2>{es.home.upcomingHeading}</h2>
+  {showcase.length > 0 && (
+    <section class="showcase" aria-labelledby="listen-heading">
+      <div class="section-head">
+        <h2 id="listen-heading">{es.home.listenHeading}</h2>
+        <a href="/escuchar/">{es.home.listenAll}</a>
+      </div>
       <ul>
-        {upcoming.map((work) => (
-          <li>{work.data.title}</li>
+        {showcase.map(({ text, recording, drawing, href }) => (
+          <li>
+            <FramedArtwork
+              artwork={drawing}
+              sizes="(min-width: 900px) 22vw, (min-width: 560px) 45vw, 90vw"
+              caption={false}
+              link={false}
+              widths={[320, 480, 720]}
+            />
+            <h3>
+              <a href={href}>{text.data.title}</a>
+            </h3>
+            <p>
+              {recording.data.collection}, {formatDuration(recording.data.durationSeconds)}
+            </p>
+          </li>
         ))}
       </ul>
-    </>
+    </section>
   )}
+
+  {drawings.length > 0 && (
+    <section class="drawings" aria-labelledby="drawings-heading">
+      <div class="section-head">
+        <h2 id="drawings-heading">{es.home.galleryHeading}</h2>
+        <a href="/galeria/">{es.home.galleryAll}</a>
+      </div>
+      <div class="strip">
+        {drawings.map((artwork) => (
+          <FramedArtwork
+            artwork={artwork}
+            sizes="(min-width: 900px) 16vw, 45vw"
+            widths={[240, 360, 540]}
+          />
+        ))}
+      </div>
+    </section>
+  )}
+
+  <section class="works" aria-labelledby="works-heading">
+    <h2 id="works-heading">{es.home.worksHeading}</h2>
+    <div class="grid">
+      {works.map((work) => (
+        <WorkCard work={work} />
+      ))}
+    </div>
+  </section>
 </BaseLayout>
+
+<style>
+  .hero {
+    position: relative;
+  }
+  .hero :global(.hero-image) {
+    display: block;
+    width: 100%;
+    height: min(78vh, 46rem);
+    object-fit: cover;
+    object-position: center 35%;
+  }
+  .card {
+    position: absolute;
+    left: var(--gutter);
+    bottom: var(--gutter);
+    max-width: 36rem;
+    background: var(--paper);
+    border: var(--frame-width) solid var(--frame);
+    padding: clamp(1.25rem, 3vw, 2.25rem);
+  }
+  h1 {
+    font-size: var(--step-4);
+    margin: 0 0 0.75rem;
+  }
+  .tagline {
+    font-style: italic;
+    font-size: var(--step-1);
+    margin: 0 0 0.75rem;
+  }
+  .card p {
+    margin: 0 0 1.25rem;
+  }
+  .enter {
+    display: inline-block;
+    background: var(--ochre);
+    color: var(--ink);
+    font-weight: 600;
+    text-decoration: none;
+    padding: 0.75rem 1.2rem;
+  }
+  .enter:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .credit {
+    position: absolute;
+    right: 1rem;
+    bottom: 0.75rem;
+    margin: 0;
+    background: rgb(255 255 255 / 0.9);
+    font-style: italic;
+    font-size: var(--step--1);
+    padding: 0.3rem 0.6rem;
+  }
+  .works,
+  .showcase,
+  .drawings {
+    padding: 3.5rem var(--gutter) 0;
+  }
+  .section-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .section-head h2,
+  .works h2 {
+    font-size: 2rem;
+    margin: 0;
+  }
+  .works h2 {
+    margin-bottom: 1.5rem;
+  }
+  .showcase ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+    gap: 2rem 1.5rem;
+  }
+  .showcase li :global(img) {
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: top;
+  }
+  .showcase h3 {
+    font-size: 1.3rem;
+    margin: 0.85rem 0 0.25rem;
+  }
+  .showcase h3 a {
+    text-decoration: none;
+  }
+  .showcase h3 a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+  .showcase li {
+    position: relative;
+  }
+  .showcase li:hover :global(img) {
+    border-color: var(--ochre);
+  }
+  .showcase p {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+  }
+  .strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+    gap: 1.25rem;
+  }
+  .strip :global(img) {
+    aspect-ratio: 1;
+    object-fit: cover;
+  }
+  .strip :global(figcaption) {
+    display: none;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: 1.5rem;
+  }
+  @media (max-width: 760px) {
+    .card {
+      position: static;
+      border-width: 0 0 var(--frame-width);
+    }
+    .hero :global(.hero-image) {
+      height: 50vh;
+    }
+    .credit {
+      position: static;
+      padding: 0.5rem var(--gutter);
+    }
+  }
+</style>

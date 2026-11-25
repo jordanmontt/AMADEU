@@ -1,0 +1,71 @@
+---
+import { Image } from 'astro:assets';
+import PageBand from '../../components/PageBand.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { artworkImage, catalog } from '../../data/catalog';
+import { es } from '../../i18n/es';
+import { artworkPath } from '../../lib/routes';
+
+const artworks = (await catalog()).artworks();
+const items = await Promise.all(
+  artworks.map(async (artwork) => ({ artwork, image: await artworkImage(artwork) })),
+);
+---
+
+<BaseLayout title={es.gallery.title}>
+  <PageBand title={es.gallery.title} subtitle={es.gallery.intro} tone="sky" />
+  <ul class="gallery">
+    {items.map(({ artwork, image }) => (
+      <li>
+        <a href={artworkPath(artwork)}>
+          <Image
+            src={image}
+            alt={artwork.data.alt}
+            widths={[320, 480, 640]}
+            sizes="(min-width: 760px) 22vw, 45vw"
+          />
+          <span>{artwork.data.title}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</BaseLayout>
+
+<style>
+  .gallery {
+    list-style: none;
+    margin: 0;
+    padding: 2.5rem var(--gutter) 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+    gap: 2rem 1.5rem;
+    align-items: start;
+  }
+  .gallery a {
+    display: block;
+    text-decoration: none;
+  }
+  .gallery :global(img) {
+    display: block;
+    width: 100%;
+    height: 14rem;
+    object-fit: contain;
+    background: var(--sky-pale);
+    border: var(--frame-width) solid var(--frame);
+    padding: 0.5rem;
+  }
+  .gallery span {
+    display: block;
+    margin-top: 0.5rem;
+  }
+  .gallery :global(img) {
+    transition: border-color 150ms ease;
+  }
+  .gallery a:hover :global(img),
+  .gallery a:focus-visible :global(img) {
+    border-color: var(--ochre);
+  }
+  .gallery a:hover span {
+    text-decoration: underline;
+  }
+</style>

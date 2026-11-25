@@ -1,0 +1,68 @@
+---
+/**
+ * An artwork in the hand-painted green frame (ADR 0048), optimized by Astro, with an
+ * optional caption and link to its gallery record.
+ */
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+import { artworkImage } from '../data/catalog';
+import type { ArtworkEntry } from '../lib/content/collections';
+import { artworkPath } from '../lib/routes';
+
+interface Props {
+  artwork: ArtworkEntry;
+  /** `sizes` attribute for the responsive image. */
+  sizes: string;
+  widths?: number[];
+  caption?: boolean;
+  link?: boolean;
+  loading?: 'lazy' | 'eager';
+}
+
+const {
+  artwork,
+  sizes,
+  widths = [480, 800, 1200, 1600],
+  caption = true,
+  link = true,
+  loading = 'lazy',
+} = Astro.props;
+const image: ImageMetadata = await artworkImage(artwork);
+const captionText = [artwork.data.title, artwork.data.technique, artwork.data.date]
+  .filter((part) => part !== undefined)
+  .join('. ');
+---
+
+<figure class="framed">
+  {link ? (
+    <a href={artworkPath(artwork)}>
+      <Image src={image} alt={artwork.data.alt} widths={widths} sizes={sizes} loading={loading} />
+    </a>
+  ) : (
+    <Image src={image} alt={artwork.data.alt} widths={widths} sizes={sizes} loading={loading} />
+  )}
+  {caption && <figcaption>{captionText}.</figcaption>}
+</figure>
+
+<style>
+  .framed {
+    margin: 0;
+  }
+  .framed :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 6px solid var(--frame);
+    background: var(--paper);
+    transition: border-color 150ms ease;
+  }
+  .framed a:hover :global(img),
+  .framed a:focus-visible :global(img) {
+    border-color: var(--ochre);
+  }
+  figcaption {
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+    margin-top: 0.5rem;
+  }
+</style>

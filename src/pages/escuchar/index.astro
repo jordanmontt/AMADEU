@@ -1,0 +1,48 @@
+---
+import PageBand from '../../components/PageBand.astro';
+import RecordingList from '../../components/RecordingList.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { catalog } from '../../data/catalog';
+import { es } from '../../i18n/es';
+import { textPath } from '../../lib/routes';
+
+const archive = await catalog();
+const groups = archive.recordingsByCollection();
+const texts = new Map(
+  archive.recordings().map((recording) => [
+    recording.id,
+    archive.textsOfRecording(recording).map((text) => ({
+      title: text.data.title,
+      href: textPath(archive.workOf(text), text),
+    })),
+  ]),
+);
+---
+
+<BaseLayout title={es.listen.title}>
+  <PageBand title={es.listen.title} subtitle={es.listen.intro} tone="sky" />
+  <div class="groups">
+    {groups.map((group, index) => {
+      const heading = group.collection ?? es.listen.noCollection;
+      return (
+        <section aria-labelledby={`collection-${index}`}>
+          <h2 id={`collection-${index}`}>{heading}</h2>
+          <RecordingList recordings={group.recordings} label={heading} texts={texts} />
+        </section>
+      );
+    })}
+  </div>
+</BaseLayout>
+
+<style>
+  .groups {
+    padding: 2.5rem var(--gutter) 0;
+    display: grid;
+    gap: 3rem;
+    max-width: 48rem;
+  }
+  h2 {
+    font-size: var(--step-2);
+    margin: 0 0 1rem;
+  }
+</style>

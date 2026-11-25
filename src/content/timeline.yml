@@ -1,0 +1,20 @@
+# Biography timeline (RF-33). Facts taken from the bibliographic research in the original
+# proposal; the Foundation reviews and extends them from the admin.
+- id: nacimiento
+  date: '1952'
+  text: Nace en La Paz, Bolivia.
+- id: premio-franz-tamayo
+  date: '1981'
+  text: Primer Premio de Poesía Franz Tamayo por «Los relatos poéticos de Diego Calahumana». Su canción «Cordillera Real» es premiada por la Alcaldía de La Paz. Recitales en el Goethe-Institut y la Alianza Francesa de La Paz.
+- id: nueva-cancion-boliviana
+  date: '1983'
+  text: Funda y preside el Movimiento de la Nueva Canción Boliviana.
+- id: disco-y-festival
+  date: '1984'
+  text: Publica el disco «Sangre y Sueño» (Discolandia) y participa en el Tercer Festival de la Nueva Canción Latinoamericana, en Quito.
+- id: premio-perspectiva
+  date: '1985'
+  text: «Fuego desvelado» obtiene el Primer Premio de Poesía Perspectiva.
+- id: fallecimiento
+  date: '1997'
+  text: Muere en Washington D. C.

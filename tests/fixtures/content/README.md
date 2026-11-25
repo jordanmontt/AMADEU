@@ -9,6 +9,8 @@ this folder via `CONTENT_DIR`). It covers:
   published (and appears in the pending tasks);
 - upcoming and draft works;
 - media: `media/audio/silencio.mp3` (3 s of silence) and `media/images/dibujo-prueba.webp`;
+- a video without YouTube id and one with an (invented) YouTube id;
+- a biography page and a two-event timeline listed out of order;
 - permanent links.
 
 Change it only together with the tests that rely on it.

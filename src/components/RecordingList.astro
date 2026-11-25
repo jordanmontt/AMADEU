@@ -1,0 +1,116 @@
+---
+/**
+ * Recordings of a text or a collection, each playable (RF-17). The primary version is
+ * highlighted. Until the persistent player arrives (H3), each row uses the native player.
+ *
+ * Audio-only content needs a transcript, not captions (WCAG 1.2.1): the lyrics. On a text
+ * page they are next to the player; elsewhere each recording links to its text.
+ */
+import { es } from '../i18n/es';
+import type { RecordingEntry } from '../lib/content/collections';
+import { formatArchiveDate, formatDuration } from '../lib/format';
+
+export interface TextLink {
+  readonly title: string;
+  readonly href: string;
+}
+
+interface Props {
+  recordings: readonly RecordingEntry[];
+  /** Id of the recording shown as the primary version. */
+  primaryId?: string | undefined;
+  label: string;
+  /** Links to the texts each recording is a version of, by recording id. */
+  texts?: ReadonlyMap<string, readonly TextLink[]>;
+}
+
+const {
+  recordings,
+  primaryId,
+  label,
+  texts = new Map<string, readonly TextLink[]>(),
+} = Astro.props;
+
+function details(recording: RecordingEntry): string {
+  const { collection, date } = recording.data;
+  return [collection, date === undefined ? undefined : formatArchiveDate(date)]
+    .filter((part) => part !== undefined)
+    .join(', ');
+}
+---
+
+<ul class="recordings" aria-label={label}>
+  {recordings.map((recording) => {
+    const versionOf = texts.get(recording.id) ?? [];
+    return (
+      <li class:list={{ primary: recording.id === primaryId }}>
+        <div class="about">
+          <strong>{recording.data.title}</strong>
+          <span>
+            {recording.id === primaryId && `${es.recording.primary}. `}
+            {details(recording)}
+          </span>
+          {versionOf.length > 0 && (
+            <span>
+              {es.listen.versionOf}{' '}
+              {versionOf.map((text, index) => (
+                <>
+                  {index > 0 && ', '}
+                  <a href={text.href}>{text.title}</a>
+                </>
+              ))}
+            </span>
+          )}
+        </div>
+        <span class="duration">{formatDuration(recording.data.durationSeconds)}</span>
+        {/* eslint-disable-next-line astro/jsx-a11y/media-has-caption -- audio only: its transcript is the lyrics, shown or linked next to it (WCAG 1.2.1) */}
+        <audio
+          controls
+          preload="none"
+          src={`/audio/${recording.data.audio}`}
+          aria-label={es.recording.listen(recording.data.title)}
+        />
+      </li>
+    );
+  })}
+</ul>
+
+<style>
+  .recordings {
+    display: grid;
+    gap: 0.6rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  li {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.4rem 1rem;
+    padding: 0.75rem 0.9rem;
+    border: 2px solid var(--ink);
+  }
+  li.primary {
+    background: var(--sky);
+  }
+  .about strong {
+    display: block;
+    font-weight: 600;
+  }
+  .about span {
+    display: block;
+  }
+  .about span,
+  .duration {
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+  }
+  .duration {
+    font-variant-numeric: tabular-nums;
+  }
+  audio {
+    grid-column: 1 / -1;
+    width: 100%;
+    height: 2.25rem;
+  }
+</style>

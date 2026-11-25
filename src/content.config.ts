@@ -6,12 +6,14 @@
  * entry file, e.g. `../media/images/dibujo-93.webp`), so Astro validates and optimizes it.
  */
 import { defineCollection } from 'astro:content';
-import { glob } from 'astro/loaders';
+import { file, glob } from 'astro/loaders';
 import {
   artworkSchema,
+  pageSchema,
   personSchema,
   recordingSchema,
   textSchema,
+  timelineEventSchema,
   videoSchema,
   workSchema,
 } from './lib/content/schemas';
@@ -42,4 +44,12 @@ export const collections = {
   }),
   videos: defineCollection({ loader: yamlFolder('videos'), schema: videoSchema }),
   people: defineCollection({ loader: yamlFolder('people'), schema: personSchema }),
+  pages: defineCollection({
+    loader: glob({ pattern: '*.md', base: `${contentDir}/pages`, generateId: fileNameId }),
+    schema: pageSchema,
+  }),
+  timeline: defineCollection({
+    loader: file(`${contentDir}/timeline.yml`),
+    schema: timelineEventSchema,
+  }),
 };

@@ -1,9 +1,13 @@
 ---
 import type { GetStaticPaths } from 'astro';
+import FramedArtwork from '../../components/FramedArtwork.astro';
+import PageBand from '../../components/PageBand.astro';
 import WorkContents from '../../components/WorkContents.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { catalog } from '../../data/catalog';
+import { es } from '../../i18n/es';
 import type { WorkEntry } from '../../lib/content/collections';
+import { formatArchiveDate } from '../../lib/format';
 
 export const getStaticPaths = (async () => {
   const archive = await catalog();
@@ -22,10 +26,54 @@ const archive = await catalog();
 const sections = archive
   .sectionsOf(work)
   .map((section) => ({ section, texts: archive.textsIn(work, section) }));
+const cover = archive.coverOf(work);
+const subtitle = [work.data.subtitle, work.data.year && formatArchiveDate(work.data.year)]
+  .filter((part) => part !== undefined)
+  .join('. ');
 ---
 
 <BaseLayout title={work.data.title} description={work.data.description}>
-  <h1>{work.data.title}</h1>
-  {work.data.subtitle && <p>{work.data.subtitle}</p>}
-  <WorkContents work={work} sections={sections} />
+  <PageBand title={work.data.title} subtitle={subtitle}>
+    <a slot="crumb" href="/obras/">
+      {es.works.title}
+    </a>
+  </PageBand>
+  <div class="work">
+    <div class="contents">
+      {work.data.description && <p class="description">{work.data.description}</p>}
+      <WorkContents work={work} sections={sections} />
+    </div>
+    {cover !== undefined && (
+      <aside>
+        <FramedArtwork artwork={cover} sizes="(min-width: 760px) 40vw, 100vw" />
+      </aside>
+    )}
+  </div>
 </BaseLayout>
+
+<style>
+  .work {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    padding: 2.5rem var(--gutter) 0;
+    align-items: start;
+  }
+  .description {
+    max-width: var(--measure-prose);
+    font-size: var(--step-1);
+  }
+  aside {
+    position: sticky;
+    top: 1.5rem;
+  }
+  @media (max-width: 760px) {
+    .work {
+      grid-template-columns: 1fr;
+    }
+    aside {
+      position: static;
+      order: -1;
+    }
+  }
+</style>

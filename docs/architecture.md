@@ -115,6 +115,9 @@ Rules that keep the code testable and replaceable:
 - **Pages ask the `Catalog`; they never sort, filter or join collections themselves.**
 - **Components receive plain data as props** and render it; they are tested with the Astro Container API.
 - **UI text comes from `src/i18n/es.ts`**, never hard-coded.
+- **Styles** are plain CSS: design tokens and base typography in `src/styles/` ([ADR 0048](adr/0048-watercolour-visual-identity.md)), everything else scoped in each component.
+- **Shared page parts** are components: `SiteHeader`, `SiteFooter`, `PageBand` (the colour band that opens a page), `FramedArtwork` (an artwork in the green frame, optimized by Astro), `Verses`, `RecordingList`, `RecordFields` (the archival record), `WorkCard`, `WorkContents`, `VideoFacade` (YouTube loaded on click), `PendingTaskList`.
+- **Domain helpers for pages** live in `src/lib/`: `record.ts` (record fields mapped to Dublin Core), `format.ts` (dates, durations, stanzas), `youtube.ts`.
 
 ### 4.1 Content model
 
