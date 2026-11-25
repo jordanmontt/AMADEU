@@ -1,8 +1,8 @@
 ---
 title: Todo y siempre
 work: sangre-y-sueno
-section: cancionero
-order: 640
+section: cancionero-1994
+order: 300
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I

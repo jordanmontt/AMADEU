@@ -1,8 +1,8 @@
 ---
 title: Altiplano
 work: sangre-y-sueno
-section: cancionero
-order: 20
+section: cancionero-1994
+order: 10
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I

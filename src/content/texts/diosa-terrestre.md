@@ -1,8 +1,8 @@
 ---
 title: Diosa terrestre
 work: sangre-y-sueno
-section: cancionero
-order: 190
+section: cancionero-1994
+order: 120
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I

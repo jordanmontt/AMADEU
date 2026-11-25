@@ -1,8 +1,8 @@
 ---
 title: Caballeros andantes
 work: sangre-y-sueno
-section: cancionero
-order: 130
+section: cancionero-1994
+order: 80
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I

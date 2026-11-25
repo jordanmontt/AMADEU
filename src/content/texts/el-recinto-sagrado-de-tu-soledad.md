@@ -1,7 +1,7 @@
 ---
 title: El recinto sagrado de tu soledad
 work: sangre-y-sueno
-section: cancionero
+section: cancionero-1981
 order: 300
 kind: song
 edition:

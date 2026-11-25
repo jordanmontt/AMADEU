@@ -57,6 +57,9 @@ export const es = {
     altTitles: (titles: readonly { title: string; source: string }[]) =>
       `También titulado ${titles.map(({ title, source }) => `«${title}» (${source})`).join(', ')}.`,
     notesHeading: 'Notas de la edición',
+    /** The superscript link from a verse to its note (ADR 0057). */
+    noteCall: (number: number) => `Nota ${String(number)}`,
+    noteBack: (number: number) => `Volver al verso de la nota ${String(number)}`,
     criticalNotesHeading: 'Notas críticas',
     illustrationsHeading: 'Dibujos',
     facsimileHeading: 'Página original',

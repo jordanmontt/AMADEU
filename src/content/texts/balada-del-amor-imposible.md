@@ -4,8 +4,8 @@ altTitles:
   - title: Balada del amor imposile
     source: El Regocijo de Vivir, Tomo I (errata)
 work: sangre-y-sueno
-section: cancionero
-order: 100
+section: cancionero-1981
+order: 340
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I
@@ -13,8 +13,8 @@ edition:
   publisher: Plural editores
   pages: "21"
 provisional: true
-rights: cleared
 primaryRecording: balada-del-amor-imposible-casera
+rights: cleared
 ---
 Hace mil años,
 hace un segundo,

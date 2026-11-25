@@ -1,8 +1,8 @@
 ---
 title: Sombra de Hitler
 work: sangre-y-sueno
-section: cancionero
-order: 590
+section: cancionero-1994
+order: 270
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I

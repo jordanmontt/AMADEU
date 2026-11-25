@@ -9,14 +9,20 @@ description: >-
   guitarra, en grabaciones caseras entre 1993 y 1995.
 order: 1
 cover: cuadro-10
-# Provisional sections, following Tomo I of El Regocijo de Vivir (Plural, 2012).
-# The canonical edition will change them (ADR 0021, 0023).
+# Sections: Relatos poéticos as in Tomo I of El Regocijo de Vivir (Plural, 2012); the songbook
+# as in the canonical edition (2027), which has two parts (ADR 0057).
 sections:
   - id: relatos-poeticos
     title: Relatos poéticos de Diego Calahumana
     slug: relatos-poeticos
     order: 1
-  - id: cancionero
-    title: Libro de canciones
-    slug: cancionero
+  - id: cancionero-1981
+    title: Sangre y sueño 1981
+    slug: sangre-y-sueno-1981
+    description: Libro de canciones, edición 1981
     order: 2
+  - id: cancionero-1994
+    title: Sangre y sueño 1994
+    slug: sangre-y-sueno-1994
+    description: Poemas de las ediciones 1994 y 2013
+    order: 3

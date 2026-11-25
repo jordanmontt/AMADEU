@@ -1,8 +1,8 @@
 ---
 title: El albañil
 work: sangre-y-sueno
-section: cancionero
-order: 210
+section: cancionero-1981
+order: 310
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I

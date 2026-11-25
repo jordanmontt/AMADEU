@@ -1,8 +1,8 @@
 ---
 title: Madre
 work: sangre-y-sueno
-section: cancionero
-order: 420
+section: cancionero-1994
+order: 240
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I

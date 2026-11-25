@@ -1,8 +1,8 @@
 ---
 title: Ya que la vida es así
 work: sangre-y-sueno
-section: cancionero
-order: 670
+section: cancionero-1994
+order: 330
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I

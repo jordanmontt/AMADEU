@@ -1,8 +1,8 @@
 ---
 title: Tristeza a orillas del mar
 work: sangre-y-sueno
-section: cancionero
-order: 650
+section: cancionero-1994
+order: 310
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I

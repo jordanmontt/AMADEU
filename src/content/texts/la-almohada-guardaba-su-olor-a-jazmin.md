@@ -1,8 +1,8 @@
 ---
 title: La almohada guardaba su olor a jazmín
 work: sangre-y-sueno
-section: cancionero
-order: 370
+section: cancionero-1994
+order: 220
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I

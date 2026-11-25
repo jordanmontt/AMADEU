@@ -1,8 +1,8 @@
 ---
 title: Amasar el viejo pan con nueva harina
 work: sangre-y-sueno
-section: cancionero
-order: 30
+section: cancionero-1994
+order: 20
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I

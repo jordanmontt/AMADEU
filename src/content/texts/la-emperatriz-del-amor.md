@@ -1,8 +1,8 @@
 ---
 title: La emperatriz del amor
 work: sangre-y-sueno
-section: cancionero
-order: 390
+section: cancionero-1994
+order: 230
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I

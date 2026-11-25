@@ -9,6 +9,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { artworkImage, catalog } from '../../data/catalog';
 import { es } from '../../i18n/es';
 import type { TextEntry, WorkEntry } from '../../lib/content/collections';
+import { editionNotes, verseParts } from '../../lib/footnotes';
 import { textRecord } from '../../lib/record';
 import { pageUrl, textJsonLd } from '../../lib/seo';
 import { textSlug, workPath } from '../../lib/routes';
@@ -45,6 +46,12 @@ const jsonLd = textJsonLd(archive, text, pageUrl(Astro.site, Astro.url.pathname)
 const facsimile = archive.facsimileOf(text);
 const record = textRecord(archive, text);
 const subtitle = es.kinds[text.data.kind];
+const notes = editionNotes(text.data.notes ?? '');
+const calls = new Set(
+  text.body
+    .split('\n')
+    .flatMap((verse) => verseParts(verse).flatMap((part) => ('note' in part ? [part.note] : []))),
+);
 ---
 
 <BaseLayout title={text.data.title} image={sharedImage} jsonLd={jsonLd}>
@@ -82,10 +89,25 @@ const subtitle = es.kinds[text.data.kind];
       )}
       <Verses body={text.body} />
       {text.data.provisional && <p class="provisional">{es.text.provisionalNote}</p>}
-      {text.data.notes && (
+      {notes.length > 0 && (
         <section aria-labelledby="notes-heading" class="notes">
           <h2 id="notes-heading">{es.text.notesHeading}</h2>
-          <p>{text.data.notes}</p>
+          {notes.map(({ number, text: note }) =>
+            number === undefined ? (
+              <p>{note}</p>
+            ) : (
+              <p id={`nota-${String(number)}`} class="numbered">
+                {calls.has(number) ? (
+                  <a href={`#llamada-${String(number)}`} aria-label={es.text.noteBack(number)}>
+                    {number}
+                  </a>
+                ) : (
+                  <span>{number}</span>
+                )}{' '}
+                {note}
+              </p>
+            ),
+          )}
         </section>
       )}
       {text.data.criticalNotes && (
@@ -169,6 +191,21 @@ const subtitle = es.kinds[text.data.kind];
   .notes p {
     max-width: var(--measure-verse);
     white-space: pre-line;
+  }
+  .notes .numbered {
+    font-size: var(--step--1);
+    margin: 0 0 0.6rem;
+    padding-left: 2rem;
+    text-indent: -2rem;
+  }
+  .notes .numbered > :first-child {
+    display: inline-block;
+    min-width: 1.6rem;
+    text-indent: 0;
+    color: var(--ink-soft);
+  }
+  .notes :target {
+    background: var(--rule);
   }
   .side {
     display: grid;

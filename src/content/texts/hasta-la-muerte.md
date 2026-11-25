@@ -1,8 +1,8 @@
 ---
 title: Hasta la muerte
 work: sangre-y-sueno
-section: cancionero
-order: 340
+section: cancionero-1994
+order: 210
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I

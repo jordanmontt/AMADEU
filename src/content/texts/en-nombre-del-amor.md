@@ -1,8 +1,8 @@
 ---
 title: En nombre del amor
 work: sangre-y-sueno
-section: cancionero
-order: 330
+section: cancionero-1981
+order: 410
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I

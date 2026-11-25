@@ -1,8 +1,8 @@
 ---
 title: Naturaleza muerta con juglar
 work: sangre-y-sueno
-section: cancionero
-order: 450
+section: cancionero-1981
+order: 260
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I

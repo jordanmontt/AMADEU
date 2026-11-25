@@ -28,7 +28,7 @@ Each design decision is recorded in a short file with context, decision, consequ
 | [0018](0018-astro-pwa-capacitor.md) | Astro + PWA; Android from the same project via Capacitor | Accepted |
 | [0019](0019-cloudflare-pages-and-domain.md) | Cloudflare Pages and a Foundation-owned domain | Partially superseded |
 | [0020](0020-foundation-owned-accounts.md) | Accounts owned by the Foundation (except the repository, for now) | Accepted |
-| [0021](0021-provisional-text-tomo-i.md) | Provisional text from Tomo I until the canonical text exists | Accepted |
+| [0021](0021-provisional-text-tomo-i.md) | Provisional text from Tomo I until the canonical text exists | Accepted; refined by 0057 |
 | [0022](0022-permanent-id-and-redirects.md) | Permanent ID, alternative titles, explicit order and redirects | Partially superseded |
 | [0023](0023-generic-work-structure.md) | Generic work structure: work → sections → texts | Accepted |
 | [0024](0024-automated-initial-import.md) | Automated initial import; the Foundation curates | Accepted |
@@ -64,3 +64,4 @@ Each design decision is recorded in a short file with context, decision, consequ
 | [0054](0054-animations-on-watercolour.md) | Animations on watercolours: a handwriting layer, washes and windows; "Cordillera Real" on the home page | Accepted |
 | [0055](0055-admin-panel-configuration.md) | Admin panel: a static Sveltia configuration checked against the schemas | Accepted |
 | [0056](0056-deployment-pipeline-and-hosting-files.md) | Deployment from CI, Cloudflare files generated at build, settings from the environment | Accepted |
+| [0057](0057-canonical-edition-import.md) | Canonical edition: its order, titles and notes; verses only where the PDF has them | Accepted |

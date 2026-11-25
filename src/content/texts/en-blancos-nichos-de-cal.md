@@ -1,8 +1,8 @@
 ---
 title: En blancos nichos de cal
 work: sangre-y-sueno
-section: cancionero
-order: 250
+section: cancionero-1994
+order: 160
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I

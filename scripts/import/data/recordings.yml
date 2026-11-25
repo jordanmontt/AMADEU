@@ -40,11 +40,11 @@
   id: cordillera-real-casera
   title: Cordillera Real
   kind: song
-  texts: []
+  texts:
+    - cordillera-de-los-andes
   collection: Grabación casera de Sangre y Sueño, voz y guitarra
   date: 1993/1995
   rights: cleared
-  review: No hay un texto con este título en el Tomo I; ¿corresponde a «Cordillera de Los Andes»?
 - source: 000 ARCHIVO MARCELO 2/Audios Marcelo/Cristal de Silencio Segunda Parte.mp3
   id: cristal-de-silencio-lectura-2
   title: Cristal de silencio (lectura, segunda parte)
@@ -396,11 +396,11 @@
   id: ninez-casera
   title: Niñez
   kind: song
-  texts: []
+  texts:
+    - aquel-antiguo-deseo-de-llorar
   collection: Grabación casera de Sangre y Sueño, voz y guitarra
   date: 1993/1995
   rights: cleared
-  review: No hay un texto con este título en el Tomo I; ¿corresponde a otra canción?
 - source: 000 ARCHIVO MARCELO 3/Audios Marcelo/Nuestra Señora de La Paz.mp3
   id: nuestra-senora-de-la-paz-casera
   title: Nuestra Señora de La Paz

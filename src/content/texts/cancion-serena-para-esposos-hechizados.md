@@ -1,8 +1,8 @@
 ---
 title: Canción serena para esposos hechizados
 work: sangre-y-sueno
-section: cancionero
-order: 140
+section: cancionero-1981
+order: 240
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I
@@ -10,8 +10,8 @@ edition:
   publisher: Plural editores
   pages: "26"
 provisional: true
-rights: cleared
 primaryRecording: cancion-serena-para-esposos-hechizados-casera
+rights: cleared
 ---
 Amada, amiga, esposa ferviente:
 mi amor será siempre aprendiz,

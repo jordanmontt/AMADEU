@@ -49,6 +49,22 @@ test.describe('text page @phone', () => {
     await expect(notes).toContainText('variante del segundo verso');
   });
 
+  test('links each note call in the verses to its note of the edition, and back (RF-21)', async ({
+    page,
+  }) => {
+    const notes = page.getByRole('region', { name: 'Notas de la edición' });
+
+    await page.getByRole('link', { name: 'Nota 1', exact: true }).click();
+
+    await expect(page).toHaveURL(/#nota-1$/);
+    await expect(notes.locator(':target')).toContainText('sobre el segundo verso');
+    await expect(notes).toContainText('Nota de prueba sobre el título.');
+
+    await notes.getByRole('link', { name: 'Volver al verso de la nota 1' }).click();
+
+    await expect(page).toHaveURL(/#llamada-1$/);
+  });
+
   test('names the edition the text comes from and says it is provisional (RF-22)', async ({
     page,
   }) => {

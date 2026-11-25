@@ -5,6 +5,7 @@
  * it is published (RF-71). Each rule reports problems instead of throwing, so one test run
  * lists every problem at once.
  */
+import { undefinedCalls } from '../footnotes';
 import { RESERVED_ROUTES, textSlug } from '../routes';
 import type { CollectionName, Collections } from './collections';
 
@@ -103,6 +104,9 @@ export function findIntegrityProblems(content: Collections): IntegrityProblem[] 
     }
     for (const page of text.data.facsimile) {
       expectExisting('texts', text.id, 'facsimile', 'artworks', page);
+    }
+    for (const number of undefinedCalls(text.body, text.data.notes)) {
+      report('texts', text.id, `calls note ${String(number)}, which its notes do not define`);
     }
     const primary = text.data.primaryRecording;
     if (primary !== undefined) {

@@ -1,8 +1,8 @@
 ---
 title: Soy una lágrima oscura que va rodando hacia el mar
 work: sangre-y-sueno
-section: cancionero
-order: 600
+section: cancionero-1994
+order: 280
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I

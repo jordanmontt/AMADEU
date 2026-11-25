@@ -1,8 +1,8 @@
 ---
 title: No pudo ser
 work: sangre-y-sueno
-section: cancionero
-order: 470
+section: cancionero-1981
+order: 200
 kind: song
 edition:
   name: El Regocijo de Vivir, Tomo I
