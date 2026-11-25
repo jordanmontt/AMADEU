@@ -69,6 +69,15 @@ See [ADR 0040](docs/adr/0040-testing-strategy.md).
 5. Add the field to the Sveltia CMS configuration with a Spanish label (milestone H6).
 6. Update section 4 of `docs/02-technical-requirements.md` and the ER diagram in `docs/architecture.md`.
 
+## Changing the admin panel
+
+The admin is Sveltia CMS, configured in `public/admin/config.yml` ([ADR 0055](docs/adr/0055-admin-panel-configuration.md)).
+
+- When you change a schema in `src/lib/content/schemas.ts`, change the matching collection in `config.yml`: `tests/content/admin-config.test.ts` fails until both agree.
+- After changing `config.yml`, open `http://localhost:4321/admin/index.html` with `npm run dev` running. Sveltia validates the configuration and shows any error instead of the sign-in screen.
+- To edit content locally, choose "Work with Local Repository" in a Chromium browser and pick this repository's folder. Sveltia edits the working copy; review the changes with `git diff` before committing.
+- Raise the pinned Sveltia version in `public/admin/index.html` on purpose, after reading its release notes.
+
 ## Animating a drawing
 
 Animations are handcrafted ([ADR 0051](docs/adr/0051-raster-layer-animations.md)); "Alcalde de la canción" (`src/lib/animations/alcalde-de-la-cancion.ts`) is the example to follow.
