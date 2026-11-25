@@ -1,0 +1,521 @@
+# Admin panel of the Marcelo de Urioste archive (Sveltia CMS; RF-65 to RF-71, ADR 0055).
+#
+# Every collection mirrors a schema of src/lib/content/schemas.ts: same fields, same
+# required ones, same allowed values. tests/content/admin-config.test.ts checks it, so the
+# admin can never save something the site would reject. Labels and hints are in Spanish;
+# field names, collection names and stored values are the schema's.
+#
+# Login: until the Foundation's Sveltia CMS Additions Worker is deployed (H7), the panel works
+# with "Work with Local Repository" in a Chromium browser, for trying it out.
+
+backend:
+  name: github
+  repo: jordanmontt/AMADEU
+  branch: main
+
+app_title: Archivo Marcelo de Urioste
+logo:
+  src: /favicon.png
+
+# Where uploads go when a field does not say. Every image and audio field says, with a path
+# relative to its entry, which is what the site reads; this one must be absolute.
+media_folder: src/content/media/images
+public_folder: /src/content/media/images
+
+# File names of new entries: lowercase, without accents, words joined by hyphens.
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: '-'
+
+output:
+  # Leave out optional fields that are empty, as the site's schemas expect.
+  omit_empty_optional_fields: true
+
+collections:
+  - name: works
+    label: Obras
+    label_singular: Obra
+    description: Libros, discos y cuadernos. Cada obra se divide en secciones ordenadas.
+    folder: src/content/works
+    extension: yml
+    format: yaml
+    create: true
+    identifier_field: title
+    slug:
+      template: '{{title}}'
+      # The file name is the entry's permanent id: chosen once, never renamed.
+      editable: [create]
+    sortable_fields: [order, title]
+    fields:
+      - { name: title, label: Título, widget: string }
+      - { name: subtitle, label: Subtítulo, widget: string, required: false }
+      - name: slug
+        label: Dirección en el sitio
+        widget: string
+        hint: 'Parte de la dirección: archivo.org/sangre-y-sueno/. No la cambies después de publicar: el QR del libro apunta a ella.'
+        pattern:
+          [
+            '^[a-z0-9]+(?:-[a-z0-9]+)*$',
+            'Solo minúsculas, números y guiones, sin acentos: sangre-y-sueno.',
+          ]
+      - name: status
+        label: Estado
+        widget: select
+        options:
+          - { label: Publicada, value: published }
+          - { label: Próximamente, value: upcoming }
+          - { label: Borrador (no se muestra), value: draft }
+      - &year
+        name: year
+        label: Año
+        widget: string
+        required: false
+        pattern:
+          &date [
+            '^\d{4}(?:-\d{2}(?:-\d{2})?)?(?:/\d{4}(?:-\d{2}(?:-\d{2})?)?)?$',
+            'Escribe la fecha como 1984, 1993-05, 1981-06-12 o 1993/1995.',
+          ]
+      - { name: description, label: Presentación, widget: text, required: false }
+      - name: cover
+        label: Imagen de portada
+        widget: relation
+        collection: artworks
+        required: false
+        search_fields: [title]
+        display_fields: ['{{title}}']
+      - name: sections
+        label: Secciones
+        label_singular: Sección
+        widget: list
+        required: false
+        summary: '{{fields.order}}. {{fields.title}}'
+        fields:
+          - name: id
+            label: Identificador
+            widget: string
+            hint: Permanente. Los textos de la sección lo usan.
+            pattern:
+              &kebab [
+                '^[a-z0-9]+(?:-[a-z0-9]+)*$',
+                'Solo minúsculas, números y guiones, sin acentos.',
+              ]
+          - { name: title, label: Título, widget: string }
+          - { name: slug, label: Dirección en el sitio, widget: string, pattern: *kebab }
+          - { name: order, label: Orden, widget: number, value_type: int }
+          - { name: description, label: Descripción, widget: text, required: false }
+      - { name: order, label: Orden en la portada, widget: number, value_type: int }
+
+  - name: texts
+    label: Textos
+    label_singular: Texto
+    description: Poemas y letras de canciones.
+    folder: src/content/texts
+    extension: md
+    format: frontmatter
+    create: true
+    identifier_field: title
+    slug:
+      template: '{{title}}'
+      editable: [create]
+    sortable_fields: [work, section, order, title]
+    fields:
+      - { name: title, label: Título, widget: string }
+      - &altTitles
+        name: altTitles
+        label: Otros títulos
+        label_singular: Otro título
+        widget: list
+        required: false
+        hint: Títulos con que se publicó o grabó en otra parte. El buscador los encuentra.
+        fields:
+          - { name: title, label: Título, widget: string }
+          - { name: source, label: Dónde aparece, widget: string }
+      - name: work
+        label: Obra
+        widget: relation
+        collection: works
+        search_fields: [title]
+        display_fields: ['{{title}}']
+      - name: section
+        label: Sección
+        widget: relation
+        collection: works
+        value_field: 'sections.*.id'
+        display_fields: ['{{title}}: {{sections.*.title}}']
+        search_fields: ['sections.*.title']
+      - {
+          name: order,
+          label: Orden en la sección,
+          widget: number,
+          value_type: int,
+          hint: 'Deja huecos (10, 20, 30…) para poder insertar textos después.',
+        }
+      - name: kind
+        label: Tipo
+        widget: select
+        options:
+          - { label: Poema, value: poem }
+          - { label: Canción, value: song }
+      - { name: dedication, label: Dedicatoria, widget: string, required: false }
+      - { name: notes, label: Notas de la edición, widget: text, required: false }
+      - {
+          name: criticalNotes,
+          label: Notas críticas,
+          widget: text,
+          required: false,
+          hint: Comentarios del editor y variantes entre ediciones.,
+        }
+      - name: facsimile
+        label: Página original (facsímil)
+        widget: relation
+        collection: artworks
+        multiple: true
+        required: false
+        search_fields: [title]
+        display_fields: ['{{title}}']
+      - name: edition
+        label: Edición de la que viene el texto
+        widget: object
+        required: false
+        fields:
+          - { name: name, label: Nombre, widget: string }
+          - { name: year, label: Año, widget: string, required: false, pattern: *date }
+          - { name: publisher, label: Editorial, widget: string, required: false }
+          - { name: pages, label: Páginas, widget: string, required: false }
+      - {
+          name: provisional,
+          label: Texto provisional,
+          widget: boolean,
+          default: false,
+          required: false,
+          hint: 'Marca si el texto se reemplazará por el de la edición conmemorativa.',
+        }
+      - name: primaryRecording
+        label: Grabación principal
+        widget: relation
+        collection: recordings
+        required: false
+        hint: La versión que se muestra primero. Si no eliges, se muestra la más antigua.
+        search_fields: [title, collection]
+        display_fields: ['{{title}} ({{collection}})']
+      - &review {
+          name: review,
+          label: Qué falta revisar,
+          widget: text,
+          required: false,
+          hint: 'Aparece en la lista de pendientes hasta que lo borres.',
+        }
+      - &rights
+        name: rights
+        label: Derechos
+        widget: select
+        hint: Solo se publica lo autorizado.
+        options:
+          - { label: Autorizado, value: cleared }
+          - { label: Pendiente, value: pending }
+          - { label: Restringido, value: restricted }
+      - &rightsHolder {
+          name: rightsHolder,
+          label: Titular de derechos,
+          widget: string,
+          required: false,
+        }
+      - &license {
+          name: license,
+          label: Licencia,
+          widget: string,
+          required: false,
+          default: all-rights-reserved,
+        }
+      - {
+          name: body,
+          label: Texto,
+          widget: text,
+          hint: 'Un verso por línea; una línea en blanco entre estrofas.',
+        }
+
+  - name: recordings
+    label: Grabaciones
+    label_singular: Grabación
+    folder: src/content/recordings
+    extension: yml
+    format: yaml
+    create: true
+    identifier_field: title
+    slug:
+      template: '{{title}}'
+      editable: [create]
+    sortable_fields: [title, date, collection]
+    fields:
+      - { name: title, label: Título, widget: string }
+      - *altTitles
+      - name: texts
+        label: Textos de los que es versión
+        widget: relation
+        collection: texts
+        multiple: true
+        required: false
+        search_fields: [title]
+        display_fields: ['{{title}}']
+      - name: kind
+        label: Tipo
+        widget: select
+        options:
+          - { label: Canción, value: song }
+          - { label: Recital, value: recital }
+          - { label: Lectura, value: reading }
+          - { label: Entrevista, value: interview }
+          - { label: Conferencia, value: lecture }
+          - { label: Instrumental, value: instrumental }
+      - { name: date, label: Fecha, widget: string, required: false, pattern: *date }
+      - {
+          name: collection,
+          label: Procedencia,
+          widget: string,
+          required: false,
+          hint: 'Disco, serie o colección: «LP Discolandia 1984».',
+        }
+      - { name: venue, label: Lugar, widget: string, required: false }
+      - {
+          name: performers,
+          label: Intérpretes,
+          label_singular: Intérprete,
+          widget: list,
+          required: false,
+        }
+      - &credits
+        name: credits
+        label: Créditos
+        label_singular: Crédito
+        widget: list
+        required: false
+        fields:
+          - name: person
+            label: Persona
+            widget: relation
+            collection: people
+            search_fields: [name]
+            display_fields: ['{{name}}']
+          - { name: role, label: Qué hizo, widget: string, hint: 'Por ejemplo: dirección musical.' }
+      - {
+          name: durationSeconds,
+          label: Duración (segundos),
+          widget: number,
+          value_type: float,
+          min: 1,
+        }
+      - name: audio
+        label: Audio (MP3)
+        widget: file
+        accept: audio/mpeg
+        media_folder: ../media/audio
+        public_folder: ''
+        hint: Un archivo MP3 de hasta 95 MB.
+        media_libraries:
+          default:
+            config:
+              max_file_size: 99614720
+      - &originalUrl {
+          name: originalUrl,
+          label: Original en Internet Archive,
+          widget: string,
+          required: false,
+          pattern: ['^https?://', 'Una dirección que empiece con https://.'],
+        }
+      - {
+          name: trackNumber,
+          label: Número de pista,
+          widget: number,
+          value_type: int,
+          required: false,
+        }
+      - &notes { name: notes, label: Notas, widget: text, required: false }
+      - *review
+      - *rights
+      - *rightsHolder
+      - *license
+
+  - name: artworks
+    label: Imágenes
+    label_singular: Imagen
+    description: Dibujos, acuarelas, pinturas, fotografías, documentos y afiches.
+    folder: src/content/artworks
+    extension: yml
+    format: yaml
+    create: true
+    identifier_field: title
+    slug:
+      template: '{{title}}'
+      editable: [create]
+    sortable_fields: [title, date]
+    fields:
+      - { name: title, label: Título, widget: string }
+      - name: image
+        label: Imagen
+        widget: image
+        media_folder: ../media/images
+        public_folder: ../media/images
+        hint: 'Una imagen de hasta 10 MB; el sitio la optimiza sola.'
+        media_libraries:
+          default:
+            config:
+              max_file_size: 10485760
+      - {
+          name: alt,
+          label: Descripción para quien no ve la imagen,
+          widget: text,
+          hint: 'Obligatoria. Describe lo que se ve, en una o dos frases.',
+        }
+      - name: kind
+        label: Tipo
+        widget: select
+        options:
+          - { label: Dibujo, value: drawing }
+          - { label: Acuarela, value: watercolor }
+          - { label: Pintura, value: painting }
+          - { label: Fotografía, value: photo }
+          - { label: Documento, value: document }
+          - { label: Afiche, value: poster }
+      - { name: inventoryCode, label: Código de inventario, widget: string, required: false }
+      - { name: inscription, label: Inscripción, widget: string, required: false }
+      - { name: technique, label: Técnica, widget: string, required: false }
+      - { name: dimensions, label: Medidas, widget: string, required: false }
+      - { name: date, label: Fecha, widget: string, required: false, pattern: *date }
+      - { name: place, label: Lugar, widget: string, required: false }
+      - { name: series, label: Serie, widget: string, required: false }
+      - name: sheet
+        label: Hoja de la que es una viñeta
+        widget: relation
+        collection: artworks
+        required: false
+        search_fields: [title]
+        display_fields: ['{{title}}']
+      - name: texts
+        label: Textos que ilustra
+        widget: relation
+        collection: texts
+        multiple: true
+        required: false
+        search_fields: [title]
+        display_fields: ['{{title}}']
+      - *originalUrl
+      - { name: sourceFile, label: Archivo original, widget: string, required: false }
+      - {
+          name: rating,
+          label: Valoración (1 a 3),
+          widget: number,
+          value_type: int,
+          min: 1,
+          max: 3,
+          required: false,
+        }
+      - *notes
+      - *review
+      - {
+          name: animated,
+          label: Animado,
+          widget: boolean,
+          default: false,
+          required: false,
+          hint: Lo decide el equipo técnico.,
+        }
+      - *rights
+      - *rightsHolder
+      - *license
+
+  - name: videos
+    label: Videos
+    label_singular: Video
+    folder: src/content/videos
+    extension: yml
+    format: yaml
+    create: true
+    identifier_field: title
+    slug:
+      template: '{{title}}'
+      editable: [create]
+    sortable_fields: [title, date]
+    fields:
+      - { name: title, label: Título, widget: string }
+      - { name: series, label: Serie, widget: string, required: false }
+      - { name: episode, label: Episodio, widget: number, value_type: int, required: false }
+      - { name: date, label: Fecha, widget: string, required: false, pattern: *date }
+      - {
+          name: durationSeconds,
+          label: Duración (segundos),
+          widget: number,
+          value_type: float,
+          required: false,
+        }
+      - { name: description, label: Descripción, widget: text, required: false }
+      - *credits
+      - name: youtubeId
+        label: Identificador de YouTube
+        widget: string
+        required: false
+        hint: 'Las 11 letras después de v= en la dirección del video: youtube.com/watch?v=dQw4w9WgXcQ.'
+        pattern: ['^[\w-]{11}$', 'Son 11 letras, números, guiones o guiones bajos.']
+      - *originalUrl
+      - name: texts
+        label: Textos relacionados
+        widget: relation
+        collection: texts
+        multiple: true
+        required: false
+        search_fields: [title]
+        display_fields: ['{{title}}']
+      - *notes
+      - *review
+      - *rights
+      - *rightsHolder
+      - *license
+
+  - name: people
+    label: Personas
+    label_singular: Persona
+    description: Quienes aparecen en los créditos.
+    folder: src/content/people
+    extension: yml
+    format: yaml
+    create: true
+    identifier_field: name
+    slug:
+      template: '{{name}}'
+      editable: [create]
+    fields:
+      - { name: name, label: Nombre, widget: string }
+      - { name: description, label: Descripción, widget: text, required: false }
+
+  - name: pages
+    label: Biografía y cronología
+    files:
+      - name: marcelo
+        label: Biografía
+        file: src/content/pages/marcelo.md
+        format: frontmatter
+        fields:
+          - { name: title, label: Título, widget: string }
+          - { name: description, label: Bajada, widget: string, required: false }
+          - { name: body, label: Texto, widget: markdown }
+      - name: timeline
+        label: Cronología
+        file: src/content/timeline.yml
+        format: yaml
+        fields:
+          - name: events
+            label: Hechos
+            label_singular: Hecho
+            widget: list
+            root: true
+            summary: '{{fields.date}}: {{fields.text}}'
+            fields:
+              - {
+                  name: id,
+                  label: Identificador,
+                  widget: string,
+                  pattern: *kebab,
+                  hint: 'Permanente: nacimiento, premio-franz-tamayo…',
+                }
+              - { name: date, label: Fecha, widget: string, pattern: *date }
+              - { name: text, label: Hecho, widget: text }
