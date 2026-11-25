@@ -217,7 +217,7 @@ Works live at the root (`/<work-slug>/`, [ADR 0038](adr/0038-works-at-root-path.
   - visible focus and verified contrast;
   - automated axe checks in E2E tests.
 - **RT-43. i18n** (RF-55): UI strings centralized in `src/i18n/es.ts`; no hard-coded UI text in components. Astro i18n routing is enabled when English is added.
-- **RT-44. SEO:** sitemap, per-item Open Graph metadata, JSON-LD, `robots.txt` excluding `/admin/`.
+- **RT-44. SEO:** sitemap, per-item Open Graph metadata, JSON-LD, `robots.txt` excluding `/admin/` (`src/lib/seo.ts`; absolute addresses from `SITE_URL`, [ADR 0056](adr/0056-deployment-pipeline-and-hosting-files.md)).
 
 ## 9. Testing, quality and delivery
 
@@ -254,7 +254,7 @@ Rules:
   4. E2E tests in Chromium, Firefox and WebKit against the fixture build.
   5. Only on `main`, and only if every previous step passed: deploy to Cloudflare Pages.
 
-  If any step fails, nothing is published and the previous site stays online (RF-71). Branch protection on `main` requires the pipeline to pass.
+  If any step fails, nothing is published and the previous site stays online (RF-71). Branch protection on `main` requires the pipeline to pass. The steps that need the Foundation's accounts are in [docs/deployment.md](deployment.md).
 
 ### 9.4 Environments
 

@@ -8,6 +8,7 @@ import { artworkImage, catalog } from '../../data/catalog';
 import { es } from '../../i18n/es';
 import type { ArtworkEntry } from '../../lib/content/collections';
 import { artworkRecord } from '../../lib/record';
+import { artworkJsonLd, pageUrl } from '../../lib/seo';
 import { textPath } from '../../lib/routes';
 
 export const getStaticPaths = (async () => {
@@ -25,9 +26,10 @@ const texts = archive.textsIllustratedBy(artwork);
 const sheet = archive.sheetOf(artwork);
 const panels = archive.panelsOf(artwork);
 const full = await artworkImage(artwork);
+const jsonLd = artworkJsonLd(artwork, pageUrl(Astro.site, Astro.url.pathname));
 ---
 
-<BaseLayout title={artwork.data.title} description={artwork.data.alt}>
+<BaseLayout title={artwork.data.title} description={artwork.data.alt} image={full} jsonLd={jsonLd}>
   <PageBand title={artwork.data.title} subtitle={es.kinds[artwork.data.kind]} tone="sky">
     <a slot="crumb" href="/galeria/">
       {es.gallery.title}

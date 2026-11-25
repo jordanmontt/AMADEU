@@ -13,7 +13,6 @@ const NOT_CHECKED_YET: Readonly<Record<string, string>> = {
   'RF-45': 'design tone: reviewed by eye; visual tests postponed until after v1',
   'RF-46': 'design tone: reviewed by eye; visual tests postponed until after v1',
   'RF-55': 'Spanish only, every string in src/i18n/es.ts: enforced by code review',
-  'RF-62': 'H7: analytics without cookies',
   'RF-65': "H7: login with username and password needs the Foundation's Additions Worker",
   'RF-70': 'H7: publishing on save needs the deployment pipeline',
   'RF-80': 'Android app, after v1',

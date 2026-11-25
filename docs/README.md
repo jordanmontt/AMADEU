@@ -4,6 +4,8 @@
 |---|---|---|---|
 | [01 – Requerimientos funcionales](01-requerimientos-funcionales.md) | Español | Fundación, editores, financiadores | Qué es la aplicación, qué contiene y cómo se ve. |
 | [Inventario del archivo](inventario/README.md) | Español | Fundación, editores | Material digitalizado existente y pendientes de contenido. |
+- [Guía del panel de administración](guia-del-panel.md): cómo editar el archivo, para la Fundación.
+- [Deployment](deployment.md) (en inglés): cómo se publica el sitio y qué cuentas hay que conectar.
 | [02 – Technical requirements](02-technical-requirements.md) | English | Engineers | Stack, content model, media, CMS, routes, quality, deployment. |
 | [Architecture](architecture.md) | English | Engineers | arc42 + C4 views: context, containers, components, data flows, deployment. |
 | [Architecture Decision Records](adr/README.md) | English | Engineers | One file per decision, with context and rejected alternatives. |

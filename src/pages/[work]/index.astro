@@ -5,7 +5,7 @@ import PageBand from '../../components/PageBand.astro';
 import WorkContents from '../../components/WorkContents.astro';
 import PlayerButton from '../../components/player/PlayerButton.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { catalog } from '../../data/catalog';
+import { artworkImage, catalog } from '../../data/catalog';
 import { es } from '../../i18n/es';
 import type { WorkEntry } from '../../lib/content/collections';
 import { formatArchiveDate, formatTotalDuration } from '../../lib/format';
@@ -30,6 +30,7 @@ const sections = archive
   .sectionsOf(work)
   .map((section) => ({ section, texts: archive.textsIn(work, section) }));
 const cover = archive.coverOf(work);
+const coverImage = cover === undefined ? undefined : await artworkImage(cover);
 const playlist = archive
   .playlistOf(work)
   .map(({ text, recording }) => recordingTrack(recording, textPath(work, text)));
@@ -39,7 +40,7 @@ const subtitle = [work.data.subtitle, work.data.year && formatArchiveDate(work.d
   .join('. ');
 ---
 
-<BaseLayout title={work.data.title} description={work.data.description}>
+<BaseLayout title={work.data.title} description={work.data.description} image={coverImage}>
   <PageBand title={work.data.title} subtitle={subtitle}>
     <a slot="crumb" href="/obras/">
       {es.works.title}

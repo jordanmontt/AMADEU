@@ -73,3 +73,51 @@ jobs:
           name: playwright-report-${{ matrix.browser }}
           path: playwright-report/
           retention-days: 7
+
+  # Only from main, and only after every check and every browser passed (RT-57, RF-71): a
+  # failing change publishes nothing and the previous site stays online. It stays idle until
+  # the Foundation's Cloudflare project is connected (docs/deployment.md).
+  deploy:
+    name: Deploy to Cloudflare Pages
+    needs: [checks, e2e]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Check that deployment is configured
+        id: configured
+        env:
+          TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          PROJECT: ${{ vars.CLOUDFLARE_PAGES_PROJECT }}
+        run: |
+          if [ -n "$TOKEN" ] && [ -n "$ACCOUNT" ] && [ -n "$PROJECT" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::Deployment is not configured yet: nothing published (see docs/deployment.md)."
+          fi
+      - if: steps.configured.outputs.ready == 'true'
+        uses: actions/checkout@v4
+      - if: steps.configured.outputs.ready == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - if: steps.configured.outputs.ready == 'true'
+        run: npm ci
+      - if: steps.configured.outputs.ready == 'true'
+        name: Install ffmpeg
+        run: command -v ffmpeg || (sudo apt-get update && sudo apt-get install -y ffmpeg)
+      - if: steps.configured.outputs.ready == 'true'
+        name: Build the site
+        run: npm run build
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}
+          PUBLIC_GOATCOUNTER_CODE: ${{ vars.GOATCOUNTER_CODE }}
+      - if: steps.configured.outputs.ready == 'true'
+        name: Publish
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=${{ vars.CLOUDFLARE_PAGES_PROJECT }} --branch=main

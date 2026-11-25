@@ -5,12 +5,16 @@
  * between pages is client-side (Astro's ClientRouter), which keeps the player sounding
  * across pages (RF-47, ADR 0049).
  */
+import type { ImageMetadata } from 'astro';
+import { getImage } from 'astro:assets';
 import { ClientRouter } from 'astro:transitions';
 import AudioPlayer from '../components/player/AudioPlayer.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import { es } from '../i18n/es';
 import { APP_BACKGROUND } from '../lib/pwa/manifest';
+import { goatCounter } from '../lib/analytics';
+import { type JsonLd, jsonLdScript } from '../lib/seo';
 import '../styles/base.css';
 
 interface Props {
@@ -19,10 +23,25 @@ interface Props {
   description?: string | undefined;
   /** Keep the page out of search engines (admin pages). */
   noindex?: boolean;
+  /** The picture shown when the page is shared (Open Graph), e.g. a drawing of the text. */
+  image?: ImageMetadata | undefined;
+  /** schema.org structured data describing the page (RT-44). */
+  jsonLd?: JsonLd | undefined;
 }
 
-const { title, description = es.site.tagline, noindex = false } = Astro.props;
+const { title, description = es.site.tagline, noindex = false, image, jsonLd } = Astro.props;
 const fullTitle = title === undefined ? es.site.name : `${title} · ${es.site.name}`;
+// Absolute addresses need the site's address (SITE_URL); without it they are left out.
+const site = Astro.site;
+const canonical = site === undefined ? undefined : new URL(Astro.url.pathname, site).href;
+// Visits are counted only once the Foundation's GoatCounter code is configured (RF-62).
+const counter = noindex
+  ? undefined
+  : goatCounter(import.meta.env.PUBLIC_GOATCOUNTER_CODE as string | undefined);
+const shared =
+  site === undefined || image === undefined
+    ? undefined
+    : new URL((await getImage({ src: image, width: 1200, format: 'jpeg' })).src, site).href;
 ---
 
 <!doctype html>
@@ -37,7 +56,28 @@ const fullTitle = title === undefined ? es.site.name : `${title} · ${es.site.na
     <link rel="manifest" href="/manifest.webmanifest" />
     <meta name="theme-color" content={APP_BACKGROUND} />
     <title>{fullTitle}</title>
+    {canonical !== undefined && <link rel="canonical" href={canonical} />}
+    <meta property="og:site_name" content={es.site.name} />
+    <meta property="og:title" content={title ?? es.site.name} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={title === undefined ? 'website' : 'article'} />
+    <meta property="og:locale" content="es_ES" />
+    {canonical !== undefined && <meta property="og:url" content={canonical} />}
+    {shared !== undefined && <meta property="og:image" content={shared} />}
+    <meta name="twitter:card" content={shared === undefined ? 'summary' : 'summary_large_image'} />
+    {jsonLd !== undefined && !noindex && (
+      <script is:inline type="application/ld+json" set:html={jsonLdScript(jsonLd)} />
+    )}
     <ClientRouter />
+    {counter !== undefined && (
+      <script
+        is:inline
+        async
+        src="https://gc.zgo.at/count.js"
+        data-goatcounter={counter.endpoint}
+        data-goatcounter-settings='{"no_onload": true}'
+      />
+    )}
   </head>
   <body>
     <a class="skip-link" href="#content">
@@ -47,8 +87,11 @@ const fullTitle = title === undefined ? es.site.name : `${title} · ${es.site.na
     <main id="content" data-pagefind-body={noindex ? undefined : ''}>
       <slot />
     </main>
-    <SiteFooter />
+    <SiteFooter statistics={counter?.dashboard} />
     <AudioPlayer />
+    {counter !== undefined && <script>
+      import '../components/analytics/page-views';
+    </script>}
     <script>
       // Offline reading after the first visit (RF-54, ADR 0052). The service worker exists only
       // in a build (`npm run build`), not under `astro dev`.

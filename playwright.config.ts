@@ -13,6 +13,10 @@ export default defineConfig({
   reporter: process.env.CI ? [['list'], ['html', { open: 'never' }]] : 'list',
   use: {
     baseURL: `http://localhost:${PORT}`,
+    // No network (RT-50): every host but the test server goes through a proxy that does not
+    // exist, so requests to outside services fail in the browser itself. Unlike intercepting
+    // routes, this leaves the service worker in charge, which the offline tests need.
+    proxy: { server: 'http://127.0.0.1:9', bypass: 'localhost,127.0.0.1' },
     trace: 'on-first-retry',
   },
   // Desktop browsers run every test except the phone checks. The phone projects run the

@@ -6,10 +6,11 @@ import RecordFields from '../../components/RecordFields.astro';
 import RecordingList from '../../components/RecordingList.astro';
 import Verses from '../../components/Verses.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { catalog } from '../../data/catalog';
+import { artworkImage, catalog } from '../../data/catalog';
 import { es } from '../../i18n/es';
 import type { TextEntry, WorkEntry } from '../../lib/content/collections';
 import { textRecord } from '../../lib/record';
+import { pageUrl, textJsonLd } from '../../lib/seo';
 import { textSlug, workPath } from '../../lib/routes';
 
 export const getStaticPaths = (async () => {
@@ -38,12 +39,15 @@ const credits = new Map(
   ]),
 );
 const illustrations = archive.illustrationsOf(text);
+const [firstDrawing] = illustrations;
+const sharedImage = firstDrawing === undefined ? undefined : await artworkImage(firstDrawing);
+const jsonLd = textJsonLd(archive, text, pageUrl(Astro.site, Astro.url.pathname));
 const facsimile = archive.facsimileOf(text);
 const record = textRecord(archive, text);
 const subtitle = es.kinds[text.data.kind];
 ---
 
-<BaseLayout title={text.data.title}>
+<BaseLayout title={text.data.title} image={sharedImage} jsonLd={jsonLd}>
   <PageBand title={text.data.title} subtitle={subtitle}>
     <Fragment slot="crumb">
       <a href={workPath(work)}>{work.data.title}</a> / {section.title}

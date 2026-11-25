@@ -14,6 +14,7 @@ export const es = {
       'Archivo digital de la obra de Marcelo de Urioste Nardín (La Paz, 1952 – Washington D. C., 1997). ' +
       'Los textos, grabaciones, dibujos y videos tienen todos los derechos reservados, salvo que la ficha indique otra licencia.',
     footerFoundation: 'Una edición de la Fundación Marcelo de Urioste.',
+    statistics: 'Estadísticas públicas de visitas (sin cookies)',
   },
   nav: {
     obras: 'Obras',

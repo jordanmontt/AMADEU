@@ -14,6 +14,8 @@ La documentación para la Fundación está en español y la documentación técn
 - [Architecture Decision Records](docs/adr/README.md) (en inglés): cada decisión con su contexto, su porqué y las alternativas descartadas.
 - [CONTRIBUTING.md](CONTRIBUTING.md) (en inglés): cómo instalar, probar y publicar.
 - [Inventario del archivo](docs/inventario/README.md): qué material existe y qué falta.
+- [Guía del panel de administración](docs/guia-del-panel.md): cómo editar el archivo, para la Fundación.
+- [Deployment](docs/deployment.md) (en inglés): cómo se publica el sitio y qué cuentas hay que conectar.
 
 ## Resumen técnico
 

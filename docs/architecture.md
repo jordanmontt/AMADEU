@@ -230,7 +230,7 @@ Navigation is client-side (`<ClientRouter />`); `transition:persist` keeps the s
 | Prototype | `*.pages.dev` | from the repository |
 | Production | Foundation domain | from the repository |
 
-Media always ship with the site; there is no separate media host and no payment card anywhere.
+Media always ship with the site; there is no separate media host and no payment card anywhere. CI publishes `dist/` with Wrangler after every check passed; the one-time setup is in [deployment.md](deployment.md) ([ADR 0056](adr/0056-deployment-pipeline-and-hosting-files.md)).
 
 ## 7. Cross-cutting concepts
 

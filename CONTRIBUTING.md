@@ -4,6 +4,8 @@ Start with [docs/architecture.md](docs/architecture.md) (how it fits together), 
 
 ## Setup
 
+Settings come from the environment (`.env.example`): `CONTENT_DIR`, `SITE_URL` and `PUBLIC_GOATCOUNTER_CODE`, all optional locally. Publishing is described in [docs/deployment.md](docs/deployment.md).
+
 Requirements: Node 24 LTS (see `.nvmrc`), npm, and ffmpeg (the build re-encodes audio over 25 MiB, [ADR 0045](docs/adr/0045-long-audio-recompressed-at-build.md)).
 
 ```bash
@@ -105,3 +107,4 @@ Animations are handcrafted ([ADR 0051](docs/adr/0051-raster-layer-animations.md)
 - **Firefox skips axe's `target-size` rule on the player's open queue:** Playwright's Firefox crashes while that rule runs there (logged upstream). Chromium and WebKit still check it.
 - **The service worker exists only in a build** (`npm run build`, or `npm run build:e2e` for the tests). `astro dev` never registers it. To try offline reading, run `npm run build && npm run preview`, open the site once, then go offline in the browser's developer tools ([ADR 0052](docs/adr/0052-service-worker-after-the-build.md)).
 - **App icons and favicon** are generated from the logo scan outside the repository: `npx tsx scripts/pwa/icons.ts "<path to the logo>"`.
+- **E2E tests reach no outside host:** `playwright.config.ts` sends every host but the test server to a proxy that does not exist. Do not intercept routes to block hosts: in Firefox any intercepted route makes navigations skip the service worker.
